@@ -355,6 +355,41 @@ main.mact>header{flex:none}
 }
 @media (min-width:900px) and (orientation:landscape) and (min-height:600px){main.mact{max-width:1120px}}
 @media (min-width:900px) and (orientation:landscape) and (min-height:600px){.tabs{max-width:none}}
+
+/* ---- v3.10 ---- */
+.ibtn{width:52px;height:52px;flex:none;border-radius:50%;border:2px solid var(--line);background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;padding:0}
+.ibtn.lg{width:64px;height:64px;border-color:var(--hear-ln);color:var(--hear)}
+.ibtn:active{transform:scale(.94)}
+/* Letra nueva: limpia */
+.li .lit{margin:0;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.5}
+.li .lbig{background:none;border:0;color:var(--ink);cursor:pointer}
+.li .kw{background:none;border:0;padding:4px 10px;margin-top:clamp(4px,1.5vh,14px)}
+.li .lres{margin:12px 0 0;font-size:.9rem;opacity:.65}
+.li .lact{align-items:center;gap:12px}
+/* Modo Docente: selector de letra */
+.mdc{text-align:center}
+.mdh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mdt{font-weight:700;font-size:.85rem;color:var(--ok);background:rgba(20,184,166,.12);padding:7px 12px;border-radius:99px}
+.chipb{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:99px;padding:6px 14px;font-weight:700;font-size:.85rem;min-height:42px}
+.mdk{font-size:.75rem;font-weight:700;opacity:.5;margin-top:18px;letter-spacing:.08em;text-transform:uppercase}
+.mdL{display:block;margin:2px auto 12px;background:none;border:0;color:var(--ink);font-family:var(--rd);font-weight:600;font-size:clamp(3.4rem,10vh,5.2rem);line-height:1.1;padding:0 10px;cursor:pointer}
+.mdL.x{font-size:clamp(1.4rem,4vh,2rem);font-weight:700;cursor:default;margin:10px auto 16px}
+.mds{display:flex;align-items:center;gap:8px;max-width:340px;margin:0 auto}
+.mds select{flex:1;text-align:center;min-height:48px}
+.seg{display:flex;background:rgba(100,116,139,.15);border-radius:16px;padding:4px;margin:14px auto 0;max-width:340px}
+.seg button{flex:1;border:0;background:transparent;border-radius:12px;padding:10px 6px;font-weight:700;color:var(--ink);opacity:.65;min-height:44px}
+.seg button.on{background:var(--card);opacity:1;box-shadow:0 1px 4px rgba(30,41,59,.18)}
+.lnk{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--ink);opacity:.6;font-weight:600;margin-top:12px;padding:10px}
+.seg button{white-space:nowrap;font-size:.92rem}
+.li .lact{flex-wrap:nowrap}.li .lact .btn{padding-left:16px;padding-right:16px;white-space:nowrap;min-width:0}
+@media (min-width:900px) and (orientation:landscape) and (min-height:600px){.hm.dh{grid-template-columns:minmax(360px,410px) minmax(0,1fr)}}
+.li .lit{margin-bottom:6px;position:relative;z-index:1}
+.li .lbig{line-height:1.2;padding-top:.05em}
+body[data-ft="l"] .li .lbig{font-size:clamp(3.4rem,13vh,8rem);line-height:1.45}
+body[data-ft="l"] .li .kww{font-size:clamp(1.6rem,4.6vh,2.6rem);line-height:1.5}
+/* Letra ligada: la letra grande y la palabra clave con el mismo grosor (Playwrite solo tiene trazo normal; así no se ve una en negrita falsa y la otra fina) */
+body[data-ft="l"] .li .lbig,body[data-ft="l"] .li .kww{font-weight:400}
+.li .acts .lnk{margin-top:2px}
 </style>
 </head>
 <body class="spl">
@@ -898,7 +933,7 @@ function mdSet(v){pr().lv=Math.max(0,Math.min(LV.length-1,+v||0));save();docHome
 function mdOnly(b){pr().only=b?1:0;save();docHome()}
 function docHome(){AD=0;NAV.f=null;const p=pr();hdr();const i=p.lv,L=LV[i],only=!!p.only,hasS=(only&&L.s.length?L.s.length:sylsTo(i).length)>0,hasW=LV.slice(only?i:0,i+1).some(l=>l.w.length),tx=m=>TX.some(t=>(m=='f'?t.n==1:t.n>1)&&t.l<=i),
  o=(ok,m,e,t,x)=>`<button class="big in" ${ok?`onclick="pl('${m}')"`:'disabled style="opacity:.55"'}><i>${ok?e:'—'}</i><div><b>${t}</b><span>${ok?x:'Sin contenido en este nivel'}</span></div></button>`;
- draw(`<div class="hm dh"><div class="hm-l"><div class="stage" style="text-align:center"><div class="fb" style="margin:0">🎓 Modo Docente · todo desbloqueado</div><div class="pic" style="font-size:${L.x?'2.2rem':'4.4rem'};cursor:pointer" ${L.x?'':`onclick="snd(LV[${i}].u)"`}>${L.x?L.u:cap(L.u)+' '+L.u}</div><div class="row"><button class="btn alt" onclick="mdLv(-1)" aria-label="Nivel anterior">◀</button><select id="mdl" onchange="mdSet(this.value)" aria-label="Nivel">${LV.map((l,k)=>`<option value="${k}"${k==i?' selected':''}>${k+1}. ${l.g}</option>`).join('')}</select><button class="btn alt" onclick="mdLv(1)" aria-label="Nivel siguiente">▶</button></div><div class="row"><button class="btn${only?' alt':''}" onclick="mdOnly(0)">Hasta esta letra</button><button class="btn${only?'':' alt'}" onclick="mdOnly(1)">Solo esta letra</button></div><div class="row"><button class="btn sm" onclick="adults()">⚙️ Ajustes</button><button class="btn alt sm" onclick="profiles()">Cambiar de perfil</button></div></div></div><div class="hm-r"><div class="menu"><button class="big in" onclick="level(pr().lv)"><i>▶️</i><div><b>Nivel completo</b><span>Sonido, sílabas, palabras y frase</span></div></button>${o(1,'c','👂','Letras','Escucha y elige la letra')}${o(1,'w','✏️','Trazar letras','Con el dedo')}${o(hasS,'s','🔡','Sílabas','Escucha, elige y construye')}${o(hasW,'b','🧩','Construye palabras','Ordena las letras')}${o(hasW,'k','✍️','Dictado','Escucha y escribe')}${o(hasW,'r','🗣️','Lee palabras','En voz alta')}${o(tx('f'),'f','💬','Frases','Lee y elige la imagen')}${o(tx('t'),'t','📘','Lecturas','Textos cortos con preguntas')}${o(tx('t'),'x','🔁','Releer','Lee 3 veces y mira cómo mejoran')}${o(hfAv(p).length>0,'h','🔠','Palabras frecuentes','Las que más se leen')}</div></div></div>`)}
+ draw(`<div class="hm dh"><div class="hm-l"><div class="stage mdc"><div class="mdh"><span class="mdt">🎓 Modo Docente</span><button class="chipb" onclick="adults()">${ic('sliders',16)} Ajustes</button></div><div class="mdk">Nivel ${i+1} de ${LV.length}</div><button class="mdL${L.x?' x':''}" ${L.x?'':`onclick="snd(LV[${i}].u)" aria-label="Escuchar el sonido"`}>${L.x?L.u:cap(L.u)+' '+L.u}</button><div class="mds"><button class="ibtn" onclick="mdLv(-1)" aria-label="Nivel anterior">${ic('chevl',22)}</button><select id="mdl" onchange="mdSet(this.value)" aria-label="Nivel">${LV.map((l,k)=>`<option value="${k}"${k==i?' selected':''}>${k+1}. ${l.x?l.u:l.g}</option>`).join('')}</select><button class="ibtn" onclick="mdLv(1)" aria-label="Nivel siguiente">${ic('chevr',22)}</button></div><div class="seg" role="group" aria-label="Qué se practica"><button class="${only?'':'on'}" onclick="mdOnly(0)" aria-pressed="${!only}">Hasta esta letra</button><button class="${only?'on':''}" onclick="mdOnly(1)" aria-pressed="${only}">Solo esta letra</button></div><button class="lnk" onclick="profiles()">${ic('user',16)} Cambiar de perfil</button></div></div><div class="hm-r"><div class="menu"><button class="big in" onclick="level(pr().lv)"><i>▶️</i><div><b>Nivel completo</b><span>Sonido, sílabas, palabras y frase</span></div></button>${o(1,'c','👂','Letras','Escucha y elige la letra')}${o(1,'w','✏️','Trazar letras','Con el dedo')}${o(hasS,'s','🔡','Sílabas','Escucha, elige y construye')}${o(hasW,'b','🧩','Construye palabras','Ordena las letras')}${o(hasW,'k','✍️','Dictado','Escucha y escribe')}${o(hasW,'r','🗣️','Lee palabras','En voz alta')}${o(tx('f'),'f','💬','Frases','Lee y elige la imagen')}${o(tx('t'),'t','📘','Lecturas','Textos cortos con preguntas')}${o(tx('t'),'x','🔁','Releer','Lee 3 veces y mira cómo mejoran')}${o(hfAv(p).length>0,'h','🔠','Palabras frecuentes','Las que más se leen')}</div></div></div>`)}
 function addP(){const n=$('#nm').value.replace(/[<>&"'`]/g,'').trim();if(!n)return;P.ps.push({n,lv:0,st:0});P.c=P.ps.length-1;save();home()}
 
 const icf=(k,s)=>ic(k,s).replace('fill="none"','fill="currentColor"');
@@ -918,9 +953,9 @@ function review(){const D=dueList(),ks=shuf([...shuf(D.filter(k=>k[1]!=':')).sli
 function adults(){needPin(()=>{try{panel(0)}catch(e){fb('Error: '+e.message,'no')}})}
 /* Zona del tutor con pestañas */
 let PT=0;
-function panel(t){AD=1;if(t!=null)PT=t;if(pr()&&pr().md)PT=2;const p=pr(),
+function panel(t){AD=1;if(t!=null)PT=t;if(pr()&&pr().md&&PT==0)PT=1;const p=pr(),
  sel=(id,o,cur)=>`<select id="${id}" aria-label="${id}">${o.map(([v,x])=>`<option value="${v}"${v==cur?' selected':''}>${x}</option>`).join('')}</select>`,
- head=`<div class="nav"><button class="back" onclick="home()">← Ajustes</button><button class="chip" onclick="home()" aria-label="Cerrar">✕</button></div><div class="ph"><span class="chip av">${p.n[0].toUpperCase()}</span><div><h2>${p.n}</h2><small>Zona del tutor</small></div></div><div class="tabs">${[[ic('chart',20),'Progreso'],[ic('sliders',20),'Configuración'],[ic('user',20),'Perfil y Sistema']].map(([e,x],i)=>`<button class="tab${i==PT?' on':''}" onclick="panel(${i})"><span>${e}</span>${x}</button>`).join('')}</div>`,
+ head=`<div class="nav"><button class="back" onclick="home()">← Ajustes</button><button class="chip" onclick="home()" aria-label="Cerrar">✕</button></div><div class="ph"><span class="chip av">${p.n[0].toUpperCase()}</span><div><h2>${p.n}</h2><small>Zona del tutor</small></div></div><div class="tabs">${[[ic('chart',20),'Progreso'],[ic('sliders',20),'Configuración'],[ic('user',20),'Perfil y Sistema']].map(([e,x],i)=>p.md&&i==0?'':`<button class="tab${i==PT?' on':''}" onclick="panel(${i})"><span>${e}</span>${x}</button>`).join('')}</div>`,
  fbx='<div class="fb" id="fb" style="white-space:pre-line"></div>';
  let b='';
  if(PT==0)b=progreso(p);
@@ -1188,6 +1223,7 @@ function evReport(ses){if(!DOC())return noDoc();if(!ses)return evl();AD=1;const 
 function evApply(n){pr().lv=n;save();hdr();panel()}
 /* Pantalla Progreso: iconos de una sola familia (trazo), datos reales del perfil */
 const IC={
+vol:'<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18.5 7a7 7 0 0 1 0 10"/>',chevl:'<path d="m15 18-6-6 6-6"/>',chevr:'<path d="m9 18 6-6-6-6"/>',
 chart:'<line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>',
 sliders:'<line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>',
 user:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
@@ -1226,7 +1262,7 @@ ${DOC()?`<h3>Diagnóstico</h3><div class="pg-dx"><button class="pg-t" onclick="v
 <h3>Seguimiento</h3><div class="pg-dx"><button class="pg-t" onclick="notas()"><span class="ib">${ic('edit',20)}</span><b>Notas del tutor</b><small>${nn?nn+(nn==1?' nota':' notas'):'Anotar observaciones'}</small></button><button class="pg-t" onclick="informe()"><span class="ib">${ic('file',20)}</span><b>Informe imprimible</b><small>Resumen en una página</small></button></div>`:'<div class="pg-card"><div class="pg-t2">Perfil Familias</div><p class="pg-nt">La velocidad lectora, la evaluación, las notas y los informes están reservados al Perfil Docente.</p></div>'}</div><div><h3>Actividad</h3><div class="pg-g" style="margin-top:0">${cd('clock',tm(p,0),'Hoy')}${cd('cal',days.reduce((a,d)=>a+d.m,0)+' min','Esta semana')}${cd('zap',st+(st==1?' día':' días'),'Racha')}${cd('star',p.st,'Estrellas')}${cd('award',dom,'Letras y sílabas dominadas')}${cd('book',rd,'Libros leídos')}</div>${accCard(p)}${hfa?`<div class="pg-card"><div class="pg-t2">Palabras frecuentes <small>(${hfm} de ${hfa} dominadas)</small></div><div class="bar"><i style="width:${Math.round(hfm/hfa*100)}%"></i></div></div>`:''}${days.some(d=>d.m>0)?`<div class="pg-card"><div class="pg-t2">Uso esta semana <small>(minutos, de lunes a domingo)</small></div><div class="pg-ev">${days.map(d=>`<div><span>${d.m||''}</span><i style="height:${Math.round(d.m/mx*44)+3}px"></i><span>${d.l}</span></div>`).join('')}</div></div>`:''}</div></div>`}
 function pracW(k){AD=2;let n=0;const all=sylsTo(pr().lv),nx=()=>{if(n++>=4){panel(0);return}ORDER.includes(k)?itemChoose(pr().lv,nx,k):itemSylChoose([k],all,nx)};nx()}
 /* Versión, instrucciones habladas, palabras frecuentes, notas, aula e informe */
-const VER='3.9 · 24 oct 2026';
+const VER='3.12 · 24 oct 2026';
 function acc1(ok){const p=pr();if(!p)return;const D=(p.d=p.d||{}),k=key(),r=D[k]=D[k]||{t:0,s:0};r.a=(r.a||0)+1;if(ok)r.o=(r.o||0)+1}
 function accDays(p,n){return[...Array(n)].map((_,i)=>{const x=new Date();x.setDate(x.getDate()-(n-1-i));const r=(p.d||{})[key(x)]||{},a=r.a||0,o=r.o||0;return{d:x.getDate(),a,o,p:a>=5?Math.round(o/a*100):null}})}
 function accSum(D){const w=arr=>{const a=arr.reduce((s,d)=>s+d.a,0),o=arr.reduce((s,d)=>s+d.o,0);return a>=10?Math.round(o/a*100):null};return{cur:w(D.slice(7)),prev:w(D.slice(0,7))}}
@@ -1343,13 +1379,13 @@ const SUBN={son:'Sonido de la letra',sil:'Sílabas',pal:'Palabras',fra:'Frase'},
 const subLen=g=>g.ln||({son:5+((pr().tz||'2')=='2'?2:1),sil:7,pal:((g.rw||[]).length||4)+(g.dx>=0?1:0),fra:1})[g.s];
 const pgTxt=p=>{const g=p.pg;return g&&g.i==p.lv&&SUBN[g.s]?SUBN[g.s]+' · ejercicio '+Math.min((g.k||0)+1,subLen(g))+' de '+subLen(g):''};
 const KW={a:['abeja','🐝'],e:['elefante','🐘'],i:['isla','🏝️'],o:['oso','🐻'],u:['uva','🍇'],h:['helado','🍦'],k:['koala','🐨'],w:['wifi','📶'],x:['xilófono','🎼'],ñ:['ñu','🐃']};
-function keyW(L){const A=LV.flatMap(l=>l.w),f=t=>A.find(([w,pc])=>pc&&t(w));if(L.x)return L.w.find(([w,pc])=>pc)||L.w[0]||null;return f(w=>units(w)[0]===L.u)||(KW[L.u]?KW[L.u]:f(w=>units(w).includes(L.u)))||null}
+function keyW(L){const A=LV.flatMap(l=>l.w),f=t=>A.find(([w,pc])=>pc&&t(w));if(L.x)return L.w.find(([w,pc])=>pc)||L.w[0]||null;return KW[L.u]||f(w=>units(w)[0]===L.u)||f(w=>units(w).includes(L.u))||null}
 function level(i){const L=LV[i],u=L.u,p=pr(),g=(i==p.lv&&p.pg&&p.pg.i==i&&SUBN[p.pg.s])?p.pg:null,kw=keyW(L),KU=kw?units(kw[0]):[],s0=L.s[0];
- const my=draw(BACK+`<div class="stage li"><div class="fb" style="margin:0">${L.x?'Nuevo reto':'Letra nueva'}</div><div class="lbig${L.x?' x':''}" id="lb">${L.x?u:cap(u)+' '+u}</div>${kw?`<button class="kw" id="kw" aria-label="Palabra: ${kw[0]}"><span class="kwp">${kw[1]||''}</span><span class="kww">${KU.map(c=>`<span class="${!L.x&&c===u?'k1':''}">${c}</span>`).join('')}</span></button>`:''}<p class="fb" id="fb">${g?`Lo dejaste en: <b>${pgTxt(p)}</b>`:'Escucha cómo lo digo yo.'}</p><div class="row"><button class="btn hear" id="h">🔊 Escucha</button><button class="btn help" id="cj">🗣️ Dilo conmigo</button>${g?'<button class="btn" id="go">Continuar ➜</button><button class="btn alt" id="rs">Empezar de nuevo</button>':'<button class="btn" id="go">Empezar ➜</button>'}</div></div>`);
+ const my=draw(BACK+`<div class="stage li"><p class="lit">${L.x?'Nuevo reto':'Letra nueva'}</p><button class="lbig${L.x?' x':''}" id="lb" aria-label="Escuchar">${L.x?u:cap(u)+' '+u}</button>${kw?`<button class="kw" id="kw" aria-label="Palabra: ${kw[0]}"><span class="kwp">${kw[1]||''}</span><span class="kww">${KU.map(c=>`<span class="${!L.x&&c===u?'k1':''}">${c}</span>`).join('')}</span></button>`:''}${g?`<p class="lres">Lo dejaste en: ${pgTxt(p)}</p>`:''}<div class="acts"><div class="row lact"><button class="ibtn lg" id="h" aria-label="Escuchar">${ic('vol',28)}</button><button class="btn alt" id="cj">Dilo conmigo</button><button class="btn" id="go">${g?'Continuar':'Empezar'}</button></div>${g?'<button class="lnk" id="rs">Empezar de nuevo</button>':''}</div></div>`);
  const lit=b=>{const e=$('#lb');if(e)e.classList[b?'add':'remove']('on')},one=()=>L.x?(s0?say('s:'+s0,s0,.7):Promise.resolve()):sndL(u);
  const model=async()=>{fb('Escucha cómo lo digo yo.');lit(1);await one();await wait(350);if(my!==T)return;if(kw)await wd(kw[0]);lit(0);if(my===T)fb('Ahora dilo conmigo: pulsa 🗣️')};
  const withMe=async()=>{for(let n=0;n<2;n++){if(my!==T)return;fb(n?'Otra vez, juntos…':'Dilo conmigo, a la vez…');lit(1);await one();lit(0);await wait(800)}if(my===T)fb('¡Muy bien! Ahora tú solo. Cuando quieras, pulsa '+(g?'Continuar':'Empezar')+'.','ok')};
- $('#h').onclick=model;$('#cj').onclick=withMe;if(kw)$('#kw').onclick=()=>wd(kw[0]);
+ $('#h').onclick=model;$('#lb').onclick=()=>{lit(1);Promise.resolve(one()).then(()=>lit(0))};$('#cj').onclick=withMe;if(kw)$('#kw').onclick=()=>wd(kw[0]);
  $('#go').onclick=()=>run(i,!!g);if(g)$('#rs').onclick=()=>{delete p.pg;save();run(i)};if(!g)model()}
 /* ---- v2.5: repaso espaciado de palabras, calentamiento, parejas confundibles, pseudopalabras y apoyo ---- */
 const CONF=[['b','d','p','q'],['m','n']];
