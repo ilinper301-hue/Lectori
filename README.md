@@ -1,4 +1,7 @@
- ## 🚀 Demo en vivo
+# Lectori
 
-Puedes probar el artefacto interactivo directamente aquí:
-[Ver Artefacto en Vivo](https://ilinper301-hue.github.io/Educacion/)
+Aplicación para aprender a leer (5-7 años) con el método fonológico: letras, sílabas, palabras, frases y lecturas, con repaso espaciado y zona del tutor.
+
+## 🚀 Demo en vivo
+
+[Abrir Lectori](https://ilinper301-hue.github.io/Lectori/)

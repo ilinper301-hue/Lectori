@@ -1,6 +1,7 @@
 ﻿tipo,archivo,texto
 instruccion,audio/instrucciones/c.mp3,Toca la letra que suena.
 instruccion,audio/instrucciones/sc.mp3,Toca la sílaba que suena.
+instruccion,audio/instrucciones/dk.mp3,Escucha la palabra y escríbela con las letras.
 instruccion,audio/instrucciones/si.mp3,Toca cada sílaba y escucha cómo se juntan los sonidos.
 instruccion,audio/instrucciones/r.mp3,"Lee la palabra en voz alta. Si quieres, escucha primero los sonidos."
 instruccion,audio/instrucciones/b.mp3,Escucha la palabra y ordena las letras para formarla.
@@ -41,9 +42,8 @@ palabra,audio/palabras/fino.mp3,fino
 palabra,audio/palabras/fideo.mp3,fideo
 palabra,audio/palabras/fama.mp3,fama
 palabra,audio/palabras/sofa.mp3,sofá
-palabra,audio/palabras/fuma.mp3,fuma
+palabra,audio/palabras/falda.mp3,falda
 palabra,audio/palabras/foso.mp3,foso
-palabra,audio/palabras/fiel.mp3,fiel
 palabra,audio/palabras/sopa.mp3,sopa
 palabra,audio/palabras/mapa.mp3,mapa
 palabra,audio/palabras/pelo.mp3,pelo
@@ -95,14 +95,12 @@ palabra,audio/palabras/monyo.mp3,moño
 palabra,audio/palabras/yoyo.mp3,yoyo
 palabra,audio/palabras/yema.mp3,yema
 palabra,audio/palabras/yate.mp3,yate
-palabra,audio/palabras/rey.mp3,rey
 palabra,audio/palabras/rayo.mp3,rayo
 palabra,audio/palabras/mayo.mp3,mayo
 palabra,audio/palabras/yeso.mp3,yeso
 palabra,audio/palabras/ayuda.mp3,ayuda
 palabra,audio/palabras/kilo.mp3,kilo
 palabra,audio/palabras/koala.mp3,koala
-palabra,audio/palabras/kayak.mp3,kayak
 palabra,audio/palabras/karate.mp3,karate
 palabra,audio/palabras/casa.mp3,casa
 palabra,audio/palabras/cama.mp3,cama
@@ -122,11 +120,10 @@ palabra,audio/palabras/cena.mp3,cena
 palabra,audio/palabras/lazo.mp3,lazo
 palabra,audio/palabras/queso.mp3,queso
 palabra,audio/palabras/paquete.mp3,paquete
-palabra,audio/palabras/quiero.mp3,quiero
 palabra,audio/palabras/quema.mp3,quema
 palabra,audio/palabras/quita.mp3,quita
 palabra,audio/palabras/poquito.mp3,poquito
-palabra,audio/palabras/tequila.mp3,tequila
+palabra,audio/palabras/bosque.mp3,bosque
 palabra,audio/palabras/gato.mp3,gato
 palabra,audio/palabras/goma.mp3,goma
 palabra,audio/palabras/lago.mp3,lago
@@ -137,9 +134,7 @@ palabra,audio/palabras/jirafa.mp3,jirafa
 palabra,audio/palabras/tijeras.mp3,tijeras
 palabra,audio/palabras/kiwi.mp3,kiwi
 palabra,audio/palabras/wifi.mp3,wifi
-palabra,audio/palabras/web.mp3,web
 palabra,audio/palabras/taxi.mp3,taxi
-palabra,audio/palabras/texto.mp3,texto
 palabra,audio/palabras/boxeo.mp3,boxeo
 palabra,audio/palabras/lluvia.mp3,lluvia
 palabra,audio/palabras/llave.mp3,llave
@@ -755,7 +750,6 @@ palabra,audio/palabras/gorila.mp3,gorila
 palabra,audio/palabras/mago.mp3,mago
 palabra,audio/palabras/amigo.mp3,amigo
 palabra,audio/palabras/jabon.mp3,jabón
-palabra,audio/palabras/reloj.mp3,reloj
 palabra,audio/palabras/rojo.mp3,rojo
 palabra,audio/palabras/hoja.mp3,hoja
 palabra,audio/palabras/saxofon.mp3,saxofón
@@ -945,3 +939,177 @@ pregunta,audio/preguntas/196.mp3,¿Qué tiempo hace?
 pregunta,audio/preguntas/197.mp3,¿Qué voy a hacer?
 pregunta,audio/preguntas/198.mp3,¿Qué hora es?
 pregunta,audio/preguntas/199.mp3,¿Qué tiempo hace?
+palabra,audio/palabras/heno.mp3,heno
+palabra,audio/palabras/elfo.mp3,elfo
+palabra,audio/palabras/lupa.mp3,lupa
+palabra,audio/palabras/balon.mp3,balón
+palabra,audio/palabras/payaso.mp3,payaso
+palabra,audio/palabras/karaoke.mp3,karaoke
+palabra,audio/palabras/esqui.mp3,esquí
+palabra,audio/palabras/jamon.mp3,jamón
+palabra,audio/palabras/wasabi.mp3,wasabi
+palabra,audio/palabras/xilofono.mp3,xilófono
+palabra,audio/palabras/ballena.mp3,ballena
+palabra,audio/palabras/arbol.mp3,árbol
+palabra,audio/palabras/farol.mp3,farol
+palabra,audio/palabras/hotel.mp3,hotel
+palabra,audio/palabras/calor.mp3,calor
+palabra,audio/palabras/leon.mp3,león
+palabra,audio/palabras/avispa.mp3,avispa
+palabra,audio/palabras/manzana.mp3,manzana
+palabra,audio/palabras/bandera.mp3,bandera
+palabra,audio/palabras/fantasma.mp3,fantasma
+palabra,audio/palabras/nariz.mp3,nariz
+palabra,audio/palabras/feliz.mp3,feliz
+palabra,audio/palabras/lampara.mp3,lámpara
+palabra,audio/palabras/bomba.mp3,bomba
+palabra,audio/palabras/abrigo.mp3,abrigo
+palabra,audio/palabras/cabra.mp3,cabra
+palabra,audio/palabras/sobre.mp3,sobre
+palabra,audio/palabras/crayon.mp3,crayón
+palabra,audio/palabras/croqueta.mp3,croqueta
+palabra,audio/palabras/cristal.mp3,cristal
+palabra,audio/palabras/escribir.mp3,escribir
+palabra,audio/palabras/flan.mp3,flan
+palabra,audio/palabras/flecha.mp3,flecha
+palabra,audio/palabras/frasco.mp3,frasco
+palabra,audio/palabras/flamenco.mp3,flamenco
+palabra,audio/palabras/grillo.mp3,grillo
+palabra,audio/palabras/grifo.mp3,grifo
+palabra,audio/palabras/negro.mp3,negro
+palabra,audio/palabras/grua.mp3,grúa
+palabra,audio/palabras/dragon.mp3,dragón
+palabra,audio/palabras/padre.mp3,padre
+palabra,audio/palabras/estrella.mp3,estrella
+palabra,audio/palabras/trompeta.mp3,trompeta
+palabra,audio/palabras/ladrillo.mp3,ladrillo
+palabra,audio/palabras/platano.mp3,plátano
+palabra,audio/palabras/plaza.mp3,plaza
+palabra,audio/palabras/princesa.mp3,princesa
+palabra,audio/palabras/primavera.mp3,primavera
+palabra,audio/palabras/pregunta.mp3,pregunta
+palabra,audio/palabras/burro.mp3,burro
+palabra,audio/palabras/arroz.mp3,arroz
+palabra,audio/palabras/gorra.mp3,gorra
+palabra,audio/palabras/jarra.mp3,jarra
+palabra,audio/palabras/tienda.mp3,tienda
+palabra,audio/palabras/escuela.mp3,escuela
+palabra,audio/palabras/abuelo.mp3,abuelo
+palabra,audio/palabras/auto.mp3,auto
+palabra,audio/palabras/aceite.mp3,aceite
+palabra,audio/palabras/bailar.mp3,bailar
+palabra,audio/palabras/euro.mp3,euro
+palabra,audio/palabras/verguuenza.mp3,vergüenza
+palabra,audio/palabras/desaguue.mp3,desagüe
+palabra,audio/palabras/guuiro.mp3,güiro
+palabra,audio/palabras/unguuento.mp3,ungüento
+palabra,audio/palabras/linguuista.mp3,lingüista
+palabra,audio/palabras/tractor.mp3,tractor
+palabra,audio/palabras/robot.mp3,robot
+palabra,audio/palabras/insecto.mp3,insecto
+palabra,audio/palabras/futbol.mp3,fútbol
+texto,audio/textos/200.mp3,¡Mamá mima a mi mula!
+pregunta,audio/preguntas/200.mp3,¿A quién mima mamá?
+texto,audio/textos/201.mp3,¡Sale el sol!
+pregunta,audio/preguntas/201.mp3,¿Qué sale?
+texto,audio/textos/202.mp3,"¿Es una mula, mamá?"
+pregunta,audio/preguntas/202.mp3,¿De qué habla?
+texto,audio/textos/203.mp3,"¿Ahí sale la luna, mamá?"
+pregunta,audio/preguntas/203.mp3,¿De qué habla?
+texto,audio/textos/204.mp3,"Ema sale a la isla. ¿Sale sola? ¡Sí, sale sola!"
+pregunta,audio/preguntas/204.mp3,¿A dónde sale Ema?
+texto,audio/textos/205.mp3,"Mi nena sale a la sala. ¿Es una mula? ¡No, es un mono!"
+pregunta,audio/preguntas/205.mp3,¿Qué es?
+texto,audio/textos/206.mp3,"Hola, mamá. ¿Ahí sale el sol? ¡Sí, ahí sale el sol!"
+pregunta,audio/preguntas/206.mp3,¿Qué sale?
+texto,audio/textos/207.mp3,"—¡Hola, Dani! —¡Hola, Alma! —¿Salimos a la isla? —¡Sí, salimos!"
+pregunta,audio/preguntas/207.mp3,¿A dónde salen?
+texto,audio/textos/208.mp3,"—¿Me das la falda, mamá?"
+pregunta,audio/preguntas/208.mp3,¿Qué pide?
+texto,audio/textos/209.mp3,—Dame el pan —pide Pepe.
+pregunta,audio/preguntas/209.mp3,¿Qué pide Pepe?
+texto,audio/textos/210.mp3,"—¿Tomas té, Tito? —Sí, mamá. —¡Ten, toma el té!"
+pregunta,audio/preguntas/210.mp3,¿Qué toma Tito?
+texto,audio/textos/211.mp3,"¿Dónde está mi pelota, papá?"
+pregunta,audio/preguntas/211.mp3,¿Qué busca?
+texto,audio/textos/212.mp3,"—Toma la rosa, Ramón —pide Rita."
+pregunta,audio/preguntas/212.mp3,¿Qué toma Ramón?
+texto,audio/textos/213.mp3,"Rosa mira una rata. —¡Mamá, mira! ¿Es un ratón? —No, Rosa, es una rata."
+pregunta,audio/preguntas/213.mp3,¿Qué mira Rosa?
+texto,audio/textos/214.mp3,¡Mi bebé bebe el té!
+pregunta,audio/preguntas/214.mp3,¿Qué bebe el bebé?
+texto,audio/textos/215.mp3,—Vamos a ver la luna —pide Vera.
+pregunta,audio/preguntas/215.mp3,¿Qué quiere ver Vera?
+texto,audio/textos/216.mp3,"¡Mira la piña, niña!"
+pregunta,audio/preguntas/216.mp3,¿Qué mira la niña?
+texto,audio/textos/217.mp3,"—Come la sopa, Cata —pide mamá."
+pregunta,audio/preguntas/217.mp3,¿Qué come Cata?
+texto,audio/textos/218.mp3,"Vera ve un pavo. —¿Vamos a verlo, Beto? —¡Sí, vamos!"
+pregunta,audio/preguntas/218.mp3,¿Qué ve Vera?
+texto,audio/textos/219.mp3,"—Beto, ¿y mi pato? —Yo lo veo, Ema. ¡Está en la bañera!"
+pregunta,audio/preguntas/219.mp3,¿Dónde está el pato?
+texto,audio/textos/220.mp3,"Cata come una pera. —¿Cómo está la pera, Cata? —¡Muy rica, mamá!"
+pregunta,audio/preguntas/220.mp3,¿Qué come Cata?
+texto,audio/textos/221.mp3,¿Dónde está el zapato de Zoe?
+pregunta,audio/preguntas/221.mp3,¿Qué busca?
+texto,audio/textos/222.mp3,"Zoe tiene una taza. —¿Tomas té, Luz? —¡Sí, por favor!"
+pregunta,audio/preguntas/222.mp3,¿Qué tiene Zoe?
+texto,audio/textos/223.mp3,¡Qué rico es el queso!
+pregunta,audio/preguntas/223.mp3,¿Qué es rico?
+texto,audio/textos/224.mp3,—¿Es el ratón? —Sí, es el ratón. —¡Que pase!
+pregunta,audio/preguntas/224.mp3,¿Quién es?
+texto,audio/textos/225.mp3,"¡Mira, mamá, un gato en la mesa!"
+pregunta,audio/preguntas/225.mp3,¿Qué hay en la mesa?
+texto,audio/textos/226.mp3,"Mamá tiene un jabón. —¡Mira, José! ¿Lo ves? —Sí, mamá, ¡es un jabón rojo!"
+pregunta,audio/preguntas/226.mp3,¿De qué color es el jabón?
+texto,audio/textos/227.mp3,"¡Mira la gallina, Pili!"
+pregunta,audio/preguntas/227.mp3,¿Qué mira Pili?
+texto,audio/textos/228.mp3,¡Qué rico es el chocolate!
+pregunta,audio/preguntas/228.mp3,¿Qué es rico?
+texto,audio/textos/229.mp3,"—¿Tomas leche o chocolate, Chema? —¡Chocolate, mamá! —Toma, nene."
+pregunta,audio/preguntas/229.mp3,¿Qué toma Chema?
+texto,audio/textos/230.mp3,"¡Mira el koala, mamá! ¿Sube al árbol? ¡Sí, sube!"
+pregunta,audio/preguntas/230.mp3,¿Qué mira?
+texto,audio/textos/231.mp3,"¡Mira el kiwi, Wanda!"
+pregunta,audio/preguntas/231.mp3,¿Qué mira Wanda?
+texto,audio/textos/232.mp3,"Wanda tiene un kiwi. —¿Me das un poco? —¡Sí, toma!"
+pregunta,audio/preguntas/232.mp3,¿Qué tiene Wanda?
+texto,audio/textos/233.mp3,"—¡Taxi, taxi! —dice papá. El taxi para y subimos todos."
+pregunta,audio/preguntas/233.mp3,¿Qué toma papá?
+texto,audio/textos/234.mp3,¡Qué blanca es la nube!
+pregunta,audio/preguntas/234.mp3,¿Qué es blanca?
+texto,audio/textos/235.mp3,"—Pon el plato en la mesa, Pablo —dice mamá."
+pregunta,audio/preguntas/235.mp3,¿Qué pone Pablo?
+texto,audio/textos/236.mp3,"Dani mira el tren. —¡Papá, el tren es grande! —Sí, Dani, es grande y rojo."
+pregunta,audio/preguntas/236.mp3,¿De qué color es el tren?
+texto,audio/textos/237.mp3,"Mi perro corre en el parque. —¡Ven, Toro! —dice Pablo. Toro corre y corre."
+pregunta,audio/preguntas/237.mp3,¿Quién corre?
+texto,audio/textos/238.mp3,"Mario tiene una piña. —¿Quieres un poco, Rosa? —¡Sí, gracias, Mario!"
+pregunta,audio/preguntas/238.mp3,¿Qué tiene Mario?
+texto,audio/textos/239.mp3,"—¿Cuándo vamos al parque, papá? —Hoy, cuando sale el sol. —¡Qué bien, papá!"
+pregunta,audio/preguntas/239.mp3,¿A dónde van?
+instruccion,audio/instrucciones/vf.mp3,¿Es verdad lo que dice esta frase?
+instruccion,audio/instrucciones/cz.mp3,¿Qué palabra falta? Fíjate en el texto.
+instruccion,audio/instrucciones/or.mp3,Toca las frases en el orden del texto.
+palabra,audio/palabras/abeja.mp3,abeja
+palabra,audio/palabras/elefante.mp3,elefante
+palabra,audio/palabras/oso.mp3,oso
+palabra,audio/palabras/helado.mp3,helado
+palabra,audio/palabras/nyu.mp3,ñu
+letra_larga,audio/letras/m-largo.mp3,mmmmm
+letra_larga,audio/letras/s-largo.mp3,sssss
+letra_larga,audio/letras/l-largo.mp3,lllll
+letra_larga,audio/letras/n-largo.mp3,nnnnn
+letra_larga,audio/letras/f-largo.mp3,fffff
+letra_larga,audio/letras/r-largo.mp3,rrrrr
+letra_larga,audio/letras/z-largo.mp3,zzzzz
+letra_larga,audio/letras/j-largo.mp3,jjjjj
+letra_larga,audio/letras/v-largo.mp3,vvvvv
+letra_larga,audio/letras/ny-largo.mp3,ññññ
+letra_larga,audio/letras/y-largo.mp3,yyyyy
+letra_larga,audio/letras/ll-largo.mp3,yyyyy
+letra_larga,audio/letras/a-largo.mp3,aaaa
+letra_larga,audio/letras/e-largo.mp3,eeee
+letra_larga,audio/letras/i-largo.mp3,iiii
+letra_larga,audio/letras/o-largo.mp3,oooo
+letra_larga,audio/letras/u-largo.mp3,uuuu
