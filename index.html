@@ -1254,7 +1254,7 @@ function panel(t){AD=1;if(t!=null)PT=t;if(pr()&&pr().md&&PT==0)PT=1;const p=pr()
  let b='';
  if(PT==0)b=progreso(p);
  else if(PT==1)b=`${p.md?NOTE('Ajustes del Modo Docente para toda la clase. No guarda el progreso de ningún alumno.'):`${LH('Alumno')}${LS(`<div class="lr"><span class="li">${ic('user',19)}</span><span class="lt">Nombre</span><span class="lc"><input id="rn" value="${esc(p.n)}" maxlength="20" aria-label="Nombre"><button class="lbtn" onclick="renP()">Guardar</button></span></div>`+RW({i:'chart',t:'Nivel',s:'Por dónde va en el recorrido',c:sel('lvs',LV.map((l,i)=>[i,`${i+1}. ${l.g}`]),p.lv)+'<button class="lbtn" onclick="sure(this,setLv)">Cambiar</button>'}))}`}
-${LH('Lectura')}${LS(RW({i:'user',t:'Lectura en voz alta',c:sel('rm',[['t','Validada por el tutor'],['m','Con micrófono']],p.rm||'t').replace('<select','<select onchange="setRm()"')})+RW({i:'edit',t:'Trazo de letras',c:sel('tz',[['M','Mayúsculas'],['m','Minúsculas'],['2','Ambas']],p.tz||'2').replace('<select','<select onchange="setTz()"')})+RW({i:'file',t:'Tipo de letra',c:sel('ft',[['i','Imprenta'],['l','Ligada (escolar)']],p.ft||'i').replace('<select','<select onchange="setFt()"')})+`<div class="lr lp"><div class="ftp" style="font-family:${(p.ft||'i')=='l'?"'Playwrite ES','Segoe Print',cursive;font-weight:400;line-height:1.7":"'Fredoka',system-ui,sans-serif"}">Mamá ama a mi mono</div></div>`)}
+${LH('Lectura')}${LS(RW({i:'user',t:'Lectura en voz alta',c:sel('rm',[['t','Validada por el tutor'],['m','Con micrófono']],p.rm||'t').replace('<select','<select onchange="setRm()"')})+RW({i:'edit',t:'Trazo de letras',c:sel('tz',[['M','Mayúsculas'],['m','Minúsculas'],['2','Ambas']],p.tz||'2').replace('<select','<select onchange="setTz()"')})+RW({i:'file',t:'Tipo de letra',c:sel('ft',[['i','Imprenta'],['l','Ligada (escolar)']],p.ft||'i').replace('<select','<select onchange="setFt()"')})+`<div class="lr lp"><div class="ftp" id="ftpv" style="font-family:${(p.ft||'i')=='l'?"'Playwrite ES','Segoe Print',cursive;font-weight:400;line-height:1.7":"'Fredoka',system-ui,sans-serif"}">Mamá ama a mi mono</div></div>`)}
 ${NOTE('«Con micrófono» usa el reconocimiento de voz de Chrome, que envía el audio a los servidores de Google. «Validada por el tutor» no usa el micrófono.')}
 ${p.md?'':`${LH('Sesión')}${LS(RW({i:'clock',t:'Tiempo de uso al día',c:sel('lim',[10,15,20,30,0].map(m=>[m,m?m+' min':'Sin límite']),p.lim==null?15:p.lim).replace('<select','<select onchange="setLim()"')}))}
 ${LH('Gestión')}${LS(RW({i:'refresh',t:'Reiniciar progreso',s:'Vuelve a empezar desde la primera letra',d:1,on:'sure(this.querySelector(\'.lt\'),resetP)',nc:1})+RW({i:'x',t:'Borrar alumno',s:'Se borra de este dispositivo y de la cuenta',d:1,on:'sure(this.querySelector(\'.lt\'),delP)',nc:1}))}`}${fbx}`;
@@ -1404,7 +1404,7 @@ function itemTrace(u,d,lc){if(chk())return;const G=(lc?GM:GL)[u];if(!G)return d(
  $('#pl').onclick=()=>{let j=0,t0=null;const dm=$('#dm'),f=ts=>{if(my!==T)return;if(t0==null)t0=ts;const q=P[j],L=q.getTotalLength(),z=(ts-t0)/(L*22);if(z>=1){j++;t0=null;if(j>=P.length){dm.setAttribute('cx',-10);return}}else{const o=q.getPointAtLength(L*z);dm.setAttribute('cx',o.x);dm.setAttribute('cy',o.y)}requestAnimationFrame(f)};requestAnimationFrame(f)}}
 let FTc='';
 function applyFt(){try{const p=P&&P.ps?pr():null,f=(p&&p.ft)||'i';document.body.dataset.ft=f;if(f!=FTc){FTc=f;if(f=='l'&&document.fonts&&document.fonts.load)document.fonts.load('400 1em "Playwrite ES"').catch(()=>{})}}catch(e){}}
-function setFt(){pr().ft=document.getElementById('ft').value=='l'?'l':'i';save();applyFt();fb('Guardado','ok')}
+function setFt(){const l=document.getElementById('ft').value=='l';pr().ft=l?'l':'i';save();applyFt();try{const e=document.getElementById('ftpv');if(e){e.style.fontFamily=l?"'Playwrite ES','Segoe Print',cursive":"'Fredoka',system-ui,sans-serif";e.style.fontWeight=l?'400':'';e.style.lineHeight=l?'1.7':''}}catch(x){}fb('Guardado','ok')}
 function setTz(){pr().tz=document.getElementById('tz').value;save();fb('Guardado','ok')}
 /* Voz sintética: prefiere voces naturales de España, o la elegida en el panel de adultos */
 function bestVoice(){const V=speechSynthesis.getVoices().filter(v=>/^es/i.test(v.lang));let s='';try{s=localStorage.getItem('arv')||''}catch(e){}const es=v=>/es[-_]ES/i.test(v.lang);
@@ -1578,7 +1578,7 @@ ${p.al&&p.al.i==p.lv?`<div class="pal">Atascado en ${SUBN[p.al.s]} (${p.al.f} in
  return `<div class="pg-2"><div>${top}</div><div>${lists}</div></div>`}
 function pracW(k){AD=2;let n=0;const all=sylsTo(pr().lv),nx=()=>{if(n++>=4){panel(0);return}ORDER.includes(k)?itemChoose(pr().lv,nx,k):itemSylChoose([k],all,nx)};nx()}
 /* Versión, instrucciones habladas, palabras frecuentes, notas, aula e informe */
-const VER='3.24 · 26 oct 2026';
+const VER='3.25 · 26 oct 2026';
 function acc1(ok){const p=pr();if(!p)return;const D=(p.d=p.d||{}),k=key(),r=D[k]=D[k]||{t:0,s:0};r.a=(r.a||0)+1;if(ok)r.o=(r.o||0)+1}
 function accDays(p,n){return[...Array(n)].map((_,i)=>{const x=new Date();x.setDate(x.getDate()-(n-1-i));const r=(p.d||{})[key(x)]||{},a=r.a||0,o=r.o||0;return{d:x.getDate(),a,o,p:a>=5?Math.round(o/a*100):null}})}
 function accSum(D){const w=arr=>{const a=arr.reduce((s,d)=>s+d.a,0),o=arr.reduce((s,d)=>s+d.o,0);return a>=10?Math.round(o/a*100):null};return{cur:w(D.slice(7)),prev:w(D.slice(0,7))}}
