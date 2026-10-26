@@ -1322,7 +1322,7 @@ function home(){AD=0;NAV.f=null;PROG.v=null;const p=pr();if(!p)return profiles()
 <button class="hm-a go in" data-a="hapr" data-t="Aprender" style="animation-delay:.08s" onclick="level(${p.lv})"><span class="ib2">${icf('play',24)}</span><div><b>Aprender</b><small>${p.st||p.lv?'Seguimos con':'Empezamos con'} ${nx}</small></div>${ic('chev',22)}</button></div><div class="hm-r">
 <button class="hm-a in" data-a="hpra" data-t="Practicar. Juega con lo que ya sabes" style="animation-delay:.16s" onclick="practice()"><span class="ib2">${ic('target',24)}</span><div><b>Practicar</b><small>Juega con lo que ya sabes</small></div>${ic('chev',22)}</button>
 ${n?`<button class="hm-a rv in" data-a="hrep" data-t="Repasar" style="animation-delay:.24s" onclick="review()"><span class="ib2">${ic('refresh',24)}</span><div><b>Repasar</b><small>${n} ${n==1?'elemento':'elementos'} por repasar</small></div>${ic('chev',22)}</button>`:''}
-<div class="hm-g in" style="animation-delay:.32s"><button class="hm-s" onclick="album()">${ic('image',22)}Mi álbum</button><button class="hm-s" onclick="map()">${ic('map',22)}Mapa de letras</button></div>
+<div class="hm-g in" style="animation-delay:.32s;grid-template-columns:1fr"><button class="hm-s" onclick="album()">${ic('image',22)}Mi álbum</button></div>
 <button class="hm-ad in" style="animation-delay:.4s" onclick="adults()">${ic('lock',16)} Zona del tutor${bkDue()?'<i class="bkdot" role="img" aria-label="Copia de seguridad pendiente"></i>':''}</button></div></div>`);spkAdd()}
 function dueList(){const n=Date.now(),p=pr();return [...Object.entries(p.s||{}).filter(([k,v])=>v.d<=n).map(x=>x[0]),...Object.entries(p.ws||{}).filter(([k,v])=>v.d<=n).map(x=>'w:'+x[0])]}
 function review(){const D=dueList(),ks=shuf([...shuf(D.filter(k=>k[1]!=':')).slice(0,4),...shuf(D.filter(k=>k[1]==':')).slice(0,3)]),all=sylsTo(pr().lv);let n=0;
@@ -1396,14 +1396,13 @@ addEventListener('animationstart',e=>{if(e.animationName=='sh')tone(0)},true);
 const sil=(U,i)=>U[i]=='u'&&'qg'.includes(U[i-1]||'-')&&'ei'.includes(U[i+1]||'-');
 /* Álbum y lectura repetida */
 const COL=['#FF6B6B','#F59E0B','#14B8A6','#7DD3FC','#C4B5FD','#FDE68A'];
-function alb(i){const l=LV[i];l.x?say('s:'+l.g,l.g,.7):snd(l.g)}
 function album(){AD=0;const p=pr(),n=Math.min(p.lv,LV.length),pc=Math.round(n/LV.length*100),ok=new Set(domS(p).ok);hdr();
  const nw=new Set([...LV.slice(0,n).flatMap(l=>l.w.map(x=>x[0])),...HFL.filter(x=>x.l<n).map(x=>x.w)]).size,tx=Object.keys(p.rd||{}).length,dk=Object.values(p.dk||{}).filter(v=>v.l).length,nl=LV.slice(0,n).filter(l=>!l.x).length;
  const T4=[['aa',nl,nl==1?'letra aprendida':'letras aprendidas'],['bookopen',nw,'palabras que ya puedes leer'],['books',tx,tx==1?'texto leído':'textos leídos'],['write',dk,'palabras que escribes']],
   M=[['bookopen','Primer texto',tx>=1],['books','5 textos',tx>=5],['trophy','20 textos',tx>=20],['aa','25 palabras',nw>=25],['star','100 palabras',nw>=100],['write','Primer dictado',dk>=1],['page','10 palabras escritas',dk>=10],['cap','Todas las letras',nl>=ORDER.length]];
  draw(BACK+`<div class="stage alb"><h2 class="h2i" style="margin:0 0 10px">${li('trophy',26)} Mi álbum</h2><div class="lg4">${T4.map(([e,v,l])=>`<button class="lg" onclick="speak('${v} ${l}',.9)"><i>${li(e,30)}</i><b>${v}</b><span>${l}</span></button>`).join('')}</div>
-<h3 class="alh">Medallas</h3><div class="mdl">${M.map(([e,l,g])=>`<button class="md1${g?' on':''}" onclick="speak('${g?'Medalla: ':'Todavía no: '}${l}',.9)" aria-label="${l}${g?'':' (todavía no)'}"><i>${li(g?e:'lock',28)}</i><span>${l}</span></button>`).join('')}</div>
-<h3 class="alh">Mis letras · ${n} de ${LV.length}</h3><div style="height:12px;background:var(--line);border-radius:99px;overflow:hidden"><div style="width:${pc}%;height:100%;background:var(--sun);border-radius:99px"></div></div><div class="grid" style="margin-top:14px">${LV.map((l,i)=>i<p.lv?`<button class="k al" style="background:${COL[i%6]};color:#1E293B;border-color:transparent" onclick="alb(${i})">${l.g}${ok.has(l.x?l.s[0]:l.g)?'<span class="stp">⭐</span>':''}</button>`:i==p.lv?`<button class="k al" style="border:3px dashed var(--accent)" onclick="alb(${i})">${l.g}</button>`:'<button class="k al" disabled aria-label="bloqueada">?</button>').join('')}</div><p class="rp-mu" style="margin-top:10px">⭐ = la domina: la ha acertado también otro día.</p></div>`)}
+<h3 class="alh">Mis letras · ${n} de ${LV.length}</h3><div style="height:12px;background:var(--line);border-radius:99px;overflow:hidden"><div style="width:${pc}%;height:100%;background:var(--sun);border-radius:99px"></div></div><div class="grid" style="margin-top:14px">${LV.map((l,i)=>i<p.lv?`<button class="k al" style="background:${COL[i%6]};color:#1E293B;border-color:transparent" onclick="level(${i})" aria-label="Volver a jugar la ${l.g}">${l.g}${ok.has(l.x?l.s[0]:l.g)?'<span class="stp">⭐</span>':''}</button>`:i==p.lv?`<button class="k al" style="border:3px dashed var(--accent)" onclick="level(${i})" aria-label="Seguir con la ${l.g}">${l.g}</button>`:'<button class="k al" disabled aria-label="bloqueada">?</button>').join('')}</div><p class="rp-mu" style="margin-top:10px">Toca una letra para volver a jugarla. ⭐ = la domina: la ha acertado también otro día.</p><h3 class="alh">Medallas</h3><div class="mdl">${M.map(([e,l,g])=>`<button class="md1${g?' on':''}" onclick="speak('${g?'Medalla: ':'Todavía no: '}${l}',.9)" aria-label="${l}${g?'':' (todavía no)'}"><i>${li(g?e:'lock',28)}</i><span>${l}</span></button>`).join('')}</div>
+</div>`)}
 function rdRec(t,sec){const p=pr(),R=p.rd=p.rd||{},o=R[t.x]||{n:0,l:0,b:0};let m='⏱ '+sec+' s';if(o.n)m+=sec<o.l?' · ¡Más rápido que la última vez! 🚀':' · ¡Bien, sigue practicando!';R[t.x]={n:o.n+1,l:sec,b:o.b?Math.min(o.b,sec):sec,d:key()};save();return m}
 /* Trazo de letras (mayúsculas de palo). Cada trazo es un camino SVG en un cuadro de 100x100; el primer punto es la salida */
 const GL={
@@ -1662,7 +1661,7 @@ ${p.al&&p.al.i==p.lv?`<div class="pal">Atascado en ${SUBN[p.al.s]} (${p.al.f} in
  return `<div class="pg-2"><div>${top}</div><div>${lists}</div></div>`}
 function pracW(k){AD=2;let n=0;const all=sylsTo(pr().lv),nx=()=>{if(n++>=4){panel(0);return}ORDER.includes(k)?itemChoose(pr().lv,nx,k):itemSylChoose([k],all,nx)};nx()}
 /* Versión, instrucciones habladas, palabras frecuentes, notas, aula e informe */
-const VER='3.26 · 26 oct 2026';
+const VER='3.27 · 26 oct 2026';
 function acc1(ok){const p=pr();if(!p)return;const D=(p.d=p.d||{}),k=key(),r=D[k]=D[k]||{t:0,s:0};r.a=(r.a||0)+1;if(ok)r.o=(r.o||0)+1}
 function accDays(p,n){return[...Array(n)].map((_,i)=>{const x=new Date();x.setDate(x.getDate()-(n-1-i));const r=(p.d||{})[key(x)]||{},a=r.a||0,o=r.o||0;return{d:x.getDate(),a,o,p:a>=5?Math.round(o/a*100):null}})}
 function accSum(D){const w=arr=>{const a=arr.reduce((s,d)=>s+d.a,0),o=arr.reduce((s,d)=>s+d.o,0);return a>=10?Math.round(o/a*100):null};return{cur:w(D.slice(7)),prev:w(D.slice(0,7))}}
@@ -1904,7 +1903,7 @@ function spkAdd(){try{app.querySelectorAll('.menu .big:not([disabled]),.hm-a').f
 function sure(b,f){if(b.dataset.s)return f();b.dataset.s=1;b.textContent='¿Seguro? Pulsa otra vez'}
 function resetP(){const p=pr();p.lv=0;p.st=0;p.s={};p.er={};save();home()}
 function delP(){if(P.c<0)return;const q=P.ps[P.c];if(q&&q.id)(P.del=P.del||{})[q.id]=Date.now();P.ps.splice(P.c,1);P.c=-1;save();profiles()}
-function map(){const p=pr();draw(BACK+`<p class="fb">Elige un nivel</p><div class="grid mp">${LV.map((l,i)=>`<button class="k${i==p.lv?' cur':''}" ${i>p.lv?'disabled aria-label="bloqueada"':''} onclick="level(${i})">${i>p.lv?'🔒':l.g}</button>`).join('')}</div><div class="row" style="margin-top:18px"><button class="btn" onclick="practice()">🎮 Practicar</button></div>`)}
+function map(){album()}
 
 /* Subniveles obligatorios de cada nivel: Sonido → Sílabas → Palabras → Frase. No se avanza sin superar el anterior.
    El estado (subnivel y ejercicio, palabras elegidas) se guarda tras cada ejercicio en pr().pg y permite reanudar. */
