@@ -669,6 +669,11 @@ header.sub .hback{display:inline-flex}header.sub .brand{display:none}
 .ab-md.on i{background:var(--sun);color:#fff}
 @media (min-width:600px){.ab-s{grid-template-columns:repeat(4,minmax(0,1fr))}.ab-c{grid-template-columns:1fr;grid-template-rows:auto;justify-items:start;row-gap:6px}.ab-c i{grid-row:auto}.ab-m{grid-template-columns:repeat(4,minmax(0,1fr))}.ab-g{grid-template-columns:repeat(auto-fill,minmax(64px,1fr))}}
 @media (max-width:340px){.ab-c{padding:10px;column-gap:8px}.ab-c i{width:34px;height:34px}.ab-c b{font-size:1.4rem}.ab-g{grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:6px}}
+
+/* ==== v3.30: deslizar entre pestañas ==== */
+#app.swl>*:not(.tzh):not(.tabs){animation:swl .22s ease both}#app.swr>*:not(.tzh):not(.tabs){animation:swr .22s ease both}
+@keyframes swl{from{opacity:.4;transform:translateX(24px)}to{opacity:1;transform:none}}@keyframes swr{from{opacity:.4;transform:translateX(-24px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#app.swl>*,#app.swr>*{animation:none!important}}
 </style>
 </head>
 <body class="spl">
@@ -1708,7 +1713,7 @@ ${p.al&&p.al.i==p.lv?`<div class="pal">Atascado en ${SUBN[p.al.s]} (${p.al.f} in
  return `<div class="pg-2"><div>${top}</div><div>${lists}</div></div>`}
 function pracW(k){AD=2;let n=0;const all=sylsTo(pr().lv),nx=()=>{if(n++>=4){panel(0);return}ORDER.includes(k)?itemChoose(pr().lv,nx,k):itemSylChoose([k],all,nx)};nx()}
 /* Versión, instrucciones habladas, palabras frecuentes, notas, aula e informe */
-const VER='3.29 · 26 oct 2026';
+const VER='3.30 · 26 oct 2026';
 function acc1(ok){const p=pr();if(!p)return;const D=(p.d=p.d||{}),k=key(),r=D[k]=D[k]||{t:0,s:0};r.a=(r.a||0)+1;if(ok)r.o=(r.o||0)+1}
 function accDays(p,n){return[...Array(n)].map((_,i)=>{const x=new Date();x.setDate(x.getDate()-(n-1-i));const r=(p.d||{})[key(x)]||{},a=r.a||0,o=r.o||0;return{d:x.getDate(),a,o,p:a>=5?Math.round(o/a*100):null}})}
 function accSum(D){const w=arr=>{const a=arr.reduce((s,d)=>s+d.a,0),o=arr.reduce((s,d)=>s+d.o,0);return a>=10?Math.round(o/a*100):null};return{cur:w(D.slice(7)),prev:w(D.slice(0,7))}}
@@ -1946,6 +1951,11 @@ function itemOrder(t,d){if(chk())return;if(!t)return d(true);const {w:W,end}=ord
  W.forEach((_,j)=>{const b=$('#w'+j);if(b)b.onclick=()=>{if(done||b.disabled)return;b.disabled=true;b.classList.add('used');sel.push(j);fb('');paint();if(sel.length===W.length)check()}});
  paint();inst('of','Ordena las palabras para formar la frase.')}
 const ORDALT={15:["Ana ve en la mesa una uva."],17:["Yo en la sala uso mi yoyo."],18:["Hay en el río un pato."],21:["Hay en el mar un pez."],24:["Hoy en la calle llueve."],33:["Hay en la mesa un kiwi."],35:["Hay en el libro un texto."],57:["Hay en el plato una pluma."],67:["Hay en la mesa un huevo."],76:["Hay en la clase un pupitre."],89:["Pepe pone en la isla un pino."],93:["Mamá pone en la sala la ropa."],101:["Hoy tomo pan y sopa."],137:["Kiko en el mar usa un kayak."],141:["Hay en la isla un lago."],194:["A Lola el helado se le cae."],260:["Mamá pone en el florero una flor."],261:["Fran come flan y fresa."],262:["Hay en la sala un gato gris."],285:["Paco pone en el pan queso."],292:["Chema pone en la silla la mochila."],299:["Hay en la calle un farol."],310:["Pablo pone en la mesa la planta."]};const ORDNO=new Set([209, 212, 215, 217]);
+/* ---- v3.30: Zona del tutor: deslizar el dedo a izquierda o derecha cambia de pestaña ---- */
+(()=>{let x0=null,y0=0,t0=0;const no=e=>e.closest('input,select,textarea,[contenteditable],canvas,.nosw')||(()=>{for(let n=e;n&&n!==document.body;n=n.parentElement)if(n.scrollWidth>n.clientWidth+4&&/(auto|scroll)/.test(getComputedStyle(n).overflowX))return 1})();
+ document.addEventListener('touchstart',e=>{x0=null;if(AD!=1||e.touches.length!=1||!document.querySelector('#app .tabs .tab')||no(e.target))return;x0=e.touches[0].clientX;y0=e.touches[0].clientY;t0=Date.now()},{passive:true});
+ document.addEventListener('touchend',e=>{if(x0==null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Date.now()-t0>700||Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.8)return;
+  const lo=pr()&&pr().md?1:0,n=Math.max(lo,Math.min(2,PT+(dx<0?1:-1)));if(n==PT)return;panel(n);try{const a=document.getElementById('app');a.classList.remove('swl','swr');void a.offsetWidth;a.classList.add(dx<0?'swl':'swr')}catch(e){}},{passive:true})})();
 function spkAdd(){try{app.querySelectorAll('.menu .big:not([disabled]),.hm-a').forEach(b=>{const pa=b.parentNode;if(!pa||pa.classList.contains('bw'))return;const w=document.createElement('div');w.className='bw';if(b.classList.contains('in')){w.classList.add('in');w.style.animationDelay=b.style.animationDelay;b.classList.remove('in')}pa.insertBefore(w,b);w.appendChild(b);const k=document.createElement('button');k.className='spk';k.type='button';k.setAttribute('aria-label','Escuchar');k.innerHTML='<svg class="vi" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.4" y="8.6" width="4.6" height="6.8" rx="1.3"/><path d="M7 8.6l5.3-3.8c.75-.5 1.6 0 1.6.8v12.8c0 .8-.85 1.3-1.6.8L7 15.4"/><path d="M17 9.1a4.2 4.2 0 0 1 0 5.8"/><path d="M19.8 6.3a8.2 8.2 0 0 1 0 11.4"/></svg>';k.onclick=e=>{e.stopPropagation();const tx=[...b.querySelectorAll('b,small,span')].map(x=>x.textContent.trim()).filter(Boolean).join('. '),a=b.dataset&&b.dataset.a;a?say('i:'+a,b.dataset.t||tx,.9):speak(tx,.9)};w.appendChild(k)})}catch(e){}}
 function sure(b,f){if(b.dataset.s)return f();b.dataset.s=1;b.textContent='¿Seguro? Pulsa otra vez'}
 function resetP(){const p=pr();p.lv=0;p.st=0;p.s={};p.er={};save();home()}
