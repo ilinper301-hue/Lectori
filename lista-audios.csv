@@ -1580,6 +1580,8 @@ instruccion,audio/instrucciones/pb.mp3,Construye palabras. Ordena las letras
 instruccion,audio/instrucciones/pk.mp3,Dictado. Escucha y escribe
 instruccion,audio/instrucciones/pr.mp3,Lee palabras. Dilas en voz alta
 instruccion,audio/instrucciones/pf.mp3,Frases. Lee y elige la imagen
+instruccion,audio/instrucciones/po.mp3,Ordena la frase. Pon las palabras en orden
+instruccion,audio/instrucciones/of.mp3,Ordena las palabras para formar la frase.
 instruccion,audio/instrucciones/pt.mp3,Lecturas. Textos cortos con preguntas
 instruccion,audio/instrucciones/px.mp3,Releer. Lee 3 veces y mira cómo mejoras
 instruccion,audio/instrucciones/ph.mp3,Palabras frecuentes. Las palabras que más se leen
@@ -1803,3 +1805,90 @@ palabra,audio/palabras/sopla.mp3,sopla
 palabra,audio/palabras/avanza.mp3,avanza
 palabra,audio/palabras/fuera.mp3,fuera
 palabra,audio/palabras/nora.mp3,nora
+texto,audio/textos/275.mp3,Lola lee a Lalo.
+pregunta,audio/preguntas/275.mp3,¿Quién lee?
+texto,audio/textos/276.mp3,Lola olía la lila.
+pregunta,audio/preguntas/276.mp3,¿Qué olía Lola?
+palabra,audio/palabras/olia.mp3,olía
+texto,audio/textos/277.mp3,Lalo olía el aloe.
+pregunta,audio/preguntas/277.mp3,¿Qué olía Lalo?
+texto,audio/textos/278.mp3,Lalo lee a Eli.
+pregunta,audio/preguntas/278.mp3,¿Quién lee?
+palabra,audio/palabras/eli.mp3,eli
+texto,audio/textos/279.mp3,Mi mamá hila la lana.
+pregunta,audio/preguntas/279.mp3,¿Qué hila mamá?
+palabra,audio/palabras/hila.mp3,hila
+texto,audio/textos/280.mp3,Mi mula ama el heno.
+pregunta,audio/preguntas/280.mp3,¿Qué ama la mula?
+texto,audio/textos/281.mp3,Beto sube a la loma.
+pregunta,audio/preguntas/281.mp3,¿A dónde sube Beto?
+palabra,audio/palabras/loma.mp3,loma
+texto,audio/textos/282.mp3,Beto pela una pera.
+pregunta,audio/preguntas/282.mp3,¿Qué pela Beto?
+texto,audio/textos/283.mp3,La niña pela una piña.
+pregunta,audio/preguntas/283.mp3,¿Qué pela la niña?
+texto,audio/textos/284.mp3,Mi nene baña a su pato.
+pregunta,audio/preguntas/284.mp3,¿A quién baña mi nene?
+texto,audio/textos/285.mp3,Paco pone queso en el pan.
+pregunta,audio/preguntas/285.mp3,¿Qué pone Paco en el pan?
+palabra,audio/palabras/paco.mp3,paco
+texto,audio/textos/286.mp3,Mi mono quiere una pera.
+pregunta,audio/preguntas/286.mp3,¿Qué quiere el mono?
+texto,audio/textos/287.mp3,El gato come queso.
+pregunta,audio/preguntas/287.mp3,¿Qué come el gato?
+texto,audio/textos/288.mp3,Mi amigo toma sopa.
+pregunta,audio/preguntas/288.mp3,¿Qué toma mi amigo?
+texto,audio/textos/289.mp3,Mi pollito llega a la casa.
+pregunta,audio/preguntas/289.mp3,¿Quién llega a la casa?
+palabra,audio/palabras/pollito.mp3,pollito
+texto,audio/textos/290.mp3,Papá llama a mamá.
+pregunta,audio/preguntas/290.mp3,¿A quién llama papá?
+texto,audio/textos/291.mp3,Mi mamá pone leche en la taza.
+pregunta,audio/preguntas/291.mp3,¿Qué pone mamá en la taza?
+texto,audio/textos/292.mp3,Chema pone la mochila en la silla.
+pregunta,audio/preguntas/292.mp3,¿Dónde pone Chema la mochila?
+texto,audio/textos/293.mp3,Mi mono tiene un kimono.
+pregunta,audio/preguntas/293.mp3,¿Qué tiene el mono?
+texto,audio/textos/294.mp3,Kiko hace kárate con su papá.
+pregunta,audio/preguntas/294.mp3,¿Con quién hace kárate Kiko?
+texto,audio/textos/295.mp3,Wanda tiene un kiwi.
+pregunta,audio/preguntas/295.mp3,¿Qué tiene Wanda?
+texto,audio/textos/296.mp3,Wilo come un kiwi verde.
+pregunta,audio/preguntas/296.mp3,¿De qué color es el kiwi?
+palabra,audio/palabras/wilo.mp3,wilo
+texto,audio/textos/297.mp3,Mi mamá toma un taxi.
+pregunta,audio/preguntas/297.mp3,¿Qué toma mamá?
+texto,audio/textos/298.mp3,Mi papá toca el saxofón.
+pregunta,audio/preguntas/298.mp3,¿Qué toca mi papá?
+texto,audio/textos/299.mp3,Hay un farol en la calle.
+pregunta,audio/preguntas/299.mp3,¿Qué hay en la calle?
+texto,audio/textos/300.mp3,Mi mamá tiene un papel.
+pregunta,audio/preguntas/300.mp3,¿Qué tiene mamá?
+texto,audio/textos/301.mp3,Mi nena ama el campo.
+pregunta,audio/preguntas/301.mp3,¿Qué ama la nena?
+texto,audio/textos/302.mp3,Mi nene tiene una lámpara.
+pregunta,audio/preguntas/302.mp3,¿Qué tiene mi nene?
+texto,audio/textos/303.mp3,Mi mamá abre el libro.
+pregunta,audio/preguntas/303.mp3,¿Qué abre mamá?
+texto,audio/textos/304.mp3,La cabra sube a la loma.
+pregunta,audio/preguntas/304.mp3,¿Quién sube a la loma?
+texto,audio/textos/305.mp3,Clara tiene un clavel rojo.
+pregunta,audio/preguntas/305.mp3,¿De qué color es el clavel?
+texto,audio/textos/306.mp3,El crayón es verde.
+pregunta,audio/preguntas/306.mp3,¿De qué color es el crayón?
+texto,audio/textos/307.mp3,Mi padre toca la trompeta.
+pregunta,audio/preguntas/307.mp3,¿Qué toca mi padre?
+texto,audio/textos/308.mp3,Mi madre pela una naranja.
+pregunta,audio/preguntas/308.mp3,¿Qué pela mi madre?
+texto,audio/textos/309.mp3,La princesa toma té.
+pregunta,audio/preguntas/309.mp3,¿Quién toma té?
+texto,audio/textos/310.mp3,Pablo pone la planta en la mesa.
+pregunta,audio/preguntas/310.mp3,¿Qué pone Pablo en la mesa?
+texto,audio/textos/311.mp3,Mi perro come pan.
+pregunta,audio/preguntas/311.mp3,¿Quién come pan?
+texto,audio/textos/312.mp3,Mi mamá tiene una jarra.
+pregunta,audio/preguntas/312.mp3,¿Qué tiene mamá?
+texto,audio/textos/313.mp3,El pingüino come pescado.
+pregunta,audio/preguntas/313.mp3,¿Qué come el pingüino?
+texto,audio/textos/314.mp3,La cigüeña pone un huevo.
+pregunta,audio/preguntas/314.mp3,¿Qué pone la cigüeña?
