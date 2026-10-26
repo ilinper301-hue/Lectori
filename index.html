@@ -1719,7 +1719,7 @@ ${p.al&&p.al.i==p.lv?`<div class="pal">Atascado en ${SUBN[p.al.s]} (${p.al.f} in
  return `<div class="pg-2"><div>${top}</div><div>${lists}</div></div>`}
 function pracW(k){AD=2;let n=0;const all=sylsTo(pr().lv),nx=()=>{if(n++>=4){panel(0);return}ORDER.includes(k)?itemChoose(pr().lv,nx,k):itemSylChoose([k],all,nx)};nx()}
 /* Versión, instrucciones habladas, palabras frecuentes, notas, aula e informe */
-const VER='3.31 · 26 oct 2026';
+const VER='3.32 · 26 oct 2026';
 function acc1(ok){const p=pr();if(!p)return;const D=(p.d=p.d||{}),k=key(),r=D[k]=D[k]||{t:0,s:0};r.a=(r.a||0)+1;if(ok)r.o=(r.o||0)+1}
 function accDays(p,n){return[...Array(n)].map((_,i)=>{const x=new Date();x.setDate(x.getDate()-(n-1-i));const r=(p.d||{})[key(x)]||{},a=r.a||0,o=r.o||0;return{d:x.getDate(),a,o,p:a>=5?Math.round(o/a*100):null}})}
 function accSum(D){const w=arr=>{const a=arr.reduce((s,d)=>s+d.a,0),o=arr.reduce((s,d)=>s+d.o,0);return a>=10?Math.round(o/a*100):null};return{cur:w(D.slice(7)),prev:w(D.slice(0,7))}}
@@ -2125,15 +2125,16 @@ function silWords(i){const ok=new Set(sylsTo(i)),cur=new Set(LV[i].s),seen=new S
 function itemSylIntro(i,d){if(chk())return;const L=LV[i].s;
  const my=draw(BACK+`<div class="stage"><p class="fb" style="margin:0">Toca y escucha cómo se juntan los sonidos</p><div class="grid syg" style="--n:${Math.min(L.length,5)};--m:${Math.min(L.length,4)}">${L.map((s,k)=>`<button class="k sgk" id="y${k}">${synSp(s)}</button>`).join('')}</div><div class="row"><button class="btn" id="n">Seguir ➜</button></div></div>`);
  inst('si','Toca cada sílaba y escucha cómo se juntan los sonidos.');L.forEach((s,k)=>$('#y'+k).onclick=()=>lightSyl($('#y'+k),s,my));$('#n').onclick=()=>d()}
-function itemSylRead(s,d){if(chk())return;let t=0,dn=0,cf=0;const SR=window.SpeechRecognition||window.webkitSpeechRecognition,TM=(pr().rm||'t')=='t'||!SR;
+function itemSylRead(s,d,rp){if(chk())return;let t=0,dn=0,cf=0;const SR=window.SpeechRecognition||window.webkitSpeechRecognition,TM=(pr().rm||'t')=='t'||!SR;
  const my=draw(BACK+`<div class="stage"><p class="fb" style="margin:0">Lee la sílaba</p><div class="grid" style="grid-template-columns:1fr;margin-top:12px"><button class="k sy" id="sy" style="font-size:3.4rem">${synSp(s)}</button></div><div class="fb" id="fb">Toca la sílaba para ver y oír los sonidos. Luego dila tú.</div><div class="acts">${EVB(TM)}<div class="row" id="nx"></div></div></div>`);
+ const swap=()=>{if(rp)return false;const A=altSyl(s);if(!A)return false;dn=1;rec(s,false);evOff();fb('Bien. Ahora lee esta otra, sin ayuda.');setTimeout(()=>{if(my===T)itemSylRead(A,d,1)},1100);return true};
  const lit=()=>lightSyl($('#sy'),s,my),nxt=async(ok,a)=>{if(dn)return;dn=1;rec(s,ok);evOff();if(a){await wait(450);if(my===T)d(ok);return}$('#nx').innerHTML='<button class="btn" id="n">Siguiente ➜</button>';$('#n').onclick=()=>d(ok)},
   adult=()=>{$('#nx').innerHTML='<button class="btn" id="y">Lo dijo bien ✔</button><button class="btn alt" id="h2">Necesita ayuda</button>';$('#y').onclick=()=>{star();fb('');nxt(true,1)};$('#h2').onclick=async()=>{await lit();nxt(false)}};
  $('#sy').onclick=lit;$('#hear').onclick=lit;inst('sr','Lee la sílaba en voz alta. Toca la sílaba si quieres oír los sonidos.');
- if(TM){fb('Lee en voz alta. El tutor valida si lo ha leído bien.');$('#ok2').onclick=()=>{if(dn)return;if(t&&!cf){cf=1;fb('Bien. Ahora léela otra vez, sin ayuda.');return}evOff();star();fb('');nxt(!!cf||t<2,1)};$('#ko2').onclick=async()=>{t++;cf=0;if(t<2){fb('Vamos otra vez. Escucha los sonidos','no');await lit();fb('Ahora tú.')}else{fb('Vamos juntos','no');await lit();if(my===T)nxt(false)}};return}
+ if(TM){fb('Lee en voz alta. El tutor valida si lo ha leído bien.');$('#ok2').onclick=()=>{if(dn)return;if(t&&swap())return;if(t&&!cf&&!rp){cf=1;fb('Bien. Ahora léela otra vez, sin ayuda.');return}evOff();if(!t||cf)star();fb('');nxt(rp?!t:(!!cf||t<2),1)};$('#ko2').onclick=async()=>{t++;cf=0;if(t<2){fb('Vamos otra vez. Escucha los sonidos','no');await lit();fb('Ahora tú.')}else{fb('Vamos juntos','no');await lit();if(my===T)nxt(false)}};return}
  $('#mic').onclick=()=>{const r=new SR();r.lang='es-ES';r.maxAlternatives=5;try{speechSynthesis.cancel()}catch(e){}stopA();fb('Te escucho… 👂');
   const on=async e=>{if(my!==T)return;const a=[...e.results[0]].flatMap(x=>norm(x.transcript).split(' '));
-   if(sylHeard(a,s)){if(t&&!cf){cf=1;fb('Bien. Ahora léela otra vez, sin ayuda.');return}star();fb('');await lit();if(my===T)nxt(!!cf||t<2)}
+   if(sylHeard(a,s)){if(t&&swap())return;if(t&&!cf&&!rp){cf=1;fb('Bien. Ahora léela otra vez, sin ayuda.');return}if(!t||cf)star();fb('');await lit();if(my===T)nxt(rp?!t:(!!cf||t<2))}
    else{t++;if(t<3){fb('Casi. Escucha y prueba otra vez','no');await lit();fb('Ahora tú.')}else{fb('Vamos juntos','no');await lit();if(my===T)nxt(false)}}};
   r.onresult=e=>{r._g=1;if(r._h)return;r._h=1;try{r.stop()}catch(x){}on(e)};
   r.onend=()=>{if(!r._g&&!r._e)fb('No oí nada. Pulsa el micrófono y prueba otra vez.','no')};
@@ -2166,20 +2167,25 @@ function itemText(t,d,sk){if(chk())return;const t0=Date.now();let rm='',ms=false
   const my=draw(BACK+`<div class="stage"><p class="fb" style="margin:0">${t.q}</p><div class="row"><button class="ibtn snd" id="h" aria-label="Escuchar"><svg class="vi" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.4" y="8.6" width="4.6" height="6.8" rx="1.3"/><path d="M7 8.6l5.3-3.8c.75-.5 1.6 0 1.6.8v12.8c0 .8-.85 1.3-1.6.8L7 15.4"/><path d="M17 9.1a4.2 4.2 0 0 1 0 5.8"/><path d="M19.8 6.3a8.2 8.2 0 0 1 0 11.4"/></svg></button><button class="btn alt" id="bk">📖 Ver texto</button></div><div class="grid" style="grid-template-columns:repeat(${o.length},1fr);margin-top:14px">${o.map((e,k)=>`<button class="k" id="o${k}" style="font-size:3rem">${e}</button>`).join('')}</div><div class="fb" id="fb"></div></div>`);
   const hear=()=>say('q:'+String(t.i).padStart(3,'0'),t.q,.85);$('#h').onclick=hear;hear();$('#bk').onclick=()=>itemText(t,d,1);
   o.forEach((e,k)=>$('#o'+k).onclick=async()=>{if(e==t.o[0]){cqRec('pic',!ms);star();fb('');await wait(rm?2200:800);if(my===T)d(!ms)}else{const b=$('#o'+k);b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),300);ms=true;fb('Vuelve a leer el texto','no')}})}}
-function itemRead(w,pic,d,ps){if(chk())return;const U=units(w);let t=0,cf=0;const TM=(pr().rm||'t')=='t'||!(window.SpeechRecognition||window.webkitSpeechRecognition);
+/* v3.32: otra palabra o sílaba del mismo nivel para comprobar sin ayuda */
+function altWord(w,ps){if(ps){const i=pr()?pr().lv:0;for(let n=0;n<8;n++){const x=pseudo(i);if(x&&x!==w)return [x,'👽']}return null}
+ const li=LV.findIndex(l=>l.w.some(x=>x[0]==w));if(li<0)return null;let B=LV[li].w.filter(x=>x[0]!==w);if(!B.length)B=LV.slice(0,li+1).flatMap(l=>l.w).filter(x=>x[0]!==w);return B.length?B[rand(B.length)]:null}
+function altSyl(s){const l=LV.find(l=>l.s.includes(s));const B=l?l.s.filter(x=>x!==s):[];return B.length?B[rand(B.length)]:null}
+function itemRead(w,pic,d,ps,rp){if(chk())return;const U=units(w);let t=0,cf=0;const TM=(pr().rm||'t')=='t'||!(window.SpeechRecognition||window.webkitSpeechRecognition);
  const my=draw(BACK+`<div class="stage">${ps?'<p class="fb" style="margin:0 0 6px"><span class="lis">'+li('spark',18)+'</span>Palabra inventada: léela con los sonidos</p>':''}<div class="word">${U.map((c,i)=>`<span class="l${sil(U,i)?' mu':''}" id="l${i}">${c}</span>`).join('')}</div><div class="fb" id="fb">Escucha y luego di la palabra.</div><div class="acts">${EVB(TM)}<div class="row" id="nx"></div></div></div>`);
- let dn=0;const nxt=(ok,a)=>{if(dn)return;dn=1;ps?prec(ok):wrec(w,ok);evOff();if(a)return d(ok);$('#nx').innerHTML='<button class="btn" id="n">Siguiente ➜</button>';$('#n').onclick=()=>d(ok)};
+ let dn=0;const swap=()=>{if(rp)return false;const A=altWord(w,ps);if(!A)return false;dn=1;ps?prec(false):wrec(w,false);evOff();fb('Bien. Ahora lee esta otra, sin ayuda.');setTimeout(()=>{if(my===T)itemRead(A[0],A[1],d,ps,1)},1100);return true};
+ const nxt=(ok,a)=>{if(dn)return;dn=1;ps?prec(ok):wrec(w,ok);evOff();if(a)return d(ok);$('#nx').innerHTML='<button class="btn" id="n">Siguiente ➜</button>';$('#n').onclick=()=>d(ok)};
  let bid=0;const blend=async(full)=>{const me=++bid,Lt=[];for(let i=0;i<U.length;i++){const e=$('#l'+i);if(my!==T||me!==bid||!e)return;if(sil(U,i))continue;const e2=sil(U,i+1)?$('#l'+(i+1)):null;e.classList.add('on');if(e2)e2.classList.add('on');Lt.push(e,e2);if(CONT.has(U[i]))await sndL(U[i]);else{await snd(U[i]);await wait(60)}}if(full&&my===T&&me===bid)await wd(w);Lt.forEach(x=>x&&x.classList.remove('on'))};
  $('#hear').onclick=()=>blend();inst('r','Lee la palabra en voz alta. Si quieres, escucha primero los sonidos.');
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(TM){fb('Lee en voz alta. El tutor valida si lo ha leído bien.');
-  $('#ok2').onclick=async()=>{if(dn)return;if(t&&!cf){cf=1;fb('Bien. Ahora léela otra vez, sin ayuda.');return}evOff();star();fb('');await wd(w);if(my===T)nxt(!!cf||t<2,1)};
+  $('#ok2').onclick=async()=>{if(dn)return;if(t&&swap())return;if(t&&!cf&&!rp){cf=1;fb('Bien. Ahora léela otra vez, sin ayuda.');return}evOff();if(!t||cf)star();fb('');await wd(w);if(my===T)nxt(rp?!t:(!!cf||t<2),1)};
   $('#ko2').onclick=async()=>{t++;cf=0;if(t<2){fb('Vamos otra vez. Escucha los sonidos','no');await blend();fb('Ahora tú.')}else{fb('Vamos juntos: '+w,'no');await blend(1);if(my===T)nxt(false)}}}
  else $('#mic').onclick=()=>{
   if(!SR){fb('Este navegador no escucha. El tutor decide:');$('#nx').innerHTML='<button class="btn" id="y">Lo dijo bien ✔</button><button class="btn alt" id="h2">Necesita ayuda</button>';$('#y').onclick=()=>{star();fb('');nxt(true,1)};$('#h2').onclick=()=>{blend();nxt(false)};return}
   const r=new SR();r.lang='es-ES';r.maxAlternatives=5;try{speechSynthesis.cancel()}catch(e){}fb('Te escucho… 👂');
   r.onresult=async e=>{if(my!==T)return;const a=[...e.results[0]].flatMap(x=>norm(x.transcript).split(' '));
-   if(a.includes(norm(w))){if(t&&!cf){cf=1;fb('Bien. Ahora léela otra vez, sin ayuda.');return}star();fb('');await wd(w);if(my===T)nxt(!!cf||t<2)}
+   if(a.includes(norm(w))){if(t&&swap())return;if(t&&!cf&&!rp){cf=1;fb('Bien. Ahora léela otra vez, sin ayuda.');return}if(!t||cf)star();fb('');await wd(w);if(my===T)nxt(rp?!t:(!!cf||t<2))}
    else{t++;if(t<3){fb('Casi. Escucha y prueba otra vez','no');await blend();fb('Ahora tú.')}else{fb('Vamos juntos: '+w,'no');await blend(1);if(my===T)nxt(false)}}};
   const pv=r.onresult;r.onresult=e=>{r._g=1;if(r._h)return;r._h=1;try{r.stop()}catch(x){}pv(e)};r.onend=()=>{if(!r._g&&!r._e)fb('No oí nada. Pulsa el micrófono y prueba otra vez.','no')};r.onerror=e=>{r._e=1;const M={'not-allowed':'El micrófono está bloqueado. Revisa el permiso del sitio en Chrome (candado junto a la dirección).','service-not-allowed':'Chrome no permite el reconocimiento de voz en esta página.','audio-capture':'No encuentro ningún micrófono.','network':'El reconocimiento de voz de Chrome necesita internet.','no-speech':'No te oí. Prueba otra vez, un poco más cerca.'};fb(M[e.error]||'Error del micrófono: '+e.error,'no');if(e.error=='not-allowed'||e.error=='service-not-allowed'||e.error=='audio-capture'){$('#nx').innerHTML='<button class="btn" id="y">Lo dijo bien ✔</button><button class="btn alt" id="h2">Necesita ayuda</button>';$('#y').onclick=()=>{star();fb('');nxt(true,1)};$('#h2').onclick=()=>{blend();nxt(false)}}};
   try{r.start()}catch(e){fb('No puedo iniciar el micrófono: '+e.message,'no')}}}
