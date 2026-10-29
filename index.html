@@ -1422,7 +1422,7 @@ const iv=(x,a=0,b=1e9)=>Math.max(a,Math.min(b,x|0)),ia=a=>(Array.isArray(a)?a:[]
 function cleanX(p){const o={};if(p.ft=='l'||p.ft=='i')o.ft=p.ft;
  const g=p.pg;if(g&&typeof g=='object'&&SUBN[g.s])o.pg=Object.assign({i:iv(g.i,0,LV.length-1),s:g.s,k:iv(g.k,0,60),o:iv(g.o,0,60),n:iv(g.n,0,60),h:iv(g.h,0,60),f:iv(g.f,0,99),rw:ia(g.rw),bs:ia(g.bs),rs:ia(g.rs),wx:ia(g.wx),wu:(Array.isArray(g.wu)?g.wu:[]).map(x=>String(x).slice(0,30)).slice(0,3),pw:String(g.pw||'').slice(0,8)},g.tx==null?{}:{tx:iv(g.tx,-1,TX.length-1)},g.ln?{ln:iv(g.ln,0,60)}:{});
  const a=p.al;if(a&&typeof a=='object'&&SUBN[a.s])o.al={i:iv(a.i,0,LV.length-1),s:a.s,f:iv(a.f,0,99),t:+a.t||0};
- o.ws=Object.fromEntries(Object.entries(p.ws||{}).filter(([k,v])=>v&&typeof v.d=='number').slice(0,500).map(([k,v])=>[String(k).slice(0,30),{b:iv(v.b,0,5),d:v.d}]));
+ o.ws=Object.fromEntries(Object.entries(p.ws||{}).filter(([k,v])=>v&&typeof v.d=='number').slice(-3000).map(([k,v])=>[String(k).slice(0,30),{b:iv(v.b,0,5),d:v.d}]));
  if(p.pa&&typeof p.pa.a=='number')o.pa={a:iv(p.pa.a),o:iv(p.pa.o)};
  o.rr=(Array.isArray(p.rr)?p.rr:[]).slice(-40).map(v=>({d:String(v&&v.d||''),t:iv(v&&v.t),w:iv(v&&v.w),r:ia(v&&v.r).slice(0,3)}));return o}
 const nid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
