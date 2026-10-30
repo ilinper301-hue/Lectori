@@ -1416,7 +1416,7 @@ ${LH('Sistema')}${LS(RW({i:'info',t:'Versión',v:VER})+RW({i:'refresh',t:'Buscar
  draw(head+`<div class="tzb${PT==0?' pg':''}">${b}</div>`)}
 function setLv(){const p=pr();p.lv=+document.getElementById('lvs').value;delete p.pg;delete p.al;save();hdr();panel()}
 function renP(){if(pr()&&pr().md)return;const n=document.getElementById('rn').value.replace(/[<>&"'`]/g,'').trim();if(!n)return;pr().n=n;save();hdr();fb('Nombre cambiado','ok')}
-function expo(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({v:1,d:new Date().toISOString(),P})],{type:'application/json'}));a.download='copia-aprende-a-leer.json';a.click();try{localStorage.setItem('arbk',Date.now())}catch(e){}fb('Copia guardada en Descargas. Guárdela en un sitio seguro.','ok')}
+function expo(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({v:1,d:new Date().toISOString(),P:{...P,pin:undefined}})],{type:'application/json'}));a.download='copia-aprende-a-leer.json';a.click();try{localStorage.setItem('arbk',Date.now())}catch(e){}fb('Copia guardada en Descargas. Guárdela en un sitio seguro.','ok')}
 let pend=null;
 const iv=(x,a=0,b=1e9)=>Math.max(a,Math.min(b,x|0)),ia=a=>(Array.isArray(a)?a:[]).slice(0,10).map(x=>x|0);
 function cleanX(p){const o={};if(p.ft=='l'||p.ft=='i')o.ft=p.ft;
@@ -1753,7 +1753,7 @@ const bkDue=()=>{const a=bkAge();return a===null?P.ps.some(x=>x.st>0||x.lv>0):a>
 const bkTxt=()=>{const a=bkAge();return a===null?'Aún no hay copias guardadas desde este móvil.':'Última copia: '+(a==0?'hoy':'hace '+a+(a==1?' día':' días'))};
 function bkBanner(){if(!bkDue())return'';const a=bkAge();return `<div class="pg-bk"><span class="ib">${ic('download',20)}</span><div style="flex:1;min-width:0"><b>${a===null?'Aún no hay copia de seguridad':'Hace '+a+' días sin copia de seguridad'}</b><small>El progreso se guarda solo en este móvil.</small></div><button class="btn sm" onclick="bkNow()">Guardar en Drive</button></div>`}
 /* Copia con un toque: menú de compartir del móvil (Drive aparece ahí); si no se puede compartir, se descarga */
-async function shareBk(){const name='lectori-copia-'+key()+'.json',txt=JSON.stringify({v:1,d:new Date().toISOString(),P});let f=null;
+async function shareBk(){const name='lectori-copia-'+key()+'.json',txt=JSON.stringify({v:1,d:new Date().toISOString(),P:{...P,pin:undefined}});let f=null;
  try{f=new File([txt],name,{type:'application/json'});if(!(navigator.canShare&&navigator.canShare({files:[f]})))f=new File([txt],name,{type:'text/plain'})}catch(e){f=null}
  if(f&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
   try{await navigator.share({files:[f],title:'Copia de seguridad de Lectori'});try{localStorage.setItem('arbk',Date.now())}catch(e){}panel();fb('Copia enviada. Compruebe en Drive que se ha guardado.','ok')}
