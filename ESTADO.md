@@ -3,19 +3,35 @@
 Documento vivo. **Cada chat que trabaje en Lectori lo lee al empezar y lo actualiza al terminar**
 (sección «Últimos cambios» arriba del todo, y «Pendiente» / «Problemas conocidos» si cambian).
 
-_Última actualización: 2026-11-13 (fase 0)_
+_Última actualización: 2026-11-13 (fase 1)_
 
 ## Resumen
 
 App (PWA) para aprender a leer con método fonético-sintético: 45 niveles (29 letras + 16 de inversas, trabadas,
 diptongos y diéresis), con sílabas, palabras, frases y lecturas decodificables, repaso espaciado y zona del tutor con PIN.
-Un solo `index.html` (versión 3.34), sin compilación. Publicada con GitHub Pages desde `main`:
+Un solo `index.html` (versión 3.35), sin compilación. Publicada con GitHub Pages desde `main`:
 https://ilinper301-hue.github.io/Lectori/ (el repositorio se llama `Lectori`, con mayúscula).
 Datos en el dispositivo (`localStorage`, clave `ar2`) y, con sesión de Google, en Firebase
 (proyecto `mis-apps-educativas`, colección `lectori`; reglas en el repositorio de Tabula).
 Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Últimos cambios
+
+- **2026-11-13 · Fase 1: opciones justas y audio sin esperas. Versión 3.35, caché `lectori-v7`.**
+  - **Opciones justas**: nuevas `hk()`/`hom()` (qué suena igual: b/v, c/q/k, ll/y, ge/je, que/ke, ha/a, ce/ze…; con seseo/ceceo
+    también s/z/ce/ci). `dstr` y `dstrS` ya no ofrecen letras/sílabas que suenan igual que la correcta en «¿Qué letra suena?»,
+    «¿Qué sílaba suena?», el repaso y «Le cuesta» (practicar una). También en «¿Con qué sílaba empieza?» (`itemSylFind`), que
+    tenía el mismo fallo. En **construir y dictado** (letras y sílabas) se mantienen a propósito (ortografía con la palabra delante).
+  - **Ajustes › Sonidos › «Sonidos iguales en mi zona»** (D2 = c): «Con seseo/ceceo» (por defecto) o «Sin seseo ni ceceo».
+    Se guarda en `localStorage['lectori.sz']` (de todo el dispositivo; no sube a la nube).
+  - **Audio**: lista `AUDL` de audios que existen (29 letras + 5 sílabas `ha–hu`, `.wav`); `say()` solo pide esos y el resto lo dice
+    la voz sin petición; `sndL` ya no pide `*-largo.mp3` (no hay ninguno); el arranque precarga solo `AUDL` en vez de 29 `.mp3`
+    inexistentes. Medido con `humo.py`: **0 peticiones de audio fallidas** (antes 36).
+  - **«Le cuesta»**: `rec()` guarda además `er[k].n` (fallos nuevos, desde 3.35; `cleanP` lo conserva y los perfiles sin `n` siguen
+    funcionando). En letras y sílabas con pareja homófona, «Le cuesta» (Progreso, aula, informe) solo las muestra si tienen fallos
+    nuevos: los antiguos no se borran, pero ya no las pintan. El número pequeño junto a cada una sigue siendo el total antiguo.
+  - Pruebas nuevas: `tests/homofonas.test.mjs` (12) y `tests/audio.test.mjs` (4). `node --test`: 62 pasan + 1 `TODO`; `humo.py` en verde.
+    Se comprobó que las pruebas fallan si se rompe `hom()`.
 
 - **2026-11-13 · Fase 0: red de seguridad (pruebas). `index.html` y `sw.js` NO han cambiado** (misma versión 3.34,
   caché `lectori-v6`; se comprobó con huella del archivo antes y después).
@@ -44,15 +60,12 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Pendiente
 
-- **Siguiente: fase 1 de `PLAN-DISENO.md`** (opciones justas y audio sin esperas; *Sonnet, esfuerzo medio*). D2 ya decidida.
-  Línea base de la fase 1: `humo.py` cuenta **36 peticiones de audio que fallan** en un recorrido corto (objetivo: 0).
+- **Siguiente: fase 2 de `PLAN-DISENO.md`** (que no se pierda nada; *Opus, esfuerzo alto*). D4 ya decidida (a).
 - Decisiones pendientes: D5 (fase 4), D6 (fase 7), D1 (fase 10), D7 (fase 11). Ya tomadas: D2 = c, D4 = a, D3 = a.
-- Fase 0 hecha. Fases 1–11 sin empezar.
+- Fases 0 y 1 hechas. Fases 2–11 sin empezar.
 
 ## Problemas conocidos
 
-- **«¿Qué letra suena?» ofrece como opciones letras que suenan igual** (b/v, c/q/k, ll/y, s/z; sílabas va/ba, ge/je):
-  el niño no puede acertar de oído y cuenta como fallo. Fase 1.
 - `cleanP` lanza un error si dentro de `nt`, `ev` o `es` hay una entrada vacía (`null`): al restaurar una copia con eso se
   rechaza la copia entera («no es una copia válida») y en la nube se salta ese alumno. Solo ocurre con datos dañados.
   Hay una prueba marcada `TODO` en `tests/datos.test.mjs`; arreglarlo en la fase 2 y quitar el `todo`.
@@ -60,8 +73,9 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
   Fori). La primera sincronización usa un `confirm()` en el que un toque equivocado sustituye un lado. Restaurar una
   copia reemplaza todos los perfiles. Fase 2.
 - «Lee palabras» depende de que un adulto valide; en clase lo pulsa el propio niño. Fase 3 (D3 = a).
-- Audio: 15 de cada 20 peticiones al leer una palabra fallan antes de sonar (se prueban extensiones que no existen).
-  Fase 1.
+- Audio: solo hay grabadas las 29 letras y 5 sílabas (`ha–hu`); el resto lo dice la voz del dispositivo (`lista-audios.csv`
+  prevé 1.893 más).
+- «Le cuesta»: junto a cada letra/sílaba el número pequeño es el total de fallos (incluye los antiguos de homófonas).
 - En oscuro, el informe y la evaluación tienen texto ilegible; pistas con poco contraste. Fase 9.
 
 ## No romper (otras apps dependen de esto)
@@ -73,7 +87,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Cómo probar
 
-- `node --test tests/*.test.mjs` (menos de 1 s): contenido y datos. 46 pasan y 1 es `TODO` (fallo conocido de `cleanP`).
+- `node --test tests/*.test.mjs` (menos de 1 s): contenido y datos. 62 pasan y 1 es `TODO` (fallo conocido de `cleanP`).
 - `python3 tests/humo.py` (~90 s; `--rapido` para solo 390×844 claro): recorrido completo en el navegador sin ventana.
 - Detalle en `CLAUDE.md` («Cómo probar»). A mano: `python3 -m http.server` en la carpeta y abrir en el navegador.
 - Al publicar cambios de la app: subir `const C='lectori-vN'` en `sw.js` y `VER` en `index.html`.

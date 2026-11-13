@@ -207,7 +207,7 @@ bueno, y mientras tanto esos niveles siguen con la lectura validada; las vocales
 **Archivos**: `tests/*` (nuevos), `CLAUDE.md`, `ESTADO.md`. **Hecho cuando**: `node --test tests/*.test.mjs` pasa y
 `index.html` no ha cambiado ni un carácter. **Tú pruebas**: nada (la app es idéntica).
 
-### Fase 1 · Opciones justas y audio sin esperas — *Sonnet, esfuerzo medio* · D2
+### Fase 1 · Opciones justas y audio sin esperas — *Sonnet, esfuerzo medio* · D2 — ✅ **hecha el 2026-11-13** (resumen en `ESTADO.md`)
 
 **Objetivo**: que toda pregunta de oído se pueda acertar y que el sonido salga al instante.
 - Grupos de letras que suenan igual (`HOMOF`: b/v, c/q/k, ll/y, g/j ante e-i, y s/z/c ante e-i según D2): nunca como

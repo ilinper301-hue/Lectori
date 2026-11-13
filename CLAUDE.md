@@ -25,7 +25,7 @@ Se publica en GitHub Pages: https://ilinper301-hue.github.io/Lectori/ (lo que se
 - `grabadora.html`: herramienta aparte para grabar los audios con el micrófono.
 - `tests/`: pruebas automáticas (ver «Cómo probar»). No forman parte de la app: GitHub Pages las publica pero nadie las carga.
 - `lista-audios.csv`: lista de todos los audios (tipo, archivo, texto): instrucciones, letras, letras largas, sílabas, palabras, textos y preguntas.
-- `audio/letras/`, `audio/silabas/`: audios grabados. La app prueba primero `.mp3` y luego `.wav`; si un audio no existe, usa la voz del navegador (speechSynthesis, es-ES).
+- `audio/letras/`, `audio/silabas/`: audios grabados (todos `.wav`). La app solo pide los que figuran en la lista `AUDL` de `index.html` (junto a `AUDX`, la extensión); lo demás lo dice la voz del navegador (speechSynthesis, es-ES) sin pedir nada a la red. **Al añadir o quitar un audio, actualiza `AUDL`** (`tests/audio.test.mjs` lo comprueba) y sube `lectori-vN` en `sw.js`.
 - `fonts/`: licencia de la fuente Playwrite ES (letra ligada). Las fuentes se cargan desde Google Fonts (Fredoka/Inter para letra de imprenta, Playwrite ES para ligada).
 
 ## Cómo funciona por dentro
@@ -47,7 +47,7 @@ Se publica en GitHub Pages: https://ilinper301-hue.github.io/Lectori/ (lo que se
 ## Cómo probar
 
 - **Pruebas automáticas** (las ejecuta Claude; hace falta Node 20 o superior, sin instalar nada):
-  - `node --test tests/*.test.mjs`: contenido (cada palabra, sílaba y texto usa solo letras ya enseñadas; preguntas y pseudopalabras válidas) y datos (migración de perfiles antiguos, `cleanP`, `domS`, racha, velocidad, evaluación, contratos con Calculi y con el service worker). Tarda menos de 1 segundo. Un test marcado `TODO` es un fallo conocido que aún no se ha arreglado: no rompe la ejecución.
+  - `node --test tests/*.test.mjs`: homófonas y audio (fase 1: nunca compiten letras/sílabas que suenan igual; la app solo pide audios que existen), contenido (cada palabra, sílaba y texto usa solo letras ya enseñadas; preguntas y pseudopalabras válidas) y datos (migración de perfiles antiguos, `cleanP`, `domS`, racha, velocidad, evaluación, contratos con Calculi y con el service worker). Tarda menos de 1 segundo. Un test marcado `TODO` es un fallo conocido que aún no se ha arreglado: no rompe la ejecución.
   - `python3 tests/humo.py` (Playwright + Chromium): recorre la app como una persona (perfil Docente, PIN, alumno, un ejercicio, zona del tutor) a 390×844 y 768×1024, en claro y oscuro, y falla si hay errores de JavaScript o de consola o si alguna pantalla desborda en horizontal. Con `--rapido`, solo 390×844 claro. Con `HUMO_CAPTURAS=/tmp/c`, guarda una captura por pantalla.
   - `tests/cargar.mjs` carga el `<script>` de `index.html` dentro de Node (`node:vm`) con un navegador falso; es lo que usan las pruebas. Con `LECTORI_INDEX=ruta/otro.html` se prueba otra copia (útil para comprobar que las pruebas detectan fallos).
 - **Antes de dar por terminada una fase**: las dos pruebas anteriores en verde, y comprobar a mano la app en claro y oscuro a 390×844 y 768×1024.
