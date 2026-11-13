@@ -166,6 +166,15 @@ class Corrida:
                                   ("practice()", 'practicar (modo Sola)', 'Lee y toca')]:
             self.ir(js, nombre, texto)
         pg.evaluate('panel(0)')
+        # Fase 5 · más datos del alumno: confusiones, historia de niveles, velocidad de 1 minuto e informe.
+        pg.evaluate("Object.assign(pr(),{cu:'1',cx:{'b>d':2,'d>b':1,'w:gato>pato':2,'d:b>v':2},hx:{m:{b:key(),d:key(),t:{son:1,sil:4,pal:1,fra:1},r:['sil']},l:{b:key(),d:key(),t:{son:1,sil:1}}}});save()")
+        for js, nombre, texto in [('panel(0)', 'progreso: confunde y superado con ayuda', 'Confunde'),
+                                  ('hxScr()', 'historia de niveles', 'Con ayuda'),
+                                  ('velRun(1)', 'velocidad: prueba de 1 minuto', '1 minuto'),
+                                  ("document.getElementById('go').click();document.getElementById('st').click()", 'velocidad: resultado', 'palabras correctas por minuto'),
+                                  ('informe()', 'informe: qué confunde e historia', 'Qué confunde')]:
+            self.ir(js, nombre, texto)
+        pg.evaluate('panel(0)')
         # Fase 4 · la tableta en clase: Ajustes, y la rejilla con 25 alumnos (cabe sin desplazarse).
         self.ir("panel(1)", 'ajustes: tabletas en clase', 'Tabletas en clase')
         pg.evaluate("for(let i=0;i<24;i++)P.ps.push({id:nid(),n:'Alumno '+(i+2),lv:0,st:0,av:i%AVS.length});localStorage.setItem('lectori.tb','s');UNL=0;tbGo()")
