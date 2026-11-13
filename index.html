@@ -1485,13 +1485,13 @@ async function bkScr(){AD=1;const L=await bkList();draw(BK+`<div class="stage" s
 async function bkUse(t){const b=(await bkList()).find(x=>x.t===t);if(b)readCopy(b.d,'copia automática del '+fdh(b.t))}
 /* Lee una copia (texto JSON) y deja elegir qué hacer con ella */
 let PSRC='';
-function readCopy(txt,src){try{const o=JSON.parse(txt),Q=o&&o.P?o.P:o;migOrd(Q);const ps=((Q||{}).ps||[]).filter(q=>q&&typeof q=='object').map(cleanP);if(!ps.length)throw 0;pend=ps;PSRC=src||'';impScr()}catch(e){fb('El archivo no es una copia válida.','no')}}
+function readCopy(txt,src){try{const o=JSON.parse(txt),Q=o&&o.P?o.P:o;if(!Q||!Array.isArray(Q.ps))throw 0;Q.ps=Q.ps.filter(q=>q&&typeof q=='object');migOrd(Q);const ps=Q.ps.map(cleanP);if(!ps.length)throw 0;pend=ps;PSRC=src||'';impScr()}catch(e){fb('El archivo no es una copia válida.','no')}}
 function impo(f){if(!f)return;const r=new FileReader();r.onload=()=>readCopy(r.result,f.name||'');r.readAsText(f)}
 function impScr(){if(!pend)return panel(2);AD=1;const ps=pend,ids=new Set(P.ps.map(q=>q.id)),dup=ps.filter(q=>ids.has(q.id)).length,nw=ps.length-dup,keep=new Set(ps.map(q=>q.id)),gone=P.ps.filter(q=>!keep.has(q.id)),
  nm=a=>a.slice(0,6).map(q=>esc(q.n)).join(', ')+(a.length>6?'…':''),al=n=>n+' '+(n==1?'alumno':'alumnos');
  draw(BK+`<div class="stage" style="text-align:left"><h2 style="margin:0 0 6px">Restaurar una copia</h2><p><small>${PSRC?esc(PSRC)+'. ':''}La copia tiene ${al(ps.length)}: ${nm(ps)}.</small></p><div class="menu">
 <button class="big" onclick="applyImp('add')"><i class="mi">${ic('download',26)}</i><div><b>Añadir a lo que hay</b><span>Recomendado. ${nw?al(nw)+(nw==1?' nuevo':' nuevos'):'Ninguno nuevo'}${dup?`; ${dup==1?'1 ya está':dup+' ya están'} aquí y se juntan`:''}. No se borra nada.</span></div></button>
-<button class="big" onclick="sure(this.querySelector('b'),()=>applyImp('rep'))"><i class="mi">${ic('refresh',26)}</i><div><b>Sustituir todo</b><span>Quedan solo los de la copia, tal como estaban.${gone.length?` Se quitarán ${al(gone.length)} que no están en la copia (${nm(gone)}), también de la cuenta si está conectada.`:''} Antes se guarda una copia automática de lo que hay.</span></div></button></div><div class="fb" id="fb"></div></div>`)}
+<button class="big" onclick="sure(this.querySelector('b'),()=>applyImp('rep'))"><i class="mi">${ic('refresh',26)}</i><div><b>Sustituir todo</b><span>Quedan solo los de la copia, tal como estaban.${gone.length?` Se quitará${gone.length>1?'n':''} ${al(gone.length)} que no ${gone.length>1?'están':'está'} en la copia (${nm(gone)}), también de la cuenta si está conectada.`:''} Antes se guarda una copia automática de lo que hay.</span></div></button></div><div class="fb" id="fb"></div></div>`)}
 async function applyImp(m){if(!pend)return;const ps=pend,now=Date.now();pend=null;
  await bkAuto(m=='rep'?'Antes de sustituir todo por una copia':'Antes de añadir una copia');
  if(m=='rep'){const keep=new Set(ps.map(q=>q.id)),del=Object.assign({},P.del);P.ps.forEach(q=>{if(q.id&&!keep.has(q.id))del[q.id]=now});ps.forEach(q=>{q.mt=now;delete del[q.id]});P={ps,c:0,rol:P.rol,pin:P.pin,md:P.md,ov:2,ob:P.ob,del,gmt:P.gmt}}
@@ -1502,7 +1502,7 @@ const LSK=k=>/^(ar2|arth|arv|arbk|ari|arm)$/.test(k)||k.startsWith('lectori.'),L
 function lsUse(){let me=0,all=0;try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i),n=k.length+(localStorage.getItem(k)||'').length;all+=n;if(LSK(k))me+=n}}catch(e){}return{me,all}}
 const kb=n=>n<1e6?Math.max(1,Math.round(n/1024))+' KB':(n/1048576).toFixed(1).replace('.',',')+' MB';
 function lsRow(){const u=lsUse(),pc=Math.round(u.all/LSMAX*100);return RW({i:'info',t:'Espacio usado',s:`Lectori ${kb(u.me)} · con sus otras apps ${kb(u.all)} de unos 5 MB`,v:`<span style="color:${pc>=80?'var(--no)':'inherit'}">${pc} %</span>`})}
-function svWarn(){return SVE?`<div class="pg-bk" role="alert" style="border-color:var(--no)"><span class="ib">${ic('x',20)}</span><div style="flex:1;min-width:0"><b>No se ha podido guardar</b><small>El almacenamiento de este navegador está lleno (lo comparten Lectori y sus otras apps). Lo último puede perderse al cerrar: guarde una copia ahora y libere espacio en las otras apps.</small></div><button class="btn sm" onclick="expo()">Guardar copia</button></div>`:''}
+function svWarn(){return SVE?`<div class="pg-bk" role="alert" style="border-left-color:var(--no)!important"><span class="ib" style="color:var(--no)">${ic('x',20)}</span><div style="flex:1;min-width:0"><b>No se ha podido guardar</b><small>El almacenamiento del navegador está lleno. Guarde una copia ahora y libere espacio en sus otras apps.</small></div><button class="btn sm" onclick="expo()">Guardar copia</button></div>`:''}
 const hmWarn=()=>{try{return !!(SVE||SYNC.ask)}catch(e){return !!SVE}};
 /* Una vez: si quedan evaluaciones antiguas con todo el detalle (más de 4), copia automática y después se dejan en resumen */
 function slimOld(){if(!P.ps.some(q=>(q.es||[]).length>4))return;bkAuto('Antes de dejar en resumen las evaluaciones antiguas').then(ok=>{if(!ok)return;P.ps.forEach(q=>{if((q.es||[]).length>4)q.es=q.es.slice(-4)});saveRaw()})}
@@ -1809,7 +1809,7 @@ ${p.al&&p.al.i==p.lv?`<div class="pal">Atascado en ${SUBN[p.al.s]} (${p.al.f} in
  return `<div class="pg-2"><div>${top}</div><div>${lists}</div></div>`}
 function pracW(k){AD=2;let n=0;const all=sylsTo(pr().lv),nx=()=>{if(n++>=4){panel(0);return}ORDER.includes(k)?itemChoose(pr().lv,nx,k):itemSylChoose([k],all,nx)};nx()}
 /* Versión, instrucciones habladas, palabras frecuentes, notas, aula e informe */
-const VER='3.35 · 13 nov 2026';
+const VER='3.36 · 13 nov 2026';
 function acc1(ok){const p=pr();if(!p)return;const D=(p.d=p.d||{}),k=key(),r=D[k]=D[k]||{t:0,s:0};r.a=(r.a||0)+1;if(ok)r.o=(r.o||0)+1}
 function accDays(p,n){return[...Array(n)].map((_,i)=>{const x=new Date();x.setDate(x.getDate()-(n-1-i));const r=(p.d||{})[key(x)]||{},a=r.a||0,o=r.o||0;return{d:x.getDate(),a,o,p:a>=5?Math.round(o/a*100):null}})}
 function accSum(D){const w=arr=>{const a=arr.reduce((s,d)=>s+d.a,0),o=arr.reduce((s,d)=>s+d.o,0);return a>=10?Math.round(o/a*100):null};return{cur:w(D.slice(7)),prev:w(D.slice(0,7))}}
