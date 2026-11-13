@@ -267,7 +267,7 @@ borrados, primera vez, sin conexión; `tests/copia.test.mjs`: exportar → resta
 **Archivos**: `index.html` (`profiles`, `addP`, `hdr`, `endScreen`, `panel`). **Pruebas**: humo con 25 perfiles a 390 px
 sin desplazamiento. **Tú pruebas**: que un niño encuentre su animal y no pueda entrar en ajustes ni crear perfiles.
 
-### Fase 5 · Más y mejores datos del alumno — *Opus, esfuerzo alto (estructura de datos)* · depende de 2
+### Fase 5 · Más y mejores datos del alumno — *Opus, esfuerzo alto (estructura de datos)* · depende de 2 — ✅ **hecha el 2026-11-13** (resumen en `ESTADO.md`; velocidad con prueba de 1 minuto uniendo los textos de velocidad que ya había; cifras de [4] comprobadas en el artículo: tabla 5)
 
 - Confusiones: guardar qué opción eligió al fallar (`p.cx['b>d']`), con tope.
 - Historia de niveles (`p.hx`): fecha de superación, intentos por subnivel, si pasó con el criterio rebajado. El aviso

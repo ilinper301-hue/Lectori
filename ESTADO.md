@@ -3,19 +3,48 @@
 Documento vivo. **Cada chat que trabaje en Lectori lo lee al empezar y lo actualiza al terminar**
 (sección «Últimos cambios» arriba del todo, y «Pendiente» / «Problemas conocidos» si cambian).
 
-_Última actualización: 2026-11-13 (fase 4)_
+_Última actualización: 2026-11-13 (fase 5)_
 
 ## Resumen
 
 App (PWA) para aprender a leer con método fonético-sintético: 45 niveles (29 letras + 16 de inversas, trabadas,
 diptongos y diéresis), con sílabas, palabras, frases y lecturas decodificables, repaso espaciado y zona del tutor con PIN.
-Un solo `index.html` (versión 3.39), sin compilación. Publicada con GitHub Pages desde `main`:
+Un solo `index.html` (versión 3.40), sin compilación. Publicada con GitHub Pages desde `main`:
 https://ilinper301-hue.github.io/Lectori/ (el repositorio se llama `Lectori`, con mayúscula).
 Datos en el dispositivo (`localStorage`, clave `ar2`) y, con sesión de Google, en Firebase
 (proyecto `mis-apps-educativas`, colección `lectori`; reglas en el repositorio de Tabula).
 Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Últimos cambios
+
+- **2026-11-13 · Fase 5: más y mejores datos del alumno. Versión 3.40, caché `lectori-v12`.** Solo se añaden campos nuevos y opcionales:
+  los perfiles anteriores siguen igual (sin migración que reescriba nada; probado con un perfil 3.34).
+  - **Confusiones** (`p.cx`, p. ej. `'b>d'`: oyó «b» y tocó «d»): en «¿Qué letra/sílaba suena?», «¿Con qué sílaba empieza?», Lee y toca
+    (prefijo `w:`, palabras) y construir/dictado/ordenar sílabas (prefijo `d:`, «al formar palabras»). Cada opción cuenta una vez por ejercicio.
+    Tope: 60 claves (sale la de menos veces) y 999 por clave. Progreso › Para reforzar: «Confunde: b con d (3)» (las dos direcciones juntas,
+    solo con 2 veces o más), «Palabras que confunde», «Al formar palabras: v en vez de b».
+  - **Historia de niveles** (`p.hx`, clave = grafema del nivel `LV[i].g`, que no cambia si cambia el orden): día en que empezó (`b`) y superó (`d`)
+    cada nivel, intentos por subnivel (`t`; 4 o más = estuvo atascado), subniveles superados con el listón rebajado (`r`) y saltados por el tutor (`k`).
+    El aviso «Atascado» se quita al superar, pero queda «Superado con ayuda» en Progreso (últimos 30 días), en la vista de aula (14 días),
+    en el informe y en la hoja del aula. Pantalla nueva: Progreso › Seguimiento › **Historia de niveles** (`hxScr`). Solo cuenta el recorrido del
+    alumno (no practicar niveles pasados ni el Modo Docente). Los niveles superados antes de 3.40 no tienen historia.
+  - **Velocidad**: **prueba de 1 minuto** (`velRun`): se ponen seguidos los textos de velocidad del nivel (73, 108 y 151 palabras; sin cambiar
+    ninguno), empezando cada vez por uno distinto; a los 60 s suena un aviso y el tutor toca la última palabra leída. Si termina antes,
+    «Ha terminado» (cuenta por tiempo, como antes). Se guarda `m:1` en esas pruebas. Botones y resultado van encima del texto.
+    **Referencia con rango** (`VREF`): 1.º 25–72 (media 49), 2.º 45–101 (media 73), lectura en voz alta; media ± desviación típica mediana de
+    la tabla 5 de Ripoll, Tapia y Aguado (2020), comprobada en el artículo. Dice si el alumno está dentro, por debajo o por encima.
+    **Ritmo en las lecturas de la app** (`rdPpm`): mediana de palabras por minuto de los textos de 12 palabras o más leídos en 30 días
+    (sale de `rd`, que ya guardaba los segundos; orientativo, hacen falta 3 textos).
+  - **Comprensión** (`p.cn` = {l literal, i inferencial}): las preguntas de la app son literales; «Ordenar la frase» no cuenta. Los perfiles
+    antiguos la sacan de `cq`. Inferencial: de la última evaluación del tutor (microtextos, `evInf`); `CQINF` está preparado para preguntas
+    inferenciales de la app (fase 10). Indicadores nuevos en Progreso.
+  - **Informe**: «Qué confunde», «Últimos niveles superados», comprensión literal/inferencial y ritmo en la app. **Hoja del aula** (CSV):
+    8 columnas nuevas y la referencia del curso como rango.
+  - `cleanP` conserva y valida lo nuevo (idempotente); `mergeP` junta confusiones (máximo), historia (fechas más antiguas, intentos máximos,
+    marcas unidas) y comprensión. Sube a la nube con el resto (las notas siguen sin subir). Peor caso medido: menos de 8 KB por alumno.
+  - Pruebas nuevas: `tests/alumno.test.mjs` (19, incluido un recorrido de nivel simulado con atasco y listón rebajado) y 5 pantallas nuevas en
+    `humo.py`. `node --test`: 120 pasan; `humo.py` en verde (38 pantallas por pasada, 4 pasadas). Se comprobó que las pruebas fallan si se
+    estropea la historia, el registro de confusiones, la fusión o la referencia. Prueba de 1 minuto recorrida en Chromium con reloj simulado.
 
 - **2026-11-13 · Fase 4: la tableta en clase (D5 = c). Versión 3.39, caché `lectori-v11`.**
   - **«¿Quién va a leer?»** es ahora una **rejilla de animales con nombre** (4 columnas; 5 si hay más de 20; 25 alumnos caben en
@@ -126,14 +155,17 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Pendiente
 
-- **Siguiente: fase 5 de `PLAN-DISENO.md`** («Más y mejores datos del alumno», *Opus, esfuerzo alto*: cambia la estructura de datos).
+- **Siguiente: fase 6 de `PLAN-DISENO.md`** («La clase primero», *Sonnet, esfuerzo alto*). Puede usar `hxHelp`, `cxTxt`, `evInf`, `rdPpm` y `p.al`.
 - Decisiones pendientes: D6 (fase 7), D1 (fase 10), D7 (fase 11). Ya tomadas: D2 = c, D4 = a, D3 = a, D5 = c.
-- Fases 0–4 hechas. Fases 5–11 sin empezar.
+- Fases 0–5 hechas. Fases 6–11 sin empezar.
 - De la fase 2 quedó sin hacer: servir Inter y Playwrite ES desde `fonts/` (aquí no se pueden descargar; siguen viniendo de Google Fonts).
 - Comprobar en dispositivos reales la sincronización con Firebase (las pruebas usan una nube simulada).
 
 ## Problemas conocidos
 
+- Datos de la fase 5 con una versión anterior de la app en otro dispositivo: esa versión no conoce `cx`/`hx`/`cn` y los quita al guardar;
+  al juntar con la nube se recuperan (`mergeP` une los dos lados), salvo que se use «Sustituir todo». Se arregla solo al actualizarse.
+- El ritmo en las lecturas de la app es orientativo: cuenta desde que sale el texto hasta «Ya lo leí» (incluye mirar y pedir ayuda).
 - Juntar dos versiones de un alumno: si el tutor bajó el nivel a mano en un dispositivo y en otro el niño siguió practicando
   después sin conexión, queda el nivel del más reciente. Las notas borradas pueden volver al «Añadir» una copia antigua.
 - Las copias automáticas son solo de este dispositivo (5 últimas); no sustituyen a guardar copias fuera.
@@ -152,7 +184,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Cómo probar
 
-- `node --test tests/*.test.mjs` (~25 s): contenido, datos, homófonas, audio, sincronización, copias y Lee y toca. 101 pasan.
+- `node --test tests/*.test.mjs` (~25 s): contenido, datos, homófonas, audio, sincronización, copias, Lee y toca, tableta y datos del alumno. 120 pasan.
 - `python3 tests/humo.py` (~90 s; `--rapido` para solo 390×844 claro): recorrido completo en el navegador sin ventana.
 - Detalle en `CLAUDE.md` («Cómo probar»). A mano: `python3 -m http.server` en la carpeta y abrir en el navegador.
 - Al publicar cambios de la app: subir `const C='lectori-vN'` en `sw.js` y `VER` en `index.html`.
