@@ -10,6 +10,8 @@ instruccion,audio/instrucciones/w.mp3,"Repasa la letra con el dedo, empezando po
 instruccion,audio/instrucciones/sr.mp3,Lee la sílaba en voz alta. Toca la sílaba si quieres oír los sonidos.
 instruccion,audio/instrucciones/sw.mp3,Escucha la palabra y ordena las sílabas para formarla.
 instruccion,audio/instrucciones/sf.mp3,Toca la sílaba con la que empieza la palabra.
+instruccion,audio/instrucciones/lt.mp3,Lee la palabra y toca su dibujo.
+instruccion,audio/instrucciones/lw.mp3,Mira el dibujo y toca su palabra.
 palabra,audio/palabras/ala.mp3,ala
 palabra,audio/palabras/ola.mp3,ola
 palabra,audio/palabras/aula.mp3,aula
@@ -1578,6 +1580,7 @@ instruccion,audio/instrucciones/pw.mp3,Trazar letras. Repasa con el dedo
 instruccion,audio/instrucciones/ps.mp3,"Sílabas. Escucha, elige y construye"
 instruccion,audio/instrucciones/pb.mp3,Construye palabras. Ordena las letras
 instruccion,audio/instrucciones/pk.mp3,Dictado. Escucha y escribe
+instruccion,audio/instrucciones/pm.mp3,Lee y toca. Lee la palabra y toca su dibujo
 instruccion,audio/instrucciones/pr.mp3,Lee palabras. Dilas en voz alta
 instruccion,audio/instrucciones/pf.mp3,Frases. Lee y elige la imagen
 instruccion,audio/instrucciones/po.mp3,Ordena la frase. Pon las palabras en orden
