@@ -59,3 +59,6 @@ Se publica en GitHub Pages: https://ilinper301-hue.github.io/Lectori/ (lo que se
   - `tests/cargar.mjs` carga el `<script>` de `index.html` dentro de Node (`node:vm`) con un navegador falso; es lo que usan las pruebas. Con `LECTORI_INDEX=ruta/otro.html` se prueba otra copia (útil para comprobar que las pruebas detectan fallos).
 - **Antes de dar por terminada una fase**: las dos pruebas anteriores en verde, y comprobar a mano la app en claro y oscuro a 390×844 y 768×1024.
 - **A mano**: sirve la carpeta en local (por ejemplo `python3 -m http.server`) y abre la app en el navegador; no funciona bien abriendo el archivo directamente. La app debe cargar sin errores en la consola, se puede crear un perfil, hacer un ejercicio y entrar en la zona del tutor.
+
+## Ecosistema
+Antes de tocar algo que una app lea o deje para otra (alumnado, resultados, enlaces entre apps), lee `ECOSISTEMA.md`: es el contrato común de las seis apps.
