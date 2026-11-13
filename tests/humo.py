@@ -158,6 +158,14 @@ class Corrida:
                            ('notas()', 'notas del tutor'), ('informe()', 'informe imprimible'), ('fichas()', 'fichas para imprimir')]:
             self.ir(js, nombre)
             pg.evaluate('panel(0)')
+        # Fase 3 · «Lee y toca»: lectura «Sola» en Ajustes y sus pantallas.
+        self.ir("panel(1);document.getElementById('rm').value='s';setRm()", 'ajustes: lectura Sola', 'Lee y toca')
+        for js, nombre, texto in [("itemMatch('pato','🦆',()=>{},13)", 'Lee y toca: palabra → dibujos', 'Lee y toca su dibujo'),
+                                  ("itemMatchW('pato','🦆',()=>{},13)", 'Lee y toca: dibujo → palabras', 'Toca la palabra del dibujo'),
+                                  ("rdFree('pato',()=>{})", 'leer en voz alta sin puntuar', 'Siguiente'),
+                                  ("practice()", 'practicar (modo Sola)', 'Lee y toca')]:
+            self.ir(js, nombre, texto)
+        pg.evaluate('panel(0)')
         # Modo oscuro/claro desde la propia app.
         pg.evaluate("setTheme(document.documentElement.dataset.theme=='dark'?'light':'dark')")
         self.revisa('cambio de tema')
