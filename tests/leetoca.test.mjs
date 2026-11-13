@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { cargar } from './cargar.mjs';
 
 const TIRADAS = 20;
-const PENDIENTES = ['m']; // niveles (letra LV[i].g) a la espera de dibujos nuevos; quitar de aquí al llegar
+const PENDIENTES = []; // niveles (letra LV[i].g) a la espera de dibujos nuevos; quitar de aquí al llegar
 const PERFIL = (extra = {}) => JSON.stringify({ ps: [{ id: 'abc123x', n: 'Ana', lv: 44, ...extra }], c: 0, rol: 'doc' });
 const app = (extra) => cargar({ ls: { ar2: PERFIL(extra) } });
 

@@ -9,13 +9,16 @@ _Última actualización: 2026-11-13 (fase 3)_
 
 App (PWA) para aprender a leer con método fonético-sintético: 45 niveles (29 letras + 16 de inversas, trabadas,
 diptongos y diéresis), con sílabas, palabras, frases y lecturas decodificables, repaso espaciado y zona del tutor con PIN.
-Un solo `index.html` (versión 3.37), sin compilación. Publicada con GitHub Pages desde `main`:
+Un solo `index.html` (versión 3.38), sin compilación. Publicada con GitHub Pages desde `main`:
 https://ilinper301-hue.github.io/Lectori/ (el repositorio se llama `Lectori`, con mayúscula).
 Datos en el dispositivo (`localStorage`, clave `ar2`) y, con sesión de Google, en Firebase
 (proyecto `mis-apps-educativas`, colección `lectori`; reglas en el repositorio de Tabula).
 Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Últimos cambios
+
+- **2026-11-13 · Dibujos de la M (aprobados). Versión 3.38, caché `lectori-v10`.** mama 👩‍👧, mula 🫏, malo 😠. La M ya usa
+  Lee y toca en modo Sola (4 palabras con dibujo). `PENDIENTES` vacío en `tests/leetoca.test.mjs`. 89 pruebas pasan; humo en verde.
 
 - **2026-11-13 · Fase 3: «Lee y toca» (D3 = a). Versión 3.37, caché `lectori-v9`.**
   - **Ajustes › Lectura › Lectura en voz alta**: nueva opción **«Sola»** (además de «Validada por el tutor» y «Con micrófono»;
@@ -104,8 +107,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Pendiente
 
-- **Dibujos de la M pendientes de tu visto bueno** (propuestos: mama 👩‍👧, mula 🫏, malo 😠). Al aprobarlos, quitar `'m'` de
-  `PENDIENTES` en `tests/leetoca.test.mjs`. La W ya funciona con kiwi y wifi.
+- Posible cambio: 👩‍👧 (mama) se ve como silueta gris en algunos Android; alternativa propuesta 👩‍🍼. Esperando respuesta.
 - **Siguiente: fase 4 de `PLAN-DISENO.md`** («La tableta en clase», *Sonnet, esfuerzo medio*). Antes, decidir D5.
 - Decisiones pendientes: D5 (fase 4), D6 (fase 7), D1 (fase 10), D7 (fase 11). Ya tomadas: D2 = c, D4 = a, D3 = a.
 - Fases 0–3 hechas. Fases 4–11 sin empezar.
@@ -117,7 +119,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 - Juntar dos versiones de un alumno: si el tutor bajó el nivel a mano en un dispositivo y en otro el niño siguió practicando
   después sin conexión, queda el nivel del más reciente. Las notas borradas pueden volver al «Añadir» una copia antigua.
 - Las copias automáticas son solo de este dispositivo (5 últimas); no sustituyen a guardar copias fuera.
-- Modo Sola: la M sigue con lectura validada hasta tener dibujos. Los emojis se ven distintos según el dispositivo.
+- Modo Sola: los emojis se ven distintos según el dispositivo (👩‍👧 puede salir como silueta gris).
 - Audio: solo hay grabadas las 29 letras y 5 sílabas (`ha–hu`); el resto lo dice la voz del dispositivo (`lista-audios.csv`
   prevé 1.893 más).
 - «Le cuesta»: junto a cada letra/sílaba el número pequeño es el total de fallos (incluye los antiguos de homófonas).
