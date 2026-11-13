@@ -198,14 +198,15 @@ test('cleanP: campos raros o mal formados no rompen nada y se descartan o se cor
   assert.equal('al' in p, false);
 });
 
-// Fallo conocido (se anota en ESTADO.md, aún sin arreglar): una entrada vacía (null) dentro de nt, ev o es
-// hace que cleanP lance un error; al restaurar una copia con eso, se rechaza la copia entera («no es una copia
-// válida»), y en la nube se salta ese alumno. Es `todo`: se ejecuta, se ve el fallo, pero no rompe `node --test`.
-// Cuando se arregle (fase 2), quitar `todo`.
-test('cleanP: tolera entradas vacías (null) en notas, evaluaciones y sesiones', { todo: 'conocido: lanza TypeError' }, () => {
+// Arreglado en la fase 2: una entrada vacía (null) dentro de nt, ev o es ya no hace fallar cleanP
+// (antes se rechazaba la copia entera y en la nube se saltaba ese alumno).
+test('cleanP: tolera entradas vacías (null) en notas, evaluaciones y sesiones', () => {
   const L = cargar();
-  for (const campo of ['nt', 'ev', 'es'])
+  for (const campo of ['nt', 'ev', 'es']) {
     assert.doesNotThrow(() => L.ev(`cleanP({${campo}:[null,{d:'2026-01-01'}]})`), campo);
+    assert.equal(L.ev(`cleanP({${campo}:[null,{d:'2026-01-01'}]}).${campo}.length`), 1, campo);
+  }
+  assert.equal(L.ev(`cleanP({es:[{d:'x',r:[null,['a','b',1,0,0,0,0]]}]}).es[0].r.length`), 1);
 });
 
 test('cleanP: aplicarla dos veces da lo mismo (no se pierde nada al sincronizar)', () => {
