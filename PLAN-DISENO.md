@@ -240,7 +240,7 @@ salgan b ni y como opción) y que los sonidos no tarden.
 borrados, primera vez, sin conexión; `tests/copia.test.mjs`: exportar → restaurar deja lo mismo; almacenamiento lleno.
 **Tú pruebas**: guardar copia, restaurarla en «Añadir», entrar con Google en un segundo dispositivo y ver el aula igual.
 
-### Fase 3 · Leer palabras sin un adulto: «Lee y toca» — *Opus, esfuerzo alto (función nueva)* · D3 = a
+### Fase 3 · Leer palabras sin un adulto: «Lee y toca» — *Opus, esfuerzo alto (función nueva)* · D3 = a — ✅ **hecha el 2026-11-13** (resumen en `ESTADO.md`; dibujos de la M pendientes de visto bueno)
 
 **Objetivo**: comprobar la lectura de palabras cuando el niño trabaja solo.
 - Actividad nueva `itemMatch`: se muestra la palabra escrita (sin audio) y 3 dibujos; el niño toca el que corresponde.

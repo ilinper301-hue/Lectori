@@ -3,19 +3,38 @@
 Documento vivo. **Cada chat que trabaje en Lectori lo lee al empezar y lo actualiza al terminar**
 (sección «Últimos cambios» arriba del todo, y «Pendiente» / «Problemas conocidos» si cambian).
 
-_Última actualización: 2026-11-13 (fase 2)_
+_Última actualización: 2026-11-13 (fase 3)_
 
 ## Resumen
 
 App (PWA) para aprender a leer con método fonético-sintético: 45 niveles (29 letras + 16 de inversas, trabadas,
 diptongos y diéresis), con sílabas, palabras, frases y lecturas decodificables, repaso espaciado y zona del tutor con PIN.
-Un solo `index.html` (versión 3.36), sin compilación. Publicada con GitHub Pages desde `main`:
+Un solo `index.html` (versión 3.37), sin compilación. Publicada con GitHub Pages desde `main`:
 https://ilinper301-hue.github.io/Lectori/ (el repositorio se llama `Lectori`, con mayúscula).
 Datos en el dispositivo (`localStorage`, clave `ar2`) y, con sesión de Google, en Firebase
 (proyecto `mis-apps-educativas`, colección `lectori`; reglas en el repositorio de Tabula).
 Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Últimos cambios
+
+- **2026-11-13 · Fase 3: «Lee y toca» (D3 = a). Versión 3.37, caché `lectori-v9`.**
+  - **Ajustes › Lectura › Lectura en voz alta**: nueva opción **«Sola»** (además de «Validada por el tutor» y «Con micrófono»;
+    por defecto sigue «Validada»). Fila **«Lo mismo para toda la clase»** (doble toque) si hay más de un alumno. Se guarda en `p.rm='s'`.
+  - **Modo Sola**: el subnivel Palabras son 4 «Lee y toca» (3 de palabra → 3 dibujos y 1 de dibujo → 3 palabras; con 2–3 palabras
+    con dibujo se repiten en la otra dirección) + el dictado. Se supera igual que antes (3 de 4 a la primera). Sin palabra inventada.
+    «Lee palabras», «Lee sílabas» y «Palabras frecuentes» quedan como práctica de decir en voz alta **sin puntuar**.
+    Repaso y calentamiento de palabras: Lee y toca (o construir si la palabra no tiene dibujo).
+  - Si el nivel tiene menos de 2 palabras con dibujo (ahora solo la **M**), ese subnivel sigue con la lectura validada.
+  - **Opciones justas**: dibujos falsos de palabras conocidas que empiezan igual o se parecen; nunca dos dibujos iguales ni del mismo grupo
+    (`EMG`: personas, caras, coches, flores, árboles…). Palabras falsas: de una letra de diferencia (inventadas pronunciables o reales),
+    nunca que suenen igual (b/v…), ni gato/gata, ni de una lista de palabras malsonantes (`LTB`). Fuera de Lee y toca: lola, lalo,
+    humano, fruta, ave, insecto, tío (`LTX`).
+  - **Datos**: `p.lm` {a, o} (intentos y aciertos a la primera), aparte de la lectura validada; actualiza el repaso de la palabra (`ws`).
+    `cleanP` y `mergeP` lo conservan; `pg.mw`/`pg.m` guardan por dónde va. Sin migración (campos nuevos opcionales).
+  - «Lee y toca» también en **Practicar** y en el **Modo Docente**. Indicador «Lee y toca · aciertos a la primera» en Progreso.
+  - `lista-audios.csv`: instrucciones `lt`, `lw`, `pm`.
+  - Pruebas: `tests/leetoca.test.mjs` (8) y 5 pantallas nuevas en `humo.py`. `node --test`: 89 pasan; `humo.py` en verde (31 pantallas por pasada).
+    Recorrido completo del subnivel en Chromium a 390 y 768, claro y oscuro: supera, guarda `lm` y pasa a Frase.
 
 - **2026-11-13 · Fase 2: que no se pierda nada. Versión 3.36, caché `lectori-v8`.** D4 = a aplicada.
   - **Guardado**: `saveRaw()` detecta si el almacenamiento está lleno (`SVE`): aviso rojo en la zona del tutor con «Guardar
@@ -85,9 +104,11 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Pendiente
 
-- **Siguiente: fase 3 de `PLAN-DISENO.md`** («Lee y toca», *Opus, esfuerzo alto*). D3 ya decidida (a). Proponer dibujos para M y W.
+- **Dibujos de la M pendientes de tu visto bueno** (propuestos: mama 👩‍👧, mula 🫏, malo 😠). Al aprobarlos, quitar `'m'` de
+  `PENDIENTES` en `tests/leetoca.test.mjs`. La W ya funciona con kiwi y wifi.
+- **Siguiente: fase 4 de `PLAN-DISENO.md`** («La tableta en clase», *Sonnet, esfuerzo medio*). Antes, decidir D5.
 - Decisiones pendientes: D5 (fase 4), D6 (fase 7), D1 (fase 10), D7 (fase 11). Ya tomadas: D2 = c, D4 = a, D3 = a.
-- Fases 0, 1 y 2 hechas. Fases 3–11 sin empezar.
+- Fases 0–3 hechas. Fases 4–11 sin empezar.
 - De la fase 2 quedó sin hacer: servir Inter y Playwrite ES desde `fonts/` (aquí no se pueden descargar; siguen viniendo de Google Fonts).
 - Comprobar en dispositivos reales la sincronización con Firebase (las pruebas usan una nube simulada).
 
@@ -96,7 +117,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 - Juntar dos versiones de un alumno: si el tutor bajó el nivel a mano en un dispositivo y en otro el niño siguió practicando
   después sin conexión, queda el nivel del más reciente. Las notas borradas pueden volver al «Añadir» una copia antigua.
 - Las copias automáticas son solo de este dispositivo (5 últimas); no sustituyen a guardar copias fuera.
-- «Lee palabras» depende de que un adulto valide; en clase lo pulsa el propio niño. Fase 3 (D3 = a).
+- Modo Sola: la M sigue con lectura validada hasta tener dibujos. Los emojis se ven distintos según el dispositivo.
 - Audio: solo hay grabadas las 29 letras y 5 sílabas (`ha–hu`); el resto lo dice la voz del dispositivo (`lista-audios.csv`
   prevé 1.893 más).
 - «Le cuesta»: junto a cada letra/sílaba el número pequeño es el total de fallos (incluye los antiguos de homófonas).
@@ -111,7 +132,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Cómo probar
 
-- `node --test tests/*.test.mjs` (unos segundos): contenido, datos, homófonas, audio, sincronización y copias. 81 pasan.
+- `node --test tests/*.test.mjs` (~25 s): contenido, datos, homófonas, audio, sincronización, copias y Lee y toca. 89 pasan.
 - `python3 tests/humo.py` (~90 s; `--rapido` para solo 390×844 claro): recorrido completo en el navegador sin ventana.
 - Detalle en `CLAUDE.md` («Cómo probar»). A mano: `python3 -m http.server` en la carpeta y abrir en el navegador.
 - Al publicar cambios de la app: subir `const C='lectori-vN'` en `sw.js` y `VER` en `index.html`.
