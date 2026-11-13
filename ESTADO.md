@@ -3,19 +3,44 @@
 Documento vivo. **Cada chat que trabaje en Lectori lo lee al empezar y lo actualiza al terminar**
 (sección «Últimos cambios» arriba del todo, y «Pendiente» / «Problemas conocidos» si cambian).
 
-_Última actualización: 2026-11-13 (fase 1)_
+_Última actualización: 2026-11-13 (fase 2)_
 
 ## Resumen
 
 App (PWA) para aprender a leer con método fonético-sintético: 45 niveles (29 letras + 16 de inversas, trabadas,
 diptongos y diéresis), con sílabas, palabras, frases y lecturas decodificables, repaso espaciado y zona del tutor con PIN.
-Un solo `index.html` (versión 3.35), sin compilación. Publicada con GitHub Pages desde `main`:
+Un solo `index.html` (versión 3.36), sin compilación. Publicada con GitHub Pages desde `main`:
 https://ilinper301-hue.github.io/Lectori/ (el repositorio se llama `Lectori`, con mayúscula).
 Datos en el dispositivo (`localStorage`, clave `ar2`) y, con sesión de Google, en Firebase
 (proyecto `mis-apps-educativas`, colección `lectori`; reglas en el repositorio de Tabula).
 Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Últimos cambios
+
+- **2026-11-13 · Fase 2: que no se pierda nada. Versión 3.36, caché `lectori-v8`.** D4 = a aplicada.
+  - **Guardado**: `saveRaw()` detecta si el almacenamiento está lleno (`SVE`): aviso rojo en la zona del tutor con «Guardar
+    copia» y punto rojo en «Zona del tutor» (Inicio). Ajustes › Sistema › **Espacio usado** (Lectori y total de la dirección, de ~5 MB).
+  - **Copias automáticas** (`bkAuto`, IndexedDB `lectori`/`bk`, las 5 últimas): antes de restaurar, de «Usar lo de la cuenta»,
+    de «Subir este dispositivo» (copia de lo que había en la cuenta), de reiniciar progreso y de borrar alumno.
+    Ajustes › Copias de seguridad › **Copias automáticas** para recuperarlas.
+  - **Restaurar copia**: pantalla propia con «Añadir a lo que hay» (recomendado: junta, no borra) o «Sustituir todo» (doble
+    toque; dice a quién quitará). Antes solo había «reemplazar» y marcaba borrados en la nube sin avisar.
+  - **Nube**: fuera el `confirm()`. La primera vez con datos en los dos lados, la tarjeta de la cuenta pregunta: «Juntar los
+    dos» / «Usar lo de la cuenta» / «Subir lo de este dispositivo»; hasta elegir, no se sincroniza nada.
+    Si el mismo alumno cambió en dos dispositivos se **juntan** (`mergeP`): días, cajas de repaso, aciertos/fallos, lecturas,
+    velocidad, evaluaciones y notas se combinan; nivel, por dónde va y ajustes los pone la versión más reciente. Si un lado
+    se reinició (`rz`, nuevo) después de lo del otro, gana el reinicio. Comprobado que no hay subidas sin fin.
+  - **Notas del tutor (D4)**: ya no suben; las que ya estaban en la nube se vuelven a subir sin ellas en la siguiente
+    sincronización (en el dispositivo se conservan). La tarjeta de la cuenta lo dice.
+  - **Tamaño**: medido, una clase de 25 con un curso completo y uso intenso ocupaba hasta ~2,8 MB (de ~5 MB compartidos con
+    las otras apps); lo que más pesaba era el detalle de 8 evaluaciones por alumno. Ahora se guarda el detalle de las **4
+    últimas**; las anteriores siguen en la lista como «(solo resumen)». Al abrir la app, si hay más de 4, primero se hace
+    copia automática y solo después se recortan (si no se puede hacer la copia, no se recorta).
+  - Arreglado: `cleanP` ya no falla con entradas vacías (`null`) en notas, evaluaciones o sesiones (antes rechazaba la copia entera).
+  - Pruebas nuevas: `tests/sync.test.mjs` (9, Firestore falso en memoria) y `tests/copia.test.mjs` (9). `node --test`: 81 pasan,
+    0 `TODO`; `humo.py` en verde (4 pasadas). Se comprobó que las pruebas fallan si se estropea la fusión, el filtro de
+    notas, la fecha tras juntar o la pregunta de la primera vez. Revisado a mano en Chromium: copias en IndexedDB, tope de 5,
+    recorte con copia previa, y las pantallas nuevas a 390 y 768, claro y oscuro.
 
 - **2026-11-13 · Fase 1: opciones justas y audio sin esperas. Versión 3.35, caché `lectori-v7`.**
   - **Opciones justas**: nuevas `hk()`/`hom()` (qué suena igual: b/v, c/q/k, ll/y, ge/je, que/ke, ha/a, ce/ze…; con seseo/ceceo
@@ -60,18 +85,17 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Pendiente
 
-- **Siguiente: fase 2 de `PLAN-DISENO.md`** (que no se pierda nada; *Opus, esfuerzo alto*). D4 ya decidida (a).
+- **Siguiente: fase 3 de `PLAN-DISENO.md`** («Lee y toca», *Opus, esfuerzo alto*). D3 ya decidida (a). Proponer dibujos para M y W.
 - Decisiones pendientes: D5 (fase 4), D6 (fase 7), D1 (fase 10), D7 (fase 11). Ya tomadas: D2 = c, D4 = a, D3 = a.
-- Fases 0 y 1 hechas. Fases 2–11 sin empezar.
+- Fases 0, 1 y 2 hechas. Fases 3–11 sin empezar.
+- De la fase 2 quedó sin hacer: servir Inter y Playwrite ES desde `fonts/` (aquí no se pueden descargar; siguen viniendo de Google Fonts).
+- Comprobar en dispositivos reales la sincronización con Firebase (las pruebas usan una nube simulada).
 
 ## Problemas conocidos
 
-- `cleanP` lanza un error si dentro de `nt`, `ev` o `es` hay una entrada vacía (`null`): al restaurar una copia con eso se
-  rechaza la copia entera («no es una copia válida») y en la nube se salta ese alumno. Solo ocurre con datos dañados.
-  Hay una prueba marcada `TODO` en `tests/datos.test.mjs`; arreglarlo en la fase 2 y quitar el `todo`.
-- El guardado no avisa si el almacenamiento del navegador se llena (compartido con Tabula, Charta, Barri, Calculi y
-  Fori). La primera sincronización usa un `confirm()` en el que un toque equivocado sustituye un lado. Restaurar una
-  copia reemplaza todos los perfiles. Fase 2.
+- Juntar dos versiones de un alumno: si el tutor bajó el nivel a mano en un dispositivo y en otro el niño siguió practicando
+  después sin conexión, queda el nivel del más reciente. Las notas borradas pueden volver al «Añadir» una copia antigua.
+- Las copias automáticas son solo de este dispositivo (5 últimas); no sustituyen a guardar copias fuera.
 - «Lee palabras» depende de que un adulto valide; en clase lo pulsa el propio niño. Fase 3 (D3 = a).
 - Audio: solo hay grabadas las 29 letras y 5 sílabas (`ha–hu`); el resto lo dice la voz del dispositivo (`lista-audios.csv`
   prevé 1.893 más).
@@ -87,7 +111,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Cómo probar
 
-- `node --test tests/*.test.mjs` (menos de 1 s): contenido y datos. 62 pasan y 1 es `TODO` (fallo conocido de `cleanP`).
+- `node --test tests/*.test.mjs` (unos segundos): contenido, datos, homófonas, audio, sincronización y copias. 81 pasan.
 - `python3 tests/humo.py` (~90 s; `--rapido` para solo 390×844 claro): recorrido completo en el navegador sin ventana.
 - Detalle en `CLAUDE.md` («Cómo probar»). A mano: `python3 -m http.server` en la carpeta y abrir en el navegador.
 - Al publicar cambios de la app: subir `const C='lectori-vN'` en `sw.js` y `VER` en `index.html`.

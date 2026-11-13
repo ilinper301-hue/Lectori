@@ -222,7 +222,7 @@ bueno, y mientras tanto esos niveles siguen con la lectura validada; las vocales
 **Hecho cuando**: 0 peticiones 404 en arranque y en un nivel completo. **Tú pruebas**: nivel de la V y de la LL (que no
 salgan b ni y como opción) y que los sonidos no tarden.
 
-### Fase 2 · Que no se pierda nada — *Opus, esfuerzo alto (delicado: datos y nube)* · D4
+### Fase 2 · Que no se pierda nada — *Opus, esfuerzo alto (delicado: datos y nube)* · D4 — ✅ **hecha el 2026-11-13** (resumen en `ESTADO.md`; las fuentes en `fonts/` quedan pendientes)
 
 **Objetivo**: cerrar las vías de pérdida de datos.
 - `saveRaw()` detecta el fallo de guardado y avisa en la zona del tutor (y punto rojo en Inicio); medidor «espacio usado».
