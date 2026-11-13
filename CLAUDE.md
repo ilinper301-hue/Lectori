@@ -12,12 +12,18 @@ Se publica en GitHub Pages: https://ilinper301-hue.github.io/Lectori/ (lo que se
 - No cambies nada que yo no haya pedido (diseño, textos, niveles, orden de las letras). Si ves algo mejorable, propónmelo aparte.
 - Haz cambios pequeños y guarda cada uno con un commit con un mensaje claro en español, para poder volver atrás.
 
+## Al empezar y al terminar un chat
+
+- **Al empezar**: lee `ESTADO.md` (qué se ha hecho, qué falta, problemas conocidos) y `PLAN-DISENO.md` (las 12 fases, una por chat).
+- **Al terminar**: actualiza `ESTADO.md` (sección «Últimos cambios» arriba del todo, y «Pendiente» / «Problemas conocidos» si cambian) y marca la fase en `PLAN-DISENO.md`.
+
 ## Estructura del proyecto
 
 - `index.html`: toda la app (HTML, CSS y JavaScript en un solo archivo, unos 430 KB, con líneas muy largas). Edítalo con cuidado y nunca lo reescribas entero.
 - `sw.js`: service worker para que funcione sin conexión. Guarda en caché la app y los audios.
 - `manifest.json`, `icon-192.png`, `icon-512.png`: datos para instalarla como app.
 - `grabadora.html`: herramienta aparte para grabar los audios con el micrófono.
+- `tests/`: pruebas automáticas (ver «Cómo probar»). No forman parte de la app: GitHub Pages las publica pero nadie las carga.
 - `lista-audios.csv`: lista de todos los audios (tipo, archivo, texto): instrucciones, letras, letras largas, sílabas, palabras, textos y preguntas.
 - `audio/letras/`, `audio/silabas/`: audios grabados. La app prueba primero `.mp3` y luego `.wav`; si un audio no existe, usa la voz del navegador (speechSynthesis, es-ES).
 - `fonts/`: licencia de la fuente Playwrite ES (letra ligada). Las fuentes se cargan desde Google Fonts (Fredoka/Inter para letra de imprenta, Playwrite ES para ligada).
@@ -40,5 +46,9 @@ Se publica en GitHub Pages: https://ilinper301-hue.github.io/Lectori/ (lo que se
 
 ## Cómo probar
 
-- Sirve la carpeta en local (por ejemplo `python3 -m http.server`) y abre la app en el navegador; no funciona bien abriendo el archivo directamente.
-- Antes de dar un cambio por terminado: la app carga sin errores en la consola, se puede crear un perfil, hacer un ejercicio y entrar en la zona del tutor.
+- **Pruebas automáticas** (las ejecuta Claude; hace falta Node 20 o superior, sin instalar nada):
+  - `node --test tests/*.test.mjs`: contenido (cada palabra, sílaba y texto usa solo letras ya enseñadas; preguntas y pseudopalabras válidas) y datos (migración de perfiles antiguos, `cleanP`, `domS`, racha, velocidad, evaluación, contratos con Calculi y con el service worker). Tarda menos de 1 segundo. Un test marcado `TODO` es un fallo conocido que aún no se ha arreglado: no rompe la ejecución.
+  - `python3 tests/humo.py` (Playwright + Chromium): recorre la app como una persona (perfil Docente, PIN, alumno, un ejercicio, zona del tutor) a 390×844 y 768×1024, en claro y oscuro, y falla si hay errores de JavaScript o de consola o si alguna pantalla desborda en horizontal. Con `--rapido`, solo 390×844 claro. Con `HUMO_CAPTURAS=/tmp/c`, guarda una captura por pantalla.
+  - `tests/cargar.mjs` carga el `<script>` de `index.html` dentro de Node (`node:vm`) con un navegador falso; es lo que usan las pruebas. Con `LECTORI_INDEX=ruta/otro.html` se prueba otra copia (útil para comprobar que las pruebas detectan fallos).
+- **Antes de dar por terminada una fase**: las dos pruebas anteriores en verde, y comprobar a mano la app en claro y oscuro a 390×844 y 768×1024.
+- **A mano**: sirve la carpeta en local (por ejemplo `python3 -m http.server`) y abre la app en el navegador; no funciona bien abriendo el archivo directamente. La app debe cargar sin errores en la consola, se puede crear un perfil, hacer un ejercicio y entrar en la zona del tutor.

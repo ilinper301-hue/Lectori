@@ -192,7 +192,7 @@ notas del tutor no suben a la nube), **D3 = a** (fase 3 «Lee y toca»; 224 de 3
 con consonante tienen al menos 3, salvo M (1) y W (2): en la fase 3 se proponen dibujos nuevos para esos dos, con tu visto
 bueno, y mientras tanto esos niveles siguen con la lectura validada; las vocales no tienen palabras).
 
-### Fase 0 · Red de seguridad: pruebas — *Sonnet, esfuerzo alto*
+### Fase 0 · Red de seguridad: pruebas — *Sonnet, esfuerzo alto* — ✅ **hecha el 2026-11-13** (resumen en `ESTADO.md`)
 
 **Objetivo**: poder cambiar sin miedo. No cambia nada de lo que ve el usuario.
 - `tests/cargar.mjs`: extrae el `<script>` de `index.html` y lo ejecuta en Node (`node:vm`) con sustitutos mínimos de
