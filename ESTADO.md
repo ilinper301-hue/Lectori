@@ -18,7 +18,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 ## Últimos cambios
 
 - **2026-11-13 · Decisiones**: D2 = c (sonidos iguales elegibles en Ajustes), D4 = a (notas del tutor fuera de la
-  nube), D3 = b (fase 3 aparcada).
+  nube), D3 = a (fase 3 «Lee y toca»; primero se eligió b y se cambió a a).
 
 - **2026-11-13 · Análisis y plan (sin cambios de código)**
   - Análisis completo (sistema, pedagogía, interfaz) con capturas reales a 390 y 768 px, claro y oscuro, y clase de
@@ -29,7 +29,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 ## Pendiente
 
 - **Siguiente: fase 0 de `PLAN-DISENO.md`** (pruebas automáticas; *Sonnet, esfuerzo alto*). Después, fase 1.
-- Decisiones pendientes: D5 (fase 4), D6 (fase 7), D1 (fase 10), D7 (fase 11). Ya tomadas: D2 = c, D4 = a, D3 = b.
+- Decisiones pendientes: D5 (fase 4), D6 (fase 7), D1 (fase 10), D7 (fase 11). Ya tomadas: D2 = c, D4 = a, D3 = a.
 - Fases 1–11 sin empezar.
 
 ## Problemas conocidos
@@ -40,7 +40,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 - El guardado no avisa si el almacenamiento del navegador se llena (compartido con Tabula, Charta, Barri, Calculi y
   Fori). La primera sincronización usa un `confirm()` en el que un toque equivocado sustituye un lado. Restaurar una
   copia reemplaza todos los perfiles. Fase 2.
-- «Lee palabras» depende de que un adulto valide; en clase lo pulsa el propio niño. Se deja así (D3 = b).
+- «Lee palabras» depende de que un adulto valide; en clase lo pulsa el propio niño. Fase 3 (D3 = a).
 - Audio: 15 de cada 20 peticiones al leer una palabra fallan antes de sonar (se prueban extensiones que no existen).
   Fase 1.
 - En oscuro, el informe y la evaluación tienen texto ilegible; pistas con poco contraste. Fase 9.

@@ -177,7 +177,7 @@ Problemas comunes:
 |---|---|---|---|
 | **D1** | ¿Hasta dónde llega Lectori? | ★ a) Aprender a leer (Infantil 5 – 2.º) y pulirla · b) Ampliar a fluidez y comprensión 3.º–6.º (plan aparte, otro contenido) | Fase 10 |
 | **D2** ✅ **c** | ¿Tu alumnado sesea o cecea? | a) Sí: s/z/ce/ci nunca compiten de oído · b) No: solo b/v, c/q/k, ll/y, ge/je · ★ c) Que se elija en Ajustes (por defecto, a) | Fase 1 |
-| **D3** ✅ **b** | Leer palabras en clase sin adulto | ★ a) Nueva actividad «lee y toca el dibujo»; con ella se supera Palabras en «modo aula», y la lectura validada queda para cuando tú estés con el niño · b) Dejarlo como está | Fase 3 |
+| **D3** ✅ **a** | Leer palabras en clase sin adulto | ★ a) Nueva actividad «lee y toca el dibujo»; con ella se supera Palabras en «modo aula», y la lectura validada queda para cuando tú estés con el niño · b) Dejarlo como está | Fase 3 |
 | **D4** ✅ **a** | ¿Qué sube a la nube de cada niño? | ★ a) Todo menos las notas del tutor (se quedan en el dispositivo y en la copia) · b) Todo, como ahora · c) Tampoco el nombre: solo animal e inicial | Fase 2 |
 | **D5** | ¿Cómo son las tabletas en clase? | a) Cada niño siempre la suya → se queda fijada a su perfil · b) Compartidas → rejilla de animales y cambio de perfil solo al terminar · ★ c) Elegible en Ajustes | Fase 4 |
 | **D6** | ¿Qué pasa al Cuaderno de Tabula? | ★ a) Indicadores con semáforo y dato (nivel, velocidad, comprensión), sin nota · b) Además, nota 0–10 calculada (como Calculi) | Fase 7 |
@@ -185,11 +185,12 @@ Problemas comunes:
 
 ## 4. Fases
 
-Orden por impacto y riesgo. Dependencias: 0 → todas · 2 → 5 → 6 y 7.
+Orden por impacto y riesgo. Dependencias: 0 → todas · 2 → 5 → 6 y 7 · 3 → 4.
 
 Decidido el 2026-11-13: **D2 = c** (Ajustes «Sonidos iguales en mi zona», por defecto con seseo/ceceo), **D4 = a** (las
-notas del tutor no suben a la nube), **D3 = b** (la fase 3 queda aparcada; dato para reabrirla: 224 de 309 palabras
-tienen dibujo y todos los niveles con consonante tienen al menos 3, salvo M (1) y W (2); las vocales no tienen palabras).
+notas del tutor no suben a la nube), **D3 = a** (fase 3 «Lee y toca»; 224 de 309 palabras tienen dibujo y todos los niveles
+con consonante tienen al menos 3, salvo M (1) y W (2): en la fase 3 se proponen dibujos nuevos para esos dos, con tu visto
+bueno, y mientras tanto esos niveles siguen con la lectura validada; las vocales no tienen palabras).
 
 ### Fase 0 · Red de seguridad: pruebas — *Sonnet, esfuerzo alto*
 
@@ -239,7 +240,7 @@ salgan b ni y como opción) y que los sonidos no tarden.
 borrados, primera vez, sin conexión; `tests/copia.test.mjs`: exportar → restaurar deja lo mismo; almacenamiento lleno.
 **Tú pruebas**: guardar copia, restaurarla en «Añadir», entrar con Google en un segundo dispositivo y ver el aula igual.
 
-### Fase 3 · ~~Leer palabras sin un adulto: «Lee y toca»~~ — APARCADA (D3 = b) · *Opus, esfuerzo alto si se reabre*
+### Fase 3 · Leer palabras sin un adulto: «Lee y toca» — *Opus, esfuerzo alto (función nueva)* · D3 = a
 
 **Objetivo**: comprobar la lectura de palabras cuando el niño trabaja solo.
 - Actividad nueva `itemMatch`: se muestra la palabra escrita (sin audio) y 3 dibujos; el niño toca el que corresponde.
@@ -254,7 +255,7 @@ borrados, primera vez, sin conexión; `tests/copia.test.mjs`: exportar → resta
 **Pruebas**: toda opción correcta tiene dibujo único en el trío; nunca dos dibujos iguales; progreso se guarda y migra.
 **Tú pruebas**: un nivel entero en modo «Sola» sin ayudar al niño.
 
-### Fase 4 · La tableta en clase — *Sonnet, esfuerzo medio* · D5
+### Fase 4 · La tableta en clase — *Sonnet, esfuerzo medio* · D5 · depende de 3
 
 - «¿Quién va a leer?» como **rejilla de animales con nombre** (20 caben en una pantalla); crear perfil y elegir animal
   pasan a la zona del tutor.
