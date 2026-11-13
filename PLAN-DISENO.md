@@ -179,7 +179,7 @@ Problemas comunes:
 | **D2** ✅ **c** | ¿Tu alumnado sesea o cecea? | a) Sí: s/z/ce/ci nunca compiten de oído · b) No: solo b/v, c/q/k, ll/y, ge/je · ★ c) Que se elija en Ajustes (por defecto, a) | Fase 1 |
 | **D3** ✅ **a** | Leer palabras en clase sin adulto | ★ a) Nueva actividad «lee y toca el dibujo»; con ella se supera Palabras en «modo aula», y la lectura validada queda para cuando tú estés con el niño · b) Dejarlo como está | Fase 3 |
 | **D4** ✅ **a** | ¿Qué sube a la nube de cada niño? | ★ a) Todo menos las notas del tutor (se quedan en el dispositivo y en la copia) · b) Todo, como ahora · c) Tampoco el nombre: solo animal e inicial | Fase 2 |
-| **D5** | ¿Cómo son las tabletas en clase? | a) Cada niño siempre la suya → se queda fijada a su perfil · b) Compartidas → rejilla de animales y cambio de perfil solo al terminar · ★ c) Elegible en Ajustes | Fase 4 |
+| **D5** ✅ **c** | ¿Cómo son las tabletas en clase? | a) Cada niño siempre la suya → se queda fijada a su perfil · b) Compartidas → rejilla de animales y cambio de perfil solo al terminar · ★ c) Elegible en Ajustes | Fase 4 |
 | **D6** | ¿Qué pasa al Cuaderno de Tabula? | ★ a) Indicadores con semáforo y dato (nivel, velocidad, comprensión), sin nota · b) Además, nota 0–10 calculada (como Calculi) | Fase 7 |
 | **D7** | ¿Partir `index.html` en archivos como Calculi? | ★ a) No por ahora: pruebas sobre el archivo único · b) Sí, tras la fase 2 (`src/` + `tools/build.py`, lo ejecuta Claude) | Fase 11 |
 
@@ -255,7 +255,7 @@ borrados, primera vez, sin conexión; `tests/copia.test.mjs`: exportar → resta
 **Pruebas**: toda opción correcta tiene dibujo único en el trío; nunca dos dibujos iguales; progreso se guarda y migra.
 **Tú pruebas**: un nivel entero en modo «Sola» sin ayudar al niño.
 
-### Fase 4 · La tableta en clase — *Sonnet, esfuerzo medio* · D5 · depende de 3
+### Fase 4 · La tableta en clase — *Sonnet, esfuerzo medio* · D5 · depende de 3 — ✅ **hecha el 2026-11-13** (D5 = c; resumen en `ESTADO.md`)
 
 - «¿Quién va a leer?» como **rejilla de animales con nombre** (20 caben en una pantalla); crear perfil y elegir animal
   pasan a la zona del tutor.

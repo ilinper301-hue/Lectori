@@ -3,19 +3,38 @@
 Documento vivo. **Cada chat que trabaje en Lectori lo lee al empezar y lo actualiza al terminar**
 (sección «Últimos cambios» arriba del todo, y «Pendiente» / «Problemas conocidos» si cambian).
 
-_Última actualización: 2026-11-13 (fase 3)_
+_Última actualización: 2026-11-13 (fase 4)_
 
 ## Resumen
 
 App (PWA) para aprender a leer con método fonético-sintético: 45 niveles (29 letras + 16 de inversas, trabadas,
 diptongos y diéresis), con sílabas, palabras, frases y lecturas decodificables, repaso espaciado y zona del tutor con PIN.
-Un solo `index.html` (versión 3.38), sin compilación. Publicada con GitHub Pages desde `main`:
+Un solo `index.html` (versión 3.39), sin compilación. Publicada con GitHub Pages desde `main`:
 https://ilinper301-hue.github.io/Lectori/ (el repositorio se llama `Lectori`, con mayúscula).
 Datos en el dispositivo (`localStorage`, clave `ar2`) y, con sesión de Google, en Firebase
 (proyecto `mis-apps-educativas`, colección `lectori`; reglas en el repositorio de Tabula).
 Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Últimos cambios
+
+- **2026-11-13 · Fase 4: la tableta en clase (D5 = c). Versión 3.39, caché `lectori-v11`.**
+  - **«¿Quién va a leer?»** es ahora una **rejilla de animales con nombre** (4 columnas; 5 si hay más de 20; 25 alumnos caben en
+    390×844 sin desplazarse). Ya no tiene el formulario de crear perfiles: abajo hay «Añadir alumno» (pide PIN) y «Modo Docente».
+    Sin ningún alumno (primera vez) sigue saliendo el formulario para crear el primero.
+  - **Crear alumno** pasa a la zona del tutor: Ajustes › Alumnos › «Añadir alumno» (pantalla `addScr`). Al crearlo desde ahí
+    te quedas en el alumno que estabas (aviso «Alumno añadido»); desde la rejilla vacía abre el inicio del nuevo, como antes.
+  - **Ajustes › «Este dispositivo» › «Tabletas en clase»** (clave `lectori.tb`; de este dispositivo, no sube a la nube):
+    **Libre** (por defecto, como siempre) · **Compartida** (al abrir y al terminar sale la rejilla; no se reanuda el último niño) ·
+    **Fijada a un alumno** (`lectori.tbf` = id; al abrir entra directa en su perfil; elegir otro alumno en la rejilla la vuelve a fijar).
+    En Compartida y Fijada, **cambiar de perfil pide el PIN**. Despedida: en Libre y Compartida «Terminar» vuelve a la rejilla;
+    en Fijada se queda en el inicio del alumno.
+  - **Botón de tema** fuera de las pantallas (cabecera); ahora está en Ajustes › Este dispositivo › **Tema** (Claro/Oscuro).
+  - **«Lo mismo para toda la clase»** también para **tipo de letra** y **tiempo de uso al día** (además de la lectura en voz alta).
+  - Emoji de **mama** cambiado de 👩‍👧 a 👩‍🍼 (aprobado).
+  - Sin cambios en los datos de los alumnos (solo claves nuevas `lectori.tb`/`lectori.tbf`): no hace falta migración.
+  - Pruebas nuevas: `tests/tableta.test.mjs` (12) y un paso nuevo en `humo.py` (rejilla de 25: sin desplazamiento a 390 px, botones ≥ 56 px,
+    sin formulario). `node --test`: 101 pasan; `humo.py` en verde (33 pantallas por pasada, 4 pasadas). Revisadas las capturas de
+    la rejilla y de Ajustes a 390 y 768, claro y oscuro.
 
 - **2026-11-13 · Dibujos de la M (aprobados). Versión 3.38, caché `lectori-v10`.** mama 👩‍👧, mula 🫏, malo 😠. La M ya usa
   Lee y toca en modo Sola (4 palabras con dibujo). `PENDIENTES` vacío en `tests/leetoca.test.mjs`. 89 pruebas pasan; humo en verde.
@@ -107,10 +126,9 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Pendiente
 
-- Posible cambio: 👩‍👧 (mama) se ve como silueta gris en algunos Android; alternativa propuesta 👩‍🍼. Esperando respuesta.
-- **Siguiente: fase 4 de `PLAN-DISENO.md`** («La tableta en clase», *Sonnet, esfuerzo medio*). Antes, decidir D5.
-- Decisiones pendientes: D5 (fase 4), D6 (fase 7), D1 (fase 10), D7 (fase 11). Ya tomadas: D2 = c, D4 = a, D3 = a.
-- Fases 0–3 hechas. Fases 4–11 sin empezar.
+- **Siguiente: fase 5 de `PLAN-DISENO.md`** («Más y mejores datos del alumno», *Opus, esfuerzo alto*: cambia la estructura de datos).
+- Decisiones pendientes: D6 (fase 7), D1 (fase 10), D7 (fase 11). Ya tomadas: D2 = c, D4 = a, D3 = a, D5 = c.
+- Fases 0–4 hechas. Fases 5–11 sin empezar.
 - De la fase 2 quedó sin hacer: servir Inter y Playwrite ES desde `fonts/` (aquí no se pueden descargar; siguen viniendo de Google Fonts).
 - Comprobar en dispositivos reales la sincronización con Firebase (las pruebas usan una nube simulada).
 
@@ -119,7 +137,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 - Juntar dos versiones de un alumno: si el tutor bajó el nivel a mano en un dispositivo y en otro el niño siguió practicando
   después sin conexión, queda el nivel del más reciente. Las notas borradas pueden volver al «Añadir» una copia antigua.
 - Las copias automáticas son solo de este dispositivo (5 últimas); no sustituyen a guardar copias fuera.
-- Modo Sola: los emojis se ven distintos según el dispositivo (👩‍👧 puede salir como silueta gris).
+- Modo Sola: los emojis se ven distintos según el dispositivo (👩‍🍼 necesita Android 11 o superior; en uno más antiguo puede salir como dos dibujos).
 - Audio: solo hay grabadas las 29 letras y 5 sílabas (`ha–hu`); el resto lo dice la voz del dispositivo (`lista-audios.csv`
   prevé 1.893 más).
 - «Le cuesta»: junto a cada letra/sílaba el número pequeño es el total de fallos (incluye los antiguos de homófonas).
@@ -134,7 +152,7 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Cómo probar
 
-- `node --test tests/*.test.mjs` (~25 s): contenido, datos, homófonas, audio, sincronización, copias y Lee y toca. 89 pasan.
+- `node --test tests/*.test.mjs` (~25 s): contenido, datos, homófonas, audio, sincronización, copias y Lee y toca. 101 pasan.
 - `python3 tests/humo.py` (~90 s; `--rapido` para solo 390×844 claro): recorrido completo en el navegador sin ventana.
 - Detalle en `CLAUDE.md` («Cómo probar»). A mano: `python3 -m http.server` en la carpeta y abrir en el navegador.
 - Al publicar cambios de la app: subir `const C='lectori-vN'` en `sw.js` y `VER` en `index.html`.

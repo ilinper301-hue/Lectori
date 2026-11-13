@@ -166,6 +166,21 @@ class Corrida:
                                   ("practice()", 'practicar (modo Sola)', 'Lee y toca')]:
             self.ir(js, nombre, texto)
         pg.evaluate('panel(0)')
+        # Fase 4 · la tableta en clase: Ajustes, y la rejilla con 25 alumnos (cabe sin desplazarse).
+        self.ir("panel(1)", 'ajustes: tabletas en clase', 'Tabletas en clase')
+        pg.evaluate("for(let i=0;i<24;i++)P.ps.push({id:nid(),n:'Alumno '+(i+2),lv:0,st:0,av:i%AVS.length});localStorage.setItem('lectori.tb','s');UNL=0;tbGo()")
+        self.revisa('rejilla de 25 alumnos', 'Quién va a leer')
+        info = pg.evaluate("()=>({n:document.querySelectorAll('.pt').length,alto:document.documentElement.scrollHeight,vp:window.innerHeight,"
+                           "min:Math.min(...[...document.querySelectorAll('.pt')].map(b=>b.getBoundingClientRect().height)),crear:!!document.getElementById('nm')})")
+        if info['n'] != 25:
+            self.falla(f'rejilla: {info["n"]} botones en vez de 25')
+        if info['alto'] > info['vp'] + 1 and self.etiqueta.startswith('390'):
+            self.falla(f'rejilla de 25 alumnos: hay que desplazarse ({info["alto"]} px > {info["vp"]} px)')
+        if info['min'] < 56:
+            self.falla(f'rejilla: un botón mide {info["min"]} px (mínimo 56)')
+        if info['crear']:
+            self.falla('rejilla: el niño ve el formulario de crear perfiles')
+        pg.evaluate("P.ps.length=1;localStorage.removeItem('lectori.tb');UNL=Date.now();panel(0)")
         # Modo oscuro/claro desde la propia app.
         pg.evaluate("setTheme(document.documentElement.dataset.theme=='dark'?'light':'dark')")
         self.revisa('cambio de tema')
