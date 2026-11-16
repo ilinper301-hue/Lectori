@@ -3,7 +3,7 @@
 Documento vivo. **Cada chat que trabaje en Lectori lo lee al empezar y lo actualiza al terminar**
 (sección «Últimos cambios» arriba del todo, y «Pendiente» / «Problemas conocidos» si cambian).
 
-_Última actualización: 2026-11-16 (diseño de la fase 7; la app no cambia)_
+_Última actualización: 2026-11-16 (revisión de datos y nube, y diseño de la fase 7; la app no cambia)_
 
 ## Resumen
 
@@ -16,6 +16,14 @@ Datos en el dispositivo (`localStorage`, clave `ar2`) y, con sesión de Google, 
 Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Últimos cambios
+
+- **2026-11-16 · Revisión independiente de datos y nube (fases 2 y 5). Sin cambios en la app (3.40, `lectori-v12`).**
+  - **`docs/revision-datos.md`**: ocho hallazgos (H1–H8), todos reproducidos. Los dos graves: una tableta que no se
+    sincronizó hace retroceder el nivel y las estrellas de un niño en todas las tabletas (H1), y la primera vez con la
+    cuenta desaparecen sin copia alumnos que solo tienen pruebas de velocidad, evaluaciones o notas (H3).
+  - **`tests/revision.test.mjs`** (nuevo): 9 pruebas que afirman lo que debería pasar y hoy fallan; van marcadas `todo`
+    y no rompen la ejecución. `node --test`: 120 pasan, 9 `todo`.
+  - **Fase 5b** añadida a `PLAN-DISENO.md` para arreglarlo (*Opus, esfuerzo alto*), antes de la 6.
 
 - **2026-11-16 · Diseño de la fase 7 y decisión D1 (sin cambios en la app: sigue la 3.40, caché `lectori-v12`).**
   - **D1 = a**: Lectori llega hasta 2.º de Primaria (aprender a leer). Ampliar a fluidez y comprensión de 3.º–6.º no es su objetivo.
@@ -167,16 +175,22 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Pendiente
 
-- **Siguiente: fase 6 de `PLAN-DISENO.md`** («La clase primero», *Sonnet, esfuerzo alto*). Puede usar `hxHelp`, `cxTxt`, `evInf`, `rdPpm` y `p.al`.
+- **Siguiente: fase 5b de `PLAN-DISENO.md`** (arreglos de `docs/revision-datos.md`, *Opus, esfuerzo alto*). Mientras no se haga,
+  con varias tabletas conviene abrir cada una con wifi y esperar a que sincronice antes de dársela a un niño.
+- Después: fase 6 («La clase primero», *Sonnet, esfuerzo alto*). Puede usar `hxHelp`, `cxTxt`, `evInf`, `rdPpm` y `p.al`.
   También se puede hacer ya la **7a** (*Sonnet, esfuerzo medio*): está especificada en `docs/tabula.md` y no depende de la 6 ni de Tabula.
 - Decisiones pendientes: D6 (fase 7b), D7 (fase 11). Ya tomadas: D2 = c, D4 = a, D3 = a, D5 = c, D1 = a.
-- Fases 0–5 hechas. Fase 7 diseñada (sin programar). Fases 6 y 8–11 sin empezar.
+- Fases 0–5 hechas. Fase 5b (nueva) y 7 diseñadas, sin programar. Fases 6 y 8–11 sin empezar.
 - 7b va en el chat de Tabula; 7c espera a que Tabula publique `tabula:eco:lista` (fase 2 de `ECOSISTEMA.md`).
 - De la fase 2 quedó sin hacer: servir Inter y Playwrite ES desde `fonts/` (aquí no se pueden descargar; siguen viniendo de Google Fonts).
 - Comprobar en dispositivos reales la sincronización con Firebase (las pruebas usan una nube simulada).
 
 ## Problemas conocidos
 
+- **Revisión del 2026-11-16 (`docs/revision-datos.md`), sin arreglar hasta la fase 5b**: una tableta atrasada puede bajar
+  el nivel y las estrellas (H1); primera vez con la cuenta y alumnos sin niveles (H3); notas y reinicio remoto (H4);
+  borrado remoto sin copia (H5); «Sustituir todo» con cuenta (H7); salto de nivel (H2); datos ilegibles (H6); bloqueo
+  por tiempo (H8).
 - Datos de la fase 5 con una versión anterior de la app en otro dispositivo: esa versión no conoce `cx`/`hx`/`cn` y los quita al guardar;
   al juntar con la nube se recuperan (`mergeP` une los dos lados), salvo que se use «Sustituir todo». Se arregla solo al actualizarse.
 - El ritmo en las lecturas de la app es orientativo: cuenta desde que sale el texto hasta «Ya lo leí» (incluye mirar y pedir ayuda).
@@ -198,7 +212,8 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Cómo probar
 
-- `node --test tests/*.test.mjs` (~25 s): contenido, datos, homófonas, audio, sincronización, copias, Lee y toca, tableta y datos del alumno. 120 pasan.
+- `node --test tests/*.test.mjs` (~25 s): contenido, datos, homófonas, audio, sincronización, copias, Lee y toca, tableta y datos del alumno. 120 pasan;
+  9 `todo` (`revision.test.mjs`: fallos conocidos de la revisión, hasta la fase 5b).
 - `python3 tests/humo.py` (~90 s; `--rapido` para solo 390×844 claro): recorrido completo en el navegador sin ventana.
 - Detalle en `CLAUDE.md` («Cómo probar»). A mano: `python3 -m http.server` en la carpeta y abrir en el navegador.
 - Al publicar cambios de la app: subir `const C='lectori-vN'` en `sw.js` y `VER` en `index.html`.

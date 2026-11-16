@@ -185,7 +185,7 @@ Problemas comunes:
 
 ## 4. Fases
 
-Orden por impacto y riesgo. Dependencias: 0 → todas · 2 → 5 → 6 y 7 · 3 → 4.
+Orden por impacto y riesgo. Dependencias: 0 → todas · 2 → 5 → 6 y 7 · 3 → 4. La 5b (añadida después) va antes de la 6.
 
 Decidido el 2026-11-13: **D2 = c** (Ajustes «Sonidos iguales en mi zona», por defecto con seseo/ceceo), **D4 = a** (las
 notas del tutor no suben a la nube), **D3 = a** (fase 3 «Lee y toca»; 224 de 309 palabras tienen dibujo y todos los niveles
@@ -283,6 +283,27 @@ sin desplazamiento. **Tú pruebas**: que un niño encuentre su animal y no pueda
 **Archivos**: `index.html` (`rec`, `run` → `done`/`end`, `cleanP`, `vel*`, `VREF`, `progreso`, `informe`, `aulaCSV`).
 **Pruebas**: migración de perfil 3.34; topes de tamaño; `cleanP` conserva lo nuevo. **Tú pruebas**: fallar adrede b/d
 y ver «confunde b con d» en Progreso.
+
+### Fase 5b · Arreglos de la revisión de datos y nube — *Opus, esfuerzo alto (datos y nube)* · depende de 2 y 5
+
+Añadida el 2026-11-16 tras la revisión independiente de las fases 2 y 5: **`docs/revision-datos.md`** (ocho hallazgos,
+H1–H8, cada uno reproducido en `tests/revision.test.mjs` como prueba `todo`). **Conviene hacerla antes de la 6**: es la
+que protege el progreso de los niños cuando hay varias tabletas.
+
+- **H1 (alta)**: una tableta atrasada no puede hacer retroceder nivel, estrellas ni «dominadas». Al juntar: nivel y
+  estrellas, los mayores; cajas y confirmaciones, las practicadas más tarde; campo nuevo opcional `lz` (el tutor puso el
+  nivel a mano) en `cleanP` y `mergeP`; reintentar la sincronización al volver la conexión.
+- **H3 (alta)**: la primera vez con la cuenta, no tratar como «vacío» un dispositivo con alumnos; copia automática siempre.
+- **H4, H5, H7 (media)**: notas a salvo en un reinicio remoto; copia antes de un borrado remoto; «Sustituir todo» de verdad.
+- **H2, H8, H6 (baja)**: no saltar nivel si cambió a mitad de ejercicio; conservar el bloqueo por tiempo; guardar aparte
+  los datos que no se puedan leer al abrir.
+- Decidir contigo las «Otras observaciones» del documento (copia automática fallida, alumnos duplicados, reinicio parcial).
+
+**Archivos**: `index.html` (`mergeP`, `cleanP`, `isBlank`, `syncNow`, `applyImp`, `setLv`, `run` → `end`, arranque),
+`tests/revision.test.mjs` (quitar cada `todo`), `tests/sync.test.mjs`, `sw.js`. **Hecho cuando**: las 9 pruebas de
+`revision.test.mjs` pasan sin haberlas cambiado y el resto sigue en verde. Cambia datos: copia previa y perfil 3.40 probado.
+**Tú pruebas**: dos dispositivos con la misma cuenta; avanzar un nivel en uno, usar el otro sin wifi, volver a conectar
+y ver que el nivel no baja.
 
 ### Fase 6 · La clase primero — *Sonnet, esfuerzo alto* · depende de 5
 
