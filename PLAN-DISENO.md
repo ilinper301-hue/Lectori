@@ -175,12 +175,12 @@ Problemas comunes:
 
 | | Pregunta | Opciones (★ = recomendada) | Bloquea |
 |---|---|---|---|
-| **D1** | ¿Hasta dónde llega Lectori? | ★ a) Aprender a leer (Infantil 5 – 2.º) y pulirla · b) Ampliar a fluidez y comprensión 3.º–6.º (plan aparte, otro contenido) | Fase 10 |
+| **D1** ✅ **a** | ¿Hasta dónde llega Lectori? | ★ a) Aprender a leer (Infantil 5 – 2.º) y pulirla · b) Ampliar a fluidez y comprensión 3.º–6.º (plan aparte, otro contenido) | Fase 10 |
 | **D2** ✅ **c** | ¿Tu alumnado sesea o cecea? | a) Sí: s/z/ce/ci nunca compiten de oído · b) No: solo b/v, c/q/k, ll/y, ge/je · ★ c) Que se elija en Ajustes (por defecto, a) | Fase 1 |
 | **D3** ✅ **a** | Leer palabras en clase sin adulto | ★ a) Nueva actividad «lee y toca el dibujo»; con ella se supera Palabras en «modo aula», y la lectura validada queda para cuando tú estés con el niño · b) Dejarlo como está | Fase 3 |
 | **D4** ✅ **a** | ¿Qué sube a la nube de cada niño? | ★ a) Todo menos las notas del tutor (se quedan en el dispositivo y en la copia) · b) Todo, como ahora · c) Tampoco el nombre: solo animal e inicial | Fase 2 |
 | **D5** ✅ **c** | ¿Cómo son las tabletas en clase? | a) Cada niño siempre la suya → se queda fijada a su perfil · b) Compartidas → rejilla de animales y cambio de perfil solo al terminar · ★ c) Elegible en Ajustes | Fase 4 |
-| **D6** | ¿Qué pasa al Cuaderno de Tabula? | ★ a) Indicadores con semáforo y dato (nivel, velocidad, comprensión), sin nota · b) Además, nota 0–10 calculada (como Calculi) | Fase 7 |
+| **D6** | ¿Cómo entra lo de Lectori en el Cuaderno de Tabula? | ★ a) Como dato con semáforo (verde, ámbar, rojo) y sin nota · b) Como nota 0–10 (dominio ÷ 10), igual que Calculi; es lo que dice hoy `ECOSISTEMA.md`: si eliges a, se corrige esa línea en el chat de Tabula | Fase 7b (la 7a no depende) |
 | **D7** | ¿Partir `index.html` en archivos como Calculi? | ★ a) No por ahora: pruebas sobre el archivo único · b) Sí, tras la fase 2 (`src/` + `tools/build.py`, lo ejecuta Claude) | Fase 11 |
 
 ## 4. Fases
@@ -191,6 +191,9 @@ Decidido el 2026-11-13: **D2 = c** (Ajustes «Sonidos iguales en mi zona», por 
 notas del tutor no suben a la nube), **D3 = a** (fase 3 «Lee y toca»; 224 de 309 palabras tienen dibujo y todos los niveles
 con consonante tienen al menos 3, salvo M (1) y W (2): en la fase 3 se proponen dibujos nuevos para esos dos, con tu visto
 bueno, y mientras tanto esos niveles siguen con la lectura validada; las vocales no tienen palabras).
+
+Decidido el 2026-11-16: **D1 = a**. Lectori llega hasta 2.º de Primaria: aprender a leer. Ampliar a fluidez y comprensión
+de 3.º a 6.º no es su objetivo (la fase 10 se queda en pulir el contenido que hay).
 
 ### Fase 0 · Red de seguridad: pruebas — *Sonnet, esfuerzo alto* — ✅ **hecha el 2026-11-13** (resumen en `ESTADO.md`)
 
@@ -291,19 +294,45 @@ y ver «confunde b con d» en Progreso.
 **Archivos**: `index.html` (`adults`, `panel`, `aula`, CSS de `.au`, `.tzh`, `.tabs`). **Pruebas**: humo a 390/768/1280.
 **Tú pruebas**: desde Inicio, llegar a «quién necesita ayuda hoy» en dos toques.
 
-### Fase 7 · Puente con el Cuaderno de Tabula — dos chats · D6 · depende de 5
+### Fase 7 · Puente con Tabula — tres chats · D6 (solo 7b) · depende de 5
 
-- **7a · Lectori** — *Sonnet, esfuerzo medio*: publicar un resumen en `localStorage['lectori.tabula']` (2 s después de
-  cada cambio; solo lectura para Tabula) y documentarlo en `docs/tabula.md`. Propuesta de forma:
-  `{ app:'lectori', v:1, ts, alumnos:[{ id, n, curso, nivel, niveles:45, grafema, dominadas, enProceso, atascado,
-  pcm, pcmFecha, comprension:{literal, inferencial}, dictado, minutosSemana, ultimoDia, semaforo }] }`.
-  Sin notas del tutor ni detalle de errores.
-- **7b · Tabula** (chat en el proyecto de Tabula) — *Opus, esfuerzo alto (toca evaluación)*: `js/lectori.js` a imagen de
-  `js/calculi.js` (leer, emparejar por nombre sin adivinar, traer al Cuaderno como columnas `origen:'lectori'` ligadas a
-  los criterios de lectura que tú elijas), botón en Cuaderno › «⋯» › Importar.
+Rehecha el 2026-11-16 para seguir `ECOSISTEMA.md` (el contrato común es posterior al plan original y manda sobre él).
+Cambia respecto a lo que ponía antes: el resumen usa el **formato común v2** (items con dominio y semáforo, enlace `tb`),
+no el formato propio que se proponía aquí; y aparece una parte nueva, «Traer mi clase de Tabula», que no estaba en ninguna fase.
+Equivalencia con las fases de `ECOSISTEMA.md`: 7a y 7b son su fase 3; 7c es su fase 2 (la parte de Lectori).
 
-**Pruebas**: forma del resumen (7a); lectura, emparejado y actualización de columnas (7b, como `tests/` de Calculi).
-**Tú pruebas**: abrir Lectori, luego Tabula en el mismo dispositivo, y traer la clase al Cuaderno.
+- **7a · Lectori: publicar el resumen** — *Sonnet, esfuerzo medio*. No depende de Tabula ni de D6: se puede hacer ya.
+  Especificación completa en **`docs/tabula.md`** (qué es un item, cómo se calcula el dominio, tamaño, casos límite y
+  la lista de pruebas). En corto: clave `lectori.tabula`, un item por nivel superado con `id` = grafema del nivel
+  (`LV[i].g`, como `p.hx`), dominio con el criterio que ya usa la app (`cf` y cajas de repaso: **no se guarda nada nuevo
+  en el perfil**, así que no hay migración), velocidad, comprensión, dictado y «atascado» en `extra`. Solo en el perfil
+  Docente; sin notas del tutor ni detalle de errores. Si pasa de 150 KB se recortan los campos opcionales.
+  **Archivos**: `index.html` (función nueva junto a `aulaCSV`, llamada desde `save()` con retardo, fila en Ajustes ›
+  Sistema), `tests/tabula.test.mjs` (nuevo), `tests/humo.py`, `sw.js`. Al terminar, quitar «diseño» de la primera línea
+  de `docs/tabula.md`. **Tú pruebas**: Ajustes › Sistema › «Resumen para Tabula» dice cuántos alumnos lleva.
+- **7b · Tabula** (chat en el proyecto de Tabula) — *Opus, esfuerzo alto (toca evaluación)* · **D6**: «Importar de mis
+  apps» en el Cuaderno (fase 3 de `ECOSISTEMA.md`): lee `lectori.tabula`, enlaza por `tb.a` y, si falta, por nombre sin
+  adivinar; columnas con `origen:'lectori'` ligadas a los criterios de lectura que tú elijas. Conviene poder traer un
+  bloque entero como una sola columna (hay 45 niveles) y mostrar `extra` (velocidad, comprensión, atascado).
+  Según D6, entra como dato con semáforo o como nota. Marcar el estado en `ECOSISTEMA.md` (copia de Tabula) y copiarlo a los demás.
+  **Tú pruebas**: abrir Lectori, luego Tabula en el mismo dispositivo, y traer la clase al Cuaderno.
+- **7c · Lectori: «Traer mi clase de Tabula»** — *Opus, esfuerzo alto (crea perfiles y añade un dato al perfil)*.
+  **Solo cuando Tabula ya publique `tabula:eco:lista`** (fase 2 de `ECOSISTEMA.md`; el orden allí es Tabula, Calculi y luego
+  las demás). Sigue el apartado 3 de `ECOSISTEMA.md`. Lo propio de Lectori:
+  - Dónde: Ajustes › Alumnos, solo perfil Docente, y **solo si hay lista válida** (si no, la fila no aparece: regla 0).
+  - Campo nuevo `p.tb = {a, g}`: añadirlo a `cleanP` (dos textos cortos) y a `mergeP` (el del más reciente; si solo un
+    lado lo tiene, se conserva), o se perderá al restaurar o sincronizar. Sube a la nube con el resto: son los id de
+    Tabula, no datos nuevos del niño. `docs/tabula.md` ya prevé `tb` en el resumen.
+  - Antes de crear o enlazar perfiles: `bkAuto('tabula')`. Los perfiles que ya existían se **proponen** emparejados por
+    nombre y tú confirmas; con dos nombres iguales no se empareja solo. Nunca se borra ni se reinicia un perfil.
+  - Los perfiles nuevos se crean como en «Añadir alumno» (animal incluido): Calculi sigue leyendo `ar2` (`ps[].n/av/id`).
+  - El nombre de la lista puede pasar de 20 letras («María García»): `cleanP` corta a 20; comprobar que no rompe el enlace.
+  **Pruebas**: lista ausente, mal formada o de otra versión = «no hay datos» sin error; emparejado con y sin dudas;
+  `tb` sobrevive a copia, restauración y sincronización; instalación limpia sigue pasando todo.
+  **Tú pruebas**: traer tu grupo de Tabula y ver que cada niño conserva su progreso.
+
+**Pruebas comunes**: las de `docs/tabula.md` (7a) y, en Tabula, lectura, emparejado y actualización de columnas (7b,
+como las de Calculi).
 
 ### Fase 8 · Lectura cómoda y apoyos — *Sonnet, esfuerzo medio*
 
@@ -325,7 +354,7 @@ ninguna pantalla desborda con el tamaño máximo. **Tú pruebas**: activar «có
 **Pruebas**: `tests/humo.py` mide contraste y tamaños (las métricas de este análisis) y falla si empeoran.
 **Tú pruebas**: modo oscuro en informe y evaluación; TalkBack en un ejercicio.
 
-### Fase 10 · Contenido — *Opus, esfuerzo alto, con tu visto bueno palabra a palabra* · D1
+### Fase 10 · Contenido — *Opus, esfuerzo alto, con tu visto bueno palabra a palabra* · D1 = a
 
 Lista de cambios propuestos para que apruebes: r suave/fuerte, «ze-zi», vocabulario (B.5), más lecturas de 40–100
 palabras y preguntas inferenciales al final del recorrido. Las pruebas de la fase 0 garantizan que todo siga siendo
@@ -339,7 +368,8 @@ decides; exige que cada chat ejecute la construcción antes de publicar.
 ## 5. Cómo pedir cada fase
 
 Abrir chat nuevo en el proyecto y escribir: «Ejecuta la fase N de `PLAN-DISENO.md` de Lectori». Antes de la 1, 2, 3, 4 y
-7 responde a su decisión (D2, D4, D3, D5, D6). Publicar al terminar cada fase, no a medias, y pedir capturas de antes y
+7b responde a su decisión (D2, D4, D3, D5, D6). La fase 7 son tres chats: «Ejecuta la fase 7a…», 7b (en el proyecto de
+Tabula) y 7c. Publicar al terminar cada fase, no a medias, y pedir capturas de antes y
 después a 390 px.
 
 ## 6. Fuentes
