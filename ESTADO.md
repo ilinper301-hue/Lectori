@@ -9,7 +9,7 @@ _Última actualización: 2026-11-16 (revisión de datos y nube, y diseño de la 
 
 App (PWA) para aprender a leer con método fonético-sintético: 45 niveles (29 letras + 16 de inversas, trabadas,
 diptongos y diéresis), con sílabas, palabras, frases y lecturas decodificables, repaso espaciado y zona del tutor con PIN.
-Un solo `index.html` (versión 3.40), sin compilación. Publicada con GitHub Pages desde `main`:
+Un solo `index.html` (versión 3.41), sin compilación. Publicada con GitHub Pages desde `main`:
 https://ilinper301-hue.github.io/Lectori/ (el repositorio se llama `Lectori`, con mayúscula).
 Datos en el dispositivo (`localStorage`, clave `ar2`) y, con sesión de Google, en Firebase
 (proyecto `mis-apps-educativas`, colección `lectori`; reglas en el repositorio de Tabula).
@@ -17,6 +17,9 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Últimos cambios
 
+- **2026-11-16 · Fuente Fredoka más delgada (3.41, `lectori-v13`).** Se sustituye la Fredoka incrustada en `index.html` por la
+  Fredoka Medium (peso 500, subida por el tutor). Todos los pesos usan ese mismo grosor (también los que antes iban en negrita).
+  Pruebas: 120 pasan, 9 `todo`; prueba de humo correcta en claro y oscuro a 390×844 y 768×1024.
 - **2026-11-16 · Revisión independiente de datos y nube (fases 2 y 5). Sin cambios en la app (3.40, `lectori-v12`).**
   - **`docs/revision-datos.md`**: ocho hallazgos (H1–H8), todos reproducidos. Los dos graves: una tableta que no se
     sincronizó hace retroceder el nivel y las estrellas de un niño en todas las tabletas (H1), y la primera vez con la
