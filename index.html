@@ -1354,7 +1354,10 @@ function say(k,t,r){stopA();if(MISS.has(k)&&!AUD[k])return speak(t,r);
   a.onended=res;a.onerror=bad;a.onplaying=()=>{OK[k]=u};a.play().catch(bad)};next()})}
 const snd=u=>say('l:'+(u=='ü'?'u':'áéíóú'.includes(u)?'aeiou'['áéíóú'.indexOf(u)]:u),SND[u]||u,.6),wd=w=>say('w:'+w,w,.65);
 const norm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z ]/g,'').trim();
-let P;try{P=JSON.parse(localStorage.getItem('ar2'))}catch(e){}
+/* Fase 5b (H6): si lo guardado no se puede leer, se guarda tal cual aparte (lectori.ar2.roto y una copia automática) antes de
+   escribir nada encima; hasta que quede a salvo en algún sitio, no se sobrescribe ar2. Aviso en la zona del tutor (rawWarn) */
+let P,RAWBAD='',RAWOK=1;{let t=null;try{t=localStorage.getItem('ar2');P=JSON.parse(t)}catch(e){P=null}
+ if(t&&(!P||!P.ps)){RAWBAD=t;RAWOK=0;try{localStorage.setItem('lectori.ar2.roto',t);RAWOK=1}catch(e){}}}
 if(!P||!P.ps)P={ps:[],c:-1,ov:2};
 /* v3.7: pasa los niveles guardados con el orden antiguo al nuevo. Se coloca al alumno en la primera letra del orden nuevo que no había superado */
 function migLv(L){if(typeof L!='number'||L<0||L>=ORD0.length)return L;const dn=new Set(ORD0.slice(0,L)),j=ORDER.findIndex(u=>!dn.has(u));return j<0?ORDER.length:j}
@@ -1368,7 +1371,7 @@ function setRol(r,back){P.rol=r;save();if(back)return panel(2);if(!P.ob&&!P.ps.l
 function noDoc(){AD=1;draw(BACK+`<div class="stage"><h2>Perfil Docente</h2><p>La velocidad lectora, la evaluación, las notas y los informes solo están disponibles en el Perfil Docente.</p><div class="row"><button class="btn" onclick="panel(2)">Cambiar de perfil</button></div></div>`)}
 /* Si el almacenamiento del navegador se llena (lo comparten todas las apps de esta dirección), SVE guarda cuándo empezó a fallar: aviso en la zona del tutor y punto en Inicio */
 let SVE=0;
-const saveRaw=()=>{try{localStorage.setItem('ar2',JSON.stringify(P));SVE=0;return true}catch(e){SVE=SVE||Date.now();return false}};
+const saveRaw=()=>{if(!RAWOK)return false;try{localStorage.setItem('ar2',JSON.stringify(P));SVE=0;return true}catch(e){SVE=SVE||Date.now();return false}};
 const save=()=>{try{const q=P.c>=0&&P.ps[P.c];if(q){q.mt=Date.now()}P.gmt=Date.now()}catch(e){}saveRaw();try{syncSoon()}catch(e){}};
 const pr=()=>P.c===-2&&DOC()?mdP():P.ps[P.c];
 // Repaso espaciado: caja 0-5; intervalos: ya, 10 min, 1 día, 3 días, 7 días, 14 días
@@ -1471,7 +1474,7 @@ ${LH('Alumnos')}${LS(RW({i:'chart',t:'Vista de aula',s:'Todos los alumnos y expo
 ${LH('Sonido')}${LS(RW({i:'vol',t:'Instrucciones habladas',c:sel('ins',[['s','Las primeras veces'],['a','Siempre'],['n','Nunca']],gIn()).replace('<select','<select onchange="setIn()"')})+RW({i:'user',t:'Voz del dispositivo',s:'Al elegirla suena una prueba',c:`<select id="vz" aria-label="Voz" onchange="setVz()">${vzOpts()}</select>`})+RW({i:'info',t:'Probar el micrófono',on:'micTest()'}),'lscf')}
 ${LH('Seguridad y uso')}${LS(RW({i:'lock',t:'PIN del tutor',s:'Se pide para entrar aquí y en el Modo Docente',v:P.pin?'Cambiar':'Crear',on:'pinChange()'})+RW({i:'user',t:'Perfil de uso',s:DOC()?'Docente: velocidad, evaluación, notas e informes':'Familias: práctica y progreso',v:DOC()?'Docente':'Familias',on:`sure(this.querySelector('.lt'),()=>setRol('${DOC()?'fam':'doc'}',1))`}))}
 ${LH('Sistema')}${LS(lsRow()+RW({i:'info',t:'Versión',v:VER})+RW({i:'refresh',t:'Buscar actualización',on:'chkVer()'})+RW({i:'download',t:'Actualizar ahora',on:'updNow()'}),'lssy')}${fbx}`;
- draw(head+svWarn()+`<div class="tzb${PT==0?' pg':''}">${b}</div>`)}
+ draw(head+svWarn()+rawWarn()+dupWarn()+`<div class="tzb${PT==0?' pg':''}">${b}</div>`)}
 function setLv(){const p=pr();p.lv=+document.getElementById('lvs').value;p.lz=Date.now();delete p.pg;delete p.al;save();hdr();panel()}
 function renP(){if(pr()&&pr().md)return;const n=document.getElementById('rn').value.replace(/[<>&"'`]/g,'').trim();if(!n)return;pr().n=n;save();hdr();fb('Nombre cambiado','ok')}
 function expo(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({v:1,d:new Date().toISOString(),P:{...P,pin:undefined}})],{type:'application/json'}));a.download='copia-aprende-a-leer.json';a.click();try{localStorage.setItem('arbk',Date.now())}catch(e){}fb('Copia guardada en Descargas. Guárdela en un sitio seguro.','ok')}
@@ -1527,12 +1530,24 @@ function bkDb(){if(!BKDB)BKDB=new Promise((ok,ko)=>{try{const r=indexedDB.open('
 const idbQ=(db,m,f)=>new Promise((ok,ko)=>{const tx=db.transaction('bk',m),q=f(tx.objectStore('bk'));tx.oncomplete=()=>ok(q&&q.result);tx.onerror=tx.onabort=()=>ko(tx.error)});
 async function bkList(){let a=[];try{a=await idbQ(await bkDb(),'readonly',s=>s.getAll())||[]}catch(e){}return[...a,...BKM].sort((x,y)=>y.t-x.t)}
 /* Guarda una copia de `data` (por defecto, todo lo de este dispositivo). La foto se toma al momento, antes de cualquier espera. Devuelve true si quedó guardada en el dispositivo */
-async function bkAuto(w,data){const t=BKT=Math.max(Date.now(),BKT+1),D=data||P,o={t,w:String(w||''),n:(D.ps||[]).length,d:JSON.stringify(D)};
+async function bkAuto(w,data){const t=BKT=Math.max(Date.now(),BKT+1),D=data||P,x=typeof D=='string',o=Object.assign({t,w:String(w||''),n:x?0:(D.ps||[]).length,d:x?D:JSON.stringify(D)},x?{x:1}:{});
  try{const db=await bkDb();await idbQ(db,'readwrite',s=>s.put(o));const ks=((await idbQ(db,'readonly',s=>s.getAllKeys()))||[]).sort((x,y)=>y-x);if(ks.length>BKN)await idbQ(db,'readwrite',s=>{ks.slice(BKN).forEach(k=>s.delete(k))});return true}
  catch(e){BKM.push(o);BKM.sort((x,y)=>y.t-x.t).splice(BKN);return false}}
 const fdh=t=>{try{return new Date(t).toLocaleString('es-ES',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}};
-async function bkScr(){AD=1;const L=await bkList();draw(BK+`<div class="stage" style="text-align:left"><h2 style="margin:0 0 6px">Copias automáticas</h2><p><small>Lectori guarda sola una copia antes de sustituir, juntar o borrar datos. Se guardan las ${BKN} últimas, solo en este dispositivo. Al recuperar una podrá elegir si añadirla a lo que hay o sustituirlo todo.</small></p>${L.length?L.map(b=>`<button class="au" style="grid-template-columns:1fr auto" onclick="bkUse(${b.t})"><span><b>${esc(fdh(b.t))}</b><br><small>${esc(b.w)} · ${b.n} ${b.n==1?'alumno':'alumnos'}</small></span><span>Recuperar</span></button>`).join(''):'<p>Aún no hay copias automáticas.</p>'}</div>`)}
-async function bkUse(t){const b=(await bkList()).find(x=>x.t===t);if(b)readCopy(b.d,'copia automática del '+fdh(b.t))}
+async function bkScr(){AD=1;const L=await bkList();draw(BK+`<div class="stage" style="text-align:left"><h2 style="margin:0 0 6px">Copias automáticas</h2><p><small>Lectori guarda sola una copia antes de sustituir, juntar o borrar datos. Se guardan las ${BKN} últimas, solo en este dispositivo. Al recuperar una podrá elegir si añadirla a lo que hay o sustituirlo todo.</small></p>${L.length?L.map(b=>`<button class="au" style="grid-template-columns:1fr auto" onclick="bkUse(${b.t})"><span><b>${esc(fdh(b.t))}</b><br><small>${esc(b.w)}${b.x?'':` · ${b.n} ${b.n==1?'alumno':'alumnos'}`}</small></span><span>${b.x?'Descargar':'Recuperar'}</span></button>`).join(''):'<p>Aún no hay copias automáticas.</p>'}</div>`)}
+async function bkUse(t){const b=(await bkList()).find(x=>x.t===t);if(b)b.x?rawDl(b.d):readCopy(b.d,'copia automática del '+fdh(b.t))}
+/* Fase 5b: copia automática que no se pudo guardar. Si el navegador tiene IndexedDB y falla (p. ej., lleno), se avisa antes de seguir
+   (sin IndexedDB, la copia queda en memoria mientras la app siga abierta, como antes). bkSafe hace la copia y luego go(), o avisa */
+let BKF=null;
+function bkSafe(w,data,go){const pr0=bkAuto(w,data);if(typeof indexedDB=='undefined')return go();pr0.then(ok=>ok?go():bkFail(go))}
+function bkFail(go){BKF=go;AD=1;draw(BK+`<div class="stage" style="text-align:left"><h2 style="margin:0 0 6px">No se pudo hacer la copia automática</h2><p><small>El navegador no ha dejado guardarla (puede que el almacenamiento esté lleno). Antes de seguir, guarde una copia de seguridad.</small></p><div class="menu">
+<button class="big" onclick="expo();fb('Copia guardada. Ya puede seguir.','ok')"><i class="mi">${ic('download',26)}</i><div><b>Guardar copia</b><span>Recomendado. Se descarga un archivo con todos los alumnos.</span></div></button>
+<button class="big" onclick="sure(this.querySelector('b'),()=>{const f=BKF;BKF=null;if(f)f()})"><i class="mi">${ic('refresh',26)}</i><div><b>Seguir</b><span>Continúa con lo que había pedido, sin copia automática.</span></div></button></div></div>`)}
+/* H6: descarga el texto que no se pudo leer (para recuperarlo después) */
+function rawDl(t){try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/plain'}));a.download='lectori-datos-danados-'+key()+'.txt';a.click();fb('Archivo guardado en Descargas','ok')}catch(e){fb('No se pudo guardar el archivo','no')}}
+const rawGet=()=>{try{return RAWBAD||localStorage.getItem('lectori.ar2.roto')||''}catch(e){return RAWBAD}};
+function rawDel(){RAWBAD='';try{localStorage.removeItem('lectori.ar2.roto')}catch(e){}panel()}
+function rawWarn(){return rawGet()?`<div class="pg-bk" role="alert" style="border-left-color:var(--no)!important"><span class="ib" style="color:var(--no)">${ic('x',20)}</span><div style="flex:1;min-width:0"><b>Los datos guardados estaban dañados</b><small>Al abrir no se pudieron leer y se han guardado aparte (también en Copias automáticas). Descárguelos antes de quitar el aviso.</small></div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn sm" onclick="rawDl(rawGet())">Descargar</button><button class="btn alt sm" onclick="sure(this,rawDel)">Quitar aviso</button></div></div>`:''}
 /* Lee una copia (texto JSON) y deja elegir qué hacer con ella */
 let PSRC='';
 function readCopy(txt,src){try{const o=JSON.parse(txt),Q=o&&o.P?o.P:o;if(!Q||!Array.isArray(Q.ps))throw 0;Q.ps=Q.ps.filter(q=>q&&typeof q=='object');migOrd(Q);const ps=Q.ps.map(cleanP);if(!ps.length)throw 0;pend=ps;PSRC=src||'';impScr()}catch(e){fb('El archivo no es una copia válida.','no')}}
@@ -1542,8 +1557,9 @@ function impScr(){if(!pend)return panel(2);AD=1;const ps=pend,ids=new Set(P.ps.m
  draw(BK+`<div class="stage" style="text-align:left"><h2 style="margin:0 0 6px">Restaurar una copia</h2><p><small>${PSRC?esc(PSRC)+'. ':''}La copia tiene ${al(ps.length)}: ${nm(ps)}.</small></p><div class="menu">
 <button class="big" onclick="applyImp('add')"><i class="mi">${ic('download',26)}</i><div><b>Añadir a lo que hay</b><span>Recomendado. ${nw?al(nw)+(nw==1?' nuevo':' nuevos'):'Ninguno nuevo'}${dup?`; ${dup==1?'1 ya está':dup+' ya están'} aquí y se juntan`:''}. No se borra nada.</span></div></button>
 <button class="big" onclick="sure(this.querySelector('b'),()=>applyImp('rep'))"><i class="mi">${ic('refresh',26)}</i><div><b>Sustituir todo</b><span>Quedan solo los de la copia, tal como estaban.${gone.length?` Se quitará${gone.length>1?'n':''} ${al(gone.length)} que no ${gone.length>1?'están':'está'} en la copia (${nm(gone)}), también de la cuenta si está conectada.`:''} Antes se guarda una copia automática de lo que hay.</span></div></button></div><div class="fb" id="fb"></div></div>`)}
-async function applyImp(m){if(!pend)return;const ps=pend,now=Date.now();pend=null;
- await bkAuto(m=='rep'?'Antes de sustituir todo por una copia':'Antes de añadir una copia');
+async function applyImp(m,f){if(!pend)return;
+ if(!f){const ok=await bkAuto(m=='rep'?'Antes de sustituir todo por una copia':'Antes de añadir una copia');if(!ok&&typeof indexedDB!='undefined')return bkFail(()=>applyImp(m,1))}
+ const ps=pend,now=Date.now();pend=null;
  if(m=='rep'){const keep=new Set(ps.map(q=>q.id)),del=Object.assign({},P.del);P.ps.forEach(q=>{if(q.id&&!keep.has(q.id))del[q.id]=now});let ac=0;try{ac=!!localStorage.getItem('lectori.sync.uid')}catch(e){}/* H7: con cuenta, marcados como reiniciados para que al sincronizar gane la copia entera */ps.forEach(q=>{q.mt=now;if(ac)q.rz=now;delete del[q.id]});P={ps,c:0,rol:P.rol,pin:P.pin,md:P.md,ov:2,ob:P.ob,del,gmt:P.gmt}}
  else{const cid=P.c>=0&&P.ps[P.c]?P.ps[P.c].id:null;ps.forEach(q=>{const l=P.ps.find(x=>x.id===q.id),o=l?mergeP(l,q):q;o.mt=now;if(P.del)delete P.del[q.id];setLocal(q.id,o)});if(cid)P.c=P.ps.findIndex(q=>q.id===cid);else if(P.c===-1&&P.ps.length)P.c=0}
  save();try{localStorage.setItem('arbk',Date.now())}catch(e){}home()}
@@ -1553,7 +1569,7 @@ function lsUse(){let me=0,all=0;try{for(let i=0;i<localStorage.length;i++){const
 const kb=n=>n<1e6?Math.max(1,Math.round(n/1024))+' KB':(n/1048576).toFixed(1).replace('.',',')+' MB';
 function lsRow(){const u=lsUse(),pc=Math.round(u.all/LSMAX*100);return RW({i:'info',t:'Espacio usado',s:`Lectori ${kb(u.me)} · con sus otras apps ${kb(u.all)} de unos 5 MB`,v:`<span style="color:${pc>=80?'var(--no)':'inherit'}">${pc} %</span>`})}
 function svWarn(){return SVE?`<div class="pg-bk" role="alert" style="border-left-color:var(--no)!important"><span class="ib" style="color:var(--no)">${ic('x',20)}</span><div style="flex:1;min-width:0"><b>No se ha podido guardar</b><small>El almacenamiento del navegador está lleno. Guarde una copia ahora y libere espacio en sus otras apps.</small></div><button class="btn sm" onclick="expo()">Guardar copia</button></div>`:''}
-const hmWarn=()=>{try{return !!(SVE||SYNC.ask)}catch(e){return !!SVE}};
+const hmWarn=()=>{try{return !!(SVE||SYNC.ask||rawGet())}catch(e){return !!SVE}};
 /* Una vez: si quedan evaluaciones antiguas con todo el detalle (más de 4), copia automática y después se dejan en resumen */
 function slimOld(){if(!P.ps.some(q=>(q.es||[]).length>4))return;bkAuto('Antes de dejar en resumen las evaluaciones antiguas').then(ok=>{if(!ok)return;P.ps.forEach(q=>{if((q.es||[]).length>4)q.es=q.es.slice(-4)});saveRaw()})}
 async function micTest(){const o=[];
@@ -2101,7 +2117,7 @@ async function syncNow(force){if(!FBU||!FB||SYNC.busy)return;SYNC.busy=true;SYNC
  let mode=force||'merge';if(first&&!remoteEmpty&&!force){if(noData())mode='down';else{const rs=Object.values(R);SYNC.ask={u,ln:P.ps.length,rn:rs.length,rt:rs.reduce((m,q)=>Math.max(m,q.mt||0),0)};return}}
  SYNC.ask=null;
  const L={};P.ps.forEach(q=>{if(!q.id)q.id=nid();L[q.id]=q});const push={},kill=[],cid=P.c>=0&&P.ps[P.c]?P.ps[P.c].id:null;
- if(mode==='down'){if(P.ps.length)await bkAuto('Antes de usar lo de la cuenta',P);
+ if(mode==='down'){if(P.ps.length&&!SYNC.nobk)await bkAuto('Antes de usar lo de la cuenta',P);SYNC.nobk=0;
   P.ps=Object.values(R).sort((a,b)=>(a.n||'').localeCompare(b.n||''));P.ps.forEach(q=>{const l=L[q.id];if(l&&(l.nt||[]).length)q.nt=uni(q.nt,l.nt,200)});
   P.c=cid&&R[cid]?P.ps.findIndex(q=>q.id===cid):(P.c===-2?-2:-1);if(RM)applyMeta(RM);P.del=RM&&RM.del||{};Object.keys(RN).forEach(id=>{push[id]=R[id]})}
  else{const del=Object.assign({},mode==='up'?{}:RM&&RM.del||{},P.del||{});
@@ -2120,7 +2136,7 @@ async function syncNow(force){if(!FBU||!FB||SYNC.busy)return;SYNC.busy=true;SYNC
  if(mode!=='down')b.set(mref,{meta:JSON.stringify(metaOf()),ts:Date.now()});if(mode!=='down'||np)await b.commit();
  localStorage.setItem('lectori.sync.uid',u);saveRaw();SYNC.last=Date.now();localStorage.setItem('lectori.sync.t',SYNC.last)}
  catch(e){SYNC.err=fbErr(e)}finally{SYNC.busy=false;accRefresh();try{if(!AD&&!document.querySelector('#app.act')){if(P.rol){GRIDV&&TBM()!='a'?profiles(1):home()}else rolScreen()}}catch(e){}}}
-function syncPick(m){if(!SYNC.ask)return;SYNC.ask=null;syncNow(m).catch(()=>{})}
+function syncPick(m){if(!SYNC.ask)return;const go=()=>{SYNC.ask=null;syncNow(m).catch(()=>{})};if(m==='down'&&P.ps.length)bkSafe('Antes de usar lo de la cuenta',P,()=>{SYNC.nobk=1;go()});else go()}
 function accRefresh(){try{const e=document.getElementById('acc');if(e){const h=e.previousElementSibling;if(h&&h.className=='lh')h.remove();e.outerHTML=accSec()}}catch(e){}}
 function accSec(){return accSec0().replace('<div class="cd" id="acc"><div class="ct">','<div class="lh">').replace(/^(<div class="lh">[^<]*)<\/div>/,'$1</div><div class="ls lsac" id="acc">')}
 function accSec0(){const c=fbCfg(),ago=SYNC.last?Math.round((Date.now()-SYNC.last)/60000):null,when=ago===null?'aún no':ago<1?'hace un momento':ago<60?`hace ${ago} min`:`hace ${Math.round(ago/60)} h`,er=SYNC.err?`<p class="fb no" style="margin:8px 0 0">${esc(SYNC.err)}</p>`:'';
@@ -2162,9 +2178,15 @@ const ORDALT={15:["Ana ve en la mesa una uva."],17:["Yo en la sala uso mi yoyo."
  document.addEventListener('touchend',e=>{if(x0==null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Date.now()-t0>700||Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.8)return;
   const lo=pr()&&pr().md?1:0,n=Math.max(lo,Math.min(2,PT+(dx<0?1:-1)));if(n==PT)return;panel(n);try{const a=document.getElementById('app');a.classList.remove('swl','swr');void a.offsetWidth;a.classList.add(dx<0?'swl':'swr')}catch(e){}},{passive:true})})();
 function spkAdd(){try{app.querySelectorAll('.menu .big:not([disabled]),.hm-a').forEach(b=>{const pa=b.parentNode;if(!pa||pa.classList.contains('bw'))return;const w=document.createElement('div');w.className='bw';if(b.classList.contains('in')){w.classList.add('in');w.style.animationDelay=b.style.animationDelay;b.classList.remove('in')}pa.insertBefore(w,b);w.appendChild(b);const k=document.createElement('button');k.className='spk';k.type='button';k.setAttribute('aria-label','Escuchar');k.innerHTML='<svg class="vi" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.4" y="8.6" width="4.6" height="6.8" rx="1.3"/><path d="M7 8.6l5.3-3.8c.75-.5 1.6 0 1.6.8v12.8c0 .8-.85 1.3-1.6.8L7 15.4"/><path d="M17 9.1a4.2 4.2 0 0 1 0 5.8"/><path d="M19.8 6.3a8.2 8.2 0 0 1 0 11.4"/></svg>';k.onclick=e=>{e.stopPropagation();const tx=[...b.querySelectorAll('b,small,span')].map(x=>x.textContent.trim()).filter(Boolean).join('. '),a=b.dataset&&b.dataset.a;a?say('i:'+a,b.dataset.t||tx,.9):speak(tx,.9)};w.appendChild(k)})}catch(e){}}
+/* Fase 5b: alumnos con el mismo nombre (p. ej., la clase creada a mano en dos tabletas y luego juntada). Solo avisa; «Son distintos» lo calla en este dispositivo */
+const dupKey=n=>String(n||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();
+function dupList(){let ok=[];try{ok=JSON.parse(localStorage.getItem('lectori.dupok')||'[]')}catch(e){}const c={};P.ps.filter(q=>!q.md).forEach(q=>{const k=dupKey(q.n);if(k&&!ok.includes(k))(c[k]=c[k]||[]).push(q.n)});return Object.values(c).filter(a=>a.length>1)}
+function dupOk(){let ok=[];try{ok=JSON.parse(localStorage.getItem('lectori.dupok')||'[]')}catch(e){}dupList().forEach(a=>ok.push(dupKey(a[0])));try{localStorage.setItem('lectori.dupok',JSON.stringify([...new Set(ok)].slice(-60)))}catch(e){}panel()}
+function dupWarn(){if(!DOC())return'';const L=dupList();return L.length?`<div class="pg-bk" role="status"><span class="ib">${ic('info',20)}</span><div style="flex:1;min-width:0"><b>Alumnos con el mismo nombre</b><small>${L.map(a=>esc(a[0])+' ('+a.length+')').join(', ')}. Puede que sea el mismo niño creado en dos dispositivos: si es así, borre el que sobre.</small></div><button class="btn alt sm" onclick="dupOk()">Son distintos</button></div>`:''}
 function sure(b,f){if(b.dataset.s)return f();b.dataset.s=1;b.textContent='¿Seguro? Pulsa otra vez'}
-function resetP(){const p=pr();bkAuto('Antes de reiniciar el progreso de '+p.n);p.lv=0;p.st=0;p.s={};p.er={};p.rz=Date.now();save();home()}
-function delP(){if(P.c<0)return;const q=P.ps[P.c];if(q)bkAuto('Antes de borrar a '+q.n);if(q&&q.id)(P.del=P.del||{})[q.id]=Date.now();P.ps.splice(P.c,1);P.c=-1;save();profiles()}
+/* Reiniciar progreso (fase 5b: todo el progreso; se conservan días de uso, velocidad, evaluaciones, lecturas, relecturas, notas y ajustes) */
+function resetP(){const p=pr();bkSafe('Antes de reiniciar el progreso de '+p.n,null,()=>{p.lv=0;p.st=0;p.s={};p.er={};['cf','hx','ws','lm','cx','cn','cq','cqn','dk','hf','pa','pg','al','lz'].forEach(k=>delete p[k]);p.rz=Date.now();save();home()})}
+function delP(){if(P.c<0)return;const q=P.ps[P.c];if(!q)return;bkSafe('Antes de borrar a '+q.n,null,()=>{const i=P.ps.indexOf(q);if(i<0)return;if(q.id)(P.del=P.del||{})[q.id]=Date.now();P.ps.splice(i,1);P.c=-1;save();profiles()})}
 function map(){AD=0;const p=pr(),n=Math.min(p.lv,LV.length),pc=Math.round(n/LV.length*100),ok=new Set(domS(p).ok),nd=LV.slice(0,n).filter(l=>ok.has(l.x?l.s[0]:l.g)).length;hdr();
  const tile=(l,i)=>{const d=i<p.lv&&ok.has(l.x?l.s[0]:l.g);return i<p.lv?`<button class="ab-k${d?' dom':''}" style="--c:${COL[i%6]}" onclick="level(${i})" aria-label="${l.g}: ${d?'la dominas':'superada'}. Volver a jugarla">${l.g}${d?'<i class="ab-st" aria-hidden="true">★</i>':''}</button>`:i==p.lv?`<button class="ab-k cur" onclick="level(${i})" aria-label="${l.g}: la estás aprendiendo">${l.g}</button>`:`<span class="ab-k off" role="img" aria-label="Por aprender">?</span>`};
  draw(BACK+`<div class="ab">
@@ -2280,7 +2302,7 @@ function run(i,res){const p0=pr(),L0=LV[i],S=L0.s,track=i==p0.lv&&!p0.md,G=res&&
   if(si<subs.length-1){si++;reset();fl=0;sv();
    draw(BACK+`<div class="stage"><div class="okw"><svg class="okc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.6 12.6l4.4 4.4 8.4-9.4"/></svg></div><h2>¡Subnivel superado!</h2><p>Siguiente: <b>${SUBN[subs[si]]}</b></p><div class="row"><button class="btn" id="nx2">Continuar ➜</button></div></div>`);$('#nx2').onclick=go;return}
   end()}
- function end(){const p=pr();if(track){cfMark(p,L0);hxGet(p,i).d=key();if(i<LV.length-1)p.lv++;delete p.pg;delete p.al;save()}const last=i>=LV.length-1;
+ function end(){const p=pr();if(track){cfMark(p,L0);hxGet(p,i).d=key();/* H2: solo sube si su nivel sigue siendo el de este ejercicio (pudo cambiarlo el tutor desde otro dispositivo) */if(p.lv===i){if(i<LV.length-1)p.lv++;delete p.pg;delete p.al}save()}const last=i>=LV.length-1;
   draw(BACK+`<div class="stage"><div class="okw"><svg class="okc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.6 12.6l4.4 4.4 8.4-9.4"/></svg></div><h2>¡Nivel superado!</h2><p>¡Ya está en tu álbum!</p><div class="row">${last?'':`<button class="btn" onclick="level(${i+1})">Siguiente: ${cap(LV[i+1].g)}</button>`}<button class="btn alt" onclick="home()">Inicio</button></div></div>`)}
  if(track)hxGet(p0,i);if(!subs.length)return end();sv();go()}
 
@@ -2494,6 +2516,7 @@ try{if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.servi
 const fbGo=()=>{try{if(!fbCfg()||!localStorage.getItem('lectori.sync.uid')||navigator.onLine===false)return;if(!FB)fbInit().catch(()=>{});else if(FBU)syncNow().catch(()=>{})}catch(e){}};
 try{fbGo();addEventListener('online',fbGo);document.addEventListener('visibilitychange',()=>{if(document.hidden){if(FBU){clearTimeout(SYNC.t);syncNow().catch(()=>{})}}else if(!FB)fbGo()})}catch(e){}
 try{slimOld()}catch(e){}
+try{if(RAWBAD)bkAuto('Datos que no se pudieron leer al abrir',RAWBAD).then(ok=>{if(ok&&!RAWOK){RAWOK=1;saveRaw()}})}catch(e){}
 setTheme(th);$('#th').onclick=()=>setTheme(document.documentElement.dataset.theme=='dark'?'light':'dark');{let w=null;try{w=localStorage.getItem('lectori.wel')}catch(e){}if(!w&&fbCfg()&&isBlank()&&!(P.ps||[]).length)wel();else{try{localStorage.setItem('lectori.wel','1')}catch(e){}if(!P.rol)rolScreen();else tbGo()}}
 {const sp=$('#splash'),fin=()=>{if(sp)sp.remove();document.body.classList.remove('spl');tc()};if(sp){const m=sp.querySelector&&sp.querySelector('.sp-m');if(m)m.innerHTML=MAS;sp.onclick=()=>{sp.style.animation='spOut .25s ease forwards';setTimeout(fin,300)};setTimeout(fin,(typeof matchMedia=='function'&&matchMedia('(prefers-reduced-motion:reduce)').matches)?900:1900)}}
 </script>

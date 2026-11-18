@@ -114,7 +114,7 @@ test('«Subir lo de este dispositivo»: copia automática de lo que había en la
   assert.deepEqual(JSON.parse(bk[0].d).ps.map(q => q.id).sort(), ['ana12345', 'otro1234']);
 });
 
-test('mismo alumno en dos dispositivos sin conexión: se juntan días, repaso y fallos; el nivel lo pone el más reciente', async () => {
+test('mismo alumno en dos dispositivos sin conexión: se juntan días, repaso y fallos; nivel y estrellas, los mayores (aquí, del más reciente)', async () => {
   const n = nubeFalsa();
   const base = alu('ana12345', { d: { '2026-11-01': { t: 300, s: 5, a: 20, o: 15 } } });
   const A = dispositivo(n, [base]);

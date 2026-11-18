@@ -51,7 +51,7 @@ function dispositivo(n, ps = [], { yaUnido = true, extra = {}, ls = {} } = {}) {
 const alu = (id, o = {}) => ({ id, n: 'Niño ' + id, mt: 1000, lv: 3, st: 10, s: { a: { b: 2, d: 5 } }, d: {}, er: {}, ...o });
 const sube = (n, p) => n.alu.set(p.id, { d: JSON.stringify(p), mt: p.mt });
 
-test('H1 · una tableta atrasada no hace retroceder el nivel ni las estrellas', { todo: 'pendiente: fase 5b' }, async () => {
+test('H1 · una tableta atrasada no hace retroceder el nivel ni las estrellas', async () => {
   const n = nubeFalsa();
   // Tableta A: Ana llegó ayer al nivel 9 (lv 8) con 120 estrellas, y está en la cuenta
   const A = dispositivo(n, [alu('ana12345', { lv: 8, st: 120, mt: 2000 })]);
@@ -70,7 +70,7 @@ test('H1 · una tableta atrasada no hace retroceder el nivel ni las estrellas', 
   assert.ok(nube.st >= 120, `estrellas en la cuenta: ${nube.st} (eran 120)`);
 });
 
-test('H1b · «Lo mismo para toda la clase» en una tableta atrasada no hace retroceder a la clase', { todo: 'pendiente: fase 5b' }, async () => {
+test('H1b · «Lo mismo para toda la clase» en una tableta atrasada no hace retroceder a la clase', async () => {
   const n = nubeFalsa();
   const A = dispositivo(n, [alu('ana12345', { lv: 8, st: 120, mt: 2000 }), alu('luis1234', { lv: 9, st: 150, mt: 2000 })]);
   await A.sync();
@@ -80,7 +80,7 @@ test('H1b · «Lo mismo para toda la clase» en una tableta atrasada no hace ret
   assert.deepEqual([n.alumno('ana12345').lv, n.alumno('luis1234').lv], [8, 9]);
 });
 
-test('H2 · si la sincronización cambia el nivel a mitad de un ejercicio, al terminarlo no se salta otro nivel', { todo: 'pendiente: fase 5b' }, async () => {
+test('H2 · si la sincronización cambia el nivel a mitad de un ejercicio, al terminarlo no se salta otro nivel', async () => {
   const n = nubeFalsa();
   const B = dispositivo(n, [alu('ana12345', { lv: 5, st: 80, mt: 1000 })]);
   B.ev(`(()=>{globalThis.__pend=null;const ok=d=>{if(globalThis.__esp){globalThis.__esp=0;globalThis.__pend=()=>d(true)}else d(true)};
@@ -98,7 +98,7 @@ test('H2 · si la sincronización cambia el nivel a mitad de un ejercicio, al te
   assert.equal(lv, 7, `terminó el lv 5 (que ya no era su nivel) y ahora va por lv ${lv}: se ha saltado el lv 7 sin hacerlo`);
 });
 
-test('H3 · primera vez con la cuenta: alumnos de aquí con pruebas de velocidad o notas (sin niveles) no se pierden sin copia', { todo: 'pendiente: fase 5b' }, async () => {
+test('H3 · primera vez con la cuenta: alumnos de aquí con pruebas de velocidad o notas (sin niveles) no se pierden sin copia', async () => {
   const n = nubeFalsa();
   sube(n, alu('otro1234', { n: 'Del curso pasado' }));
   n.meta = { meta: JSON.stringify({ rol: 'doc', gmt: 1, del: {} }) };
@@ -112,7 +112,7 @@ test('H3 · primera vez con la cuenta: alumnos de aquí con pruebas de velocidad
   assert.ok(sigue || pregunta || copia, `Ana y Luis han desaparecido (velocidad y notas incluidas), sin preguntar y sin copia automática`);
 });
 
-test('H4 · reiniciar a un alumno en un dispositivo no borra las notas del tutor escritas en otro', { todo: 'pendiente: fase 5b' }, async () => {
+test('H4 · reiniciar a un alumno en un dispositivo no borra las notas del tutor escritas en otro', async () => {
   const n = nubeFalsa();
   // En la cuenta: Ana reiniciada desde la tableta A (rz) después de lo último de B
   sube(n, alu('ana12345', { lv: 0, st: 0, s: {}, rz: 3000, mt: 3000 }));
@@ -122,7 +122,7 @@ test('H4 · reiniciar a un alumno en un dispositivo no borra las notas del tutor
   assert.equal((B.alumno('ana12345').nt || []).length, 1, 'la nota del tutor (que solo está en B) se ha perdido');
 });
 
-test('H5 · un borrado que llega de otro dispositivo guarda antes una copia automática aquí', { todo: 'pendiente: fase 5b' }, async () => {
+test('H5 · un borrado que llega de otro dispositivo guarda antes una copia automática aquí', async () => {
   const n = nubeFalsa();
   n.meta = { meta: JSON.stringify({ rol: 'doc', gmt: 1, del: { ana12345: 5000 } }) };
   const B = dispositivo(n, [alu('ana12345', { mt: 1500, nt: [{ d: '2026-11-10', x: 'Nota que solo está aquí' }] }), alu('luis1234')]);
@@ -131,7 +131,7 @@ test('H5 · un borrado que llega de otro dispositivo guarda antes una copia auto
   assert.ok(B.json('BKM').length >= 1, 'Ana se ha borrado de B (con sus notas) sin copia automática previa');
 });
 
-test('H6 · si los datos guardados no se pueden leer al abrir, no se pisan sin guardar antes lo que había', { todo: 'pendiente: fase 5b' }, () => {
+test('H6 · si los datos guardados no se pueden leer al abrir, no se pisan sin guardar antes lo que había', () => {
   const roto = '{"ps":[{"id":"ana12345","n":"Ana","lv":7,"st":90,"s":{"a":{"b":3';   // texto cortado
   const L = cargar({ ls: { ar2: roto } });
   assert.equal(L.ev('P.ps.length'), 0);
@@ -140,7 +140,7 @@ test('H6 · si los datos guardados no se pueden leer al abrir, no se pisan sin g
   assert.ok(L.localStorage.getItem('ar2').includes('ana12345') || queda, 'el texto antiguo se ha sustituido por un aula vacía y no queda en ningún sitio');
 });
 
-test('H7 · «Sustituir todo» con la cuenta conectada deja solo lo de la copia', { todo: 'pendiente: fase 5b' }, async () => {
+test('H7 · «Sustituir todo» con la cuenta conectada deja solo lo de la copia', async () => {
   const n = nubeFalsa();
   const hoy = alu('ana12345', { lv: 8, mt: 2000, s: { a: { b: 2, d: 5 }, l: { b: 3, d: 5 }, m: { b: 3, d: 5 } }, d: { '2026-11-10': { t: 600, s: 5, a: 30, o: 20 } } });
   const A = dispositivo(n, [hoy]);
@@ -153,7 +153,7 @@ test('H7 · «Sustituir todo» con la cuenta conectada deja solo lo de la copia'
   assert.deepEqual(Object.keys(A.alumno('ana12345').s).sort(), ['a'], 'tras sincronizar, vuelve lo que había en la cuenta');
 });
 
-test('H8 · el bloqueo por tiempo de uso no desaparece al sincronizar', { todo: 'pendiente: fase 5b' }, async () => {
+test('H8 · el bloqueo por tiempo de uso no desaparece al sincronizar', async () => {
   const n = nubeFalsa();
   sube(n, alu('ana12345', { mt: 900 }));
   const B = dispositivo(n, [alu('ana12345', { mt: 1000, e: 1794800000000 })]);
