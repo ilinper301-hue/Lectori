@@ -1898,7 +1898,7 @@ ${R.length?R.map(({l,i,x})=>{const t=x.t||{},dd=hxDays(x),hp=HXS.some(k=>(t[k]||
  return `<div class="au" style="grid-template-columns:1fr auto"><span><b>${i+1}. ${esc(l.x?l.u:l.g)}</b><br><small>${x.d?'Superado el '+dm(x.d)+(dd!=null?' · '+(dd==0?'el mismo día':dd+(dd==1?' día':' días')):''):x.b?'Empezado el '+dm(x.b)+' · en curso':''}${ts?' · '+ts:''}</small></span><span style="text-align:right;font-size:.8rem">${[hp?'<b style="color:var(--help)">Con ayuda</b>':'',rb?'Listón rebajado: '+x.r.map(sc).join(', '):'',sk?'Saltado por el tutor: '+x.k.map(sc).join(', '):''].filter(Boolean).join('<br>')}</span></div>`}).join(''):'<p>Aún no hay historia: se empieza a guardar a partir de ahora, al avanzar de nivel.</p>'}</div>`)}
 function pracW(k){AD=2;let n=0;const all=sylsTo(pr().lv),nx=()=>{if(n++>=4){panel(0);return}ORDER.includes(k)?itemChoose(pr().lv,nx,k):itemSylChoose([k],all,nx)};nx()}
 /* Versión, instrucciones habladas, palabras frecuentes, notas, aula e informe */
-const VER='3.41 · 16 nov 2026';
+const VER='3.42 · 18 nov 2026';
 function acc1(ok){const p=pr();if(!p)return;const D=(p.d=p.d||{}),k=key(),r=D[k]=D[k]||{t:0,s:0};r.a=(r.a||0)+1;if(ok)r.o=(r.o||0)+1}
 function accDays(p,n){return[...Array(n)].map((_,i)=>{const x=new Date();x.setDate(x.getDate()-(n-1-i));const r=(p.d||{})[key(x)]||{},a=r.a||0,o=r.o||0;return{d:x.getDate(),a,o,p:a>=5?Math.round(o/a*100):null}})}
 function accSum(D){const w=arr=>{const a=arr.reduce((s,d)=>s+d.a,0),o=arr.reduce((s,d)=>s+d.o,0);return a>=10?Math.round(o/a*100):null};return{cur:w(D.slice(7)),prev:w(D.slice(0,7))}}

@@ -1,5 +1,8 @@
 # Revisión de datos y nube (fases 2 y 5)
 
+> **Arreglado en la fase 5b (2026-11-18, versión 3.42).** Las 9 pruebas de `tests/revision.test.mjs` pasan sin haberlas cambiado.
+> «Otras observaciones»: ver `ESTADO.md` (decididas con el tutor).
+
 Hecha el 2026-11-16 sobre la versión 3.40 (`lectori-v12`), leyendo el código de guardado, copias, fusión y
 sincronización, y **reproduciendo cada hallazgo** con la nube falsa de las pruebas. **No se ha cambiado la app.**
 

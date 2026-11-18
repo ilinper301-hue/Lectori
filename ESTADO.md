@@ -3,19 +3,46 @@
 Documento vivo. **Cada chat que trabaje en Lectori lo lee al empezar y lo actualiza al terminar**
 (sección «Últimos cambios» arriba del todo, y «Pendiente» / «Problemas conocidos» si cambian).
 
-_Última actualización: 2026-11-16 (revisión de datos y nube, y diseño de la fase 7; la app no cambia)_
+_Última actualización: 2026-11-18 (fase 5b: arreglos de datos y nube)_
 
 ## Resumen
 
 App (PWA) para aprender a leer con método fonético-sintético: 45 niveles (29 letras + 16 de inversas, trabadas,
 diptongos y diéresis), con sílabas, palabras, frases y lecturas decodificables, repaso espaciado y zona del tutor con PIN.
-Un solo `index.html` (versión 3.41), sin compilación. Publicada con GitHub Pages desde `main`:
+Un solo `index.html` (versión 3.42), sin compilación. Publicada con GitHub Pages desde `main`:
 https://ilinper301-hue.github.io/Lectori/ (el repositorio se llama `Lectori`, con mayúscula).
 Datos en el dispositivo (`localStorage`, clave `ar2`) y, con sesión de Google, en Firebase
 (proyecto `mis-apps-educativas`, colección `lectori`; reglas en el repositorio de Tabula).
 Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Últimos cambios
+
+- **2026-11-18 · Fase 5b: arreglos de la revisión de datos y nube. Versión 3.42, caché `lectori-v14`.** Los 8 hallazgos de
+  `docs/revision-datos.md`, arreglados; las 9 pruebas de `tests/revision.test.mjs` pasan **sin haberlas cambiado** (ya sin `todo`).
+  - **H1** · Al juntar dos versiones de un alumno (`mergeP`): **nivel y estrellas, los mayores** (y «por dónde va», del lado del nivel elegido);
+    cajas de repaso de letras y palabras y confirmaciones, letra a letra, las de la versión que la practicó más tarde (`d − INT[b]`, sin guardar nada nuevo);
+    si lo más reciente es un fallo, la letra deja de estar «dominada». Campo nuevo opcional **`lz`** (cuándo el tutor puso el nivel a mano en `setLv`):
+    si es posterior a lo último del otro lado, manda el nivel del tutor. Los ajustes siguen siendo del más reciente.
+    **Reintento**: si la app se abrió sin conexión, sincroniza al volver internet (evento `online`) o al volver a la app (`fbGo`).
+  - **H3** · Primera vez con la cuenta: solo se usa «lo de la cuenta» sin preguntar si aquí no hay ningún dato (`noData`: tampoco velocidad,
+    evaluaciones, notas, lecturas ni días). En ese modo, copia automática siempre que haya algún alumno. `isBlank` queda igual.
+  - **H4** · Un reinicio que llega de otro dispositivo conserva las notas del tutor de aquí. **H5** · Copia automática antes de quitar alumnos
+    borrados en otro dispositivo. **H7** · «Sustituir todo» con el dispositivo unido a una cuenta marca a los restaurados como reiniciados (`rz`):
+    al sincronizar gana la copia entera. **H2** · Al terminar un nivel solo se sube si su nivel sigue siendo ese (`end`).
+    **H8** · `cleanP` conserva `e` (tiempo agotado). **H6** · Si `ar2` no se puede leer al abrir: se guarda tal cual en `lectori.ar2.roto`
+    y en las copias automáticas («Descargar» en vez de «Recuperar»), no se escribe encima hasta que quede a salvo, y aviso rojo en la zona del tutor
+    («Descargar» / «Quitar aviso») con punto rojo en Inicio.
+  - **Otras observaciones (decididas por el tutor)**: (1) **Copia automática fallida**: si IndexedDB existe y falla, antes de reiniciar, borrar,
+    restaurar una copia o «Usar lo de la cuenta» sale «No se pudo hacer la copia automática» con «Guardar copia» y «Seguir» (doble toque)
+    (`bkSafe`/`bkFail`). Sin IndexedDB, como antes (copia en memoria). No aplica a «Subir lo de este dispositivo» ni a los borrados que llegan
+    solos al sincronizar. (2) **Nombres repetidos**: aviso en la zona del tutor (Docente) «Alumnos con el mismo nombre» con «Son distintos»
+    (lo calla en este dispositivo: `lectori.dupok`). (3) **Reiniciar progreso** borra todo el progreso (nivel, estrellas, repaso, fallos,
+    confirmaciones, historia, palabras, Lee y toca, confusiones, comprensión, dictado, palabras frecuentes e inventadas) y conserva días de uso,
+    velocidad, evaluaciones, lecturas, relecturas, notas y ajustes. (4) Minutos del mismo día en dos tabletas: se deja como estaba.
+  - Sin migración: `lz` y `e` son opcionales; los perfiles 3.40/3.41 siguen igual (probado: `cleanP` idempotente y juntar consigo mismo no cambia nada).
+  - Pruebas: `tests/fase5b.test.mjs` (10) y título ajustado en `sync.test.mjs`. `node --test`: **139 pasan, 0 `todo`**; `humo.py` en verde
+    (38 pantallas por pasada, 4 pasadas). Se comprobó que las pruebas fallan si se estropea el nivel al juntar, el aviso de copia, la confirmación,
+    el salto de nivel o el guardado de datos ilegibles. Avisos nuevos revisados a 390 y 768, claro y oscuro.
 
 - **2026-11-16 · Fuente Fredoka más delgada (3.41, `lectori-v13`).** Se sustituye la Fredoka incrustada en `index.html` por la
   Fredoka Medium (peso 500, subida por el tutor). Todos los pesos usan ese mismo grosor (también los que antes iban en negrita).
@@ -178,27 +205,23 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Pendiente
 
-- **Siguiente: fase 5b de `PLAN-DISENO.md`** (arreglos de `docs/revision-datos.md`, *Opus, esfuerzo alto*). Mientras no se haga,
-  con varias tabletas conviene abrir cada una con wifi y esperar a que sincronice antes de dársela a un niño.
-- Después: fase 6 («La clase primero», *Sonnet, esfuerzo alto*). Puede usar `hxHelp`, `cxTxt`, `evInf`, `rdPpm` y `p.al`.
+- **Siguiente: fase 6** («La clase primero», *Sonnet, esfuerzo alto*). Puede usar `hxHelp`, `cxTxt`, `evInf`, `rdPpm` y `p.al`.
   También se puede hacer ya la **7a** (*Sonnet, esfuerzo medio*): está especificada en `docs/tabula.md` y no depende de la 6 ni de Tabula.
 - Decisiones pendientes: D6 (fase 7b), D7 (fase 11). Ya tomadas: D2 = c, D4 = a, D3 = a, D5 = c, D1 = a.
-- Fases 0–5 hechas. Fase 5b (nueva) y 7 diseñadas, sin programar. Fases 6 y 8–11 sin empezar.
+- Fases 0–5 y 5b hechas. Fase 7 diseñada, sin programar. Fases 6 y 8–11 sin empezar.
 - 7b va en el chat de Tabula; 7c espera a que Tabula publique `tabula:eco:lista` (fase 2 de `ECOSISTEMA.md`).
 - De la fase 2 quedó sin hacer: servir Inter y Playwrite ES desde `fonts/` (aquí no se pueden descargar; siguen viniendo de Google Fonts).
 - Comprobar en dispositivos reales la sincronización con Firebase (las pruebas usan una nube simulada).
 
 ## Problemas conocidos
 
-- **Revisión del 2026-11-16 (`docs/revision-datos.md`), sin arreglar hasta la fase 5b**: una tableta atrasada puede bajar
-  el nivel y las estrellas (H1); primera vez con la cuenta y alumnos sin niveles (H3); notas y reinicio remoto (H4);
-  borrado remoto sin copia (H5); «Sustituir todo» con cuenta (H7); salto de nivel (H2); datos ilegibles (H6); bloqueo
-  por tiempo (H8).
+- Al juntar, nivel y estrellas son los mayores: si el tutor **baja** el nivel a mano y en otro dispositivo el niño sigue practicando
+  después sin conexión, queda el nivel más alto (antes quedaba el del más reciente). Si se baja con wifi, se respeta (`lz`).
+- Alumnos con el mismo nombre (clase creada a mano en dos tabletas): solo hay aviso; para unirlos, borrar uno (la fase 7c lo resolverá).
 - Datos de la fase 5 con una versión anterior de la app en otro dispositivo: esa versión no conoce `cx`/`hx`/`cn` y los quita al guardar;
   al juntar con la nube se recuperan (`mergeP` une los dos lados), salvo que se use «Sustituir todo». Se arregla solo al actualizarse.
 - El ritmo en las lecturas de la app es orientativo: cuenta desde que sale el texto hasta «Ya lo leí» (incluye mirar y pedir ayuda).
-- Juntar dos versiones de un alumno: si el tutor bajó el nivel a mano en un dispositivo y en otro el niño siguió practicando
-  después sin conexión, queda el nivel del más reciente. Las notas borradas pueden volver al «Añadir» una copia antigua.
+- Las notas borradas pueden volver al «Añadir» una copia antigua.
 - Las copias automáticas son solo de este dispositivo (5 últimas); no sustituyen a guardar copias fuera.
 - Modo Sola: los emojis se ven distintos según el dispositivo (👩‍🍼 necesita Android 11 o superior; en uno más antiguo puede salir como dos dibujos).
 - Audio: solo hay grabadas las 29 letras y 5 sílabas (`ha–hu`); el resto lo dice la voz del dispositivo (`lista-audios.csv`
@@ -215,8 +238,8 @@ Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Cómo probar
 
-- `node --test tests/*.test.mjs` (~25 s): contenido, datos, homófonas, audio, sincronización, copias, Lee y toca, tableta y datos del alumno. 120 pasan;
-  9 `todo` (`revision.test.mjs`: fallos conocidos de la revisión, hasta la fase 5b).
+- `node --test tests/*.test.mjs` (~25 s): contenido, datos, homófonas, audio, sincronización, copias, Lee y toca, tableta, datos del alumno,
+  revisión de datos y fase 5b. 139 pasan, 0 `todo`.
 - `python3 tests/humo.py` (~90 s; `--rapido` para solo 390×844 claro): recorrido completo en el navegador sin ventana.
 - Detalle en `CLAUDE.md` («Cómo probar»). A mano: `python3 -m http.server` en la carpeta y abrir en el navegador.
 - Al publicar cambios de la app: subir `const C='lectori-vN'` en `sw.js` y `VER` en `index.html`.

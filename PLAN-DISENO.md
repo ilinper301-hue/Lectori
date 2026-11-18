@@ -284,7 +284,7 @@ sin desplazamiento. **Tú pruebas**: que un niño encuentre su animal y no pueda
 **Pruebas**: migración de perfil 3.34; topes de tamaño; `cleanP` conserva lo nuevo. **Tú pruebas**: fallar adrede b/d
 y ver «confunde b con d» en Progreso.
 
-### Fase 5b · Arreglos de la revisión de datos y nube — *Opus, esfuerzo alto (datos y nube)* · depende de 2 y 5
+### Fase 5b · Arreglos de la revisión de datos y nube — *Opus, esfuerzo alto (datos y nube)* · depende de 2 y 5 — ✅ **hecha el 2026-11-18** (resumen en `ESTADO.md`; «Otras observaciones» decididas: avisar si falla la copia automática, solo avisar de nombres repetidos, reiniciar todo el progreso)
 
 Añadida el 2026-11-16 tras la revisión independiente de las fases 2 y 5: **`docs/revision-datos.md`** (ocho hallazgos,
 H1–H8, cada uno reproducido en `tests/revision.test.mjs` como prueba `todo`). **Conviene hacerla antes de la 6**: es la
