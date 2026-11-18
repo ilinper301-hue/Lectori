@@ -1544,7 +1544,7 @@ function impScr(){if(!pend)return panel(2);AD=1;const ps=pend,ids=new Set(P.ps.m
 <button class="big" onclick="sure(this.querySelector('b'),()=>applyImp('rep'))"><i class="mi">${ic('refresh',26)}</i><div><b>Sustituir todo</b><span>Quedan solo los de la copia, tal como estaban.${gone.length?` Se quitará${gone.length>1?'n':''} ${al(gone.length)} que no ${gone.length>1?'están':'está'} en la copia (${nm(gone)}), también de la cuenta si está conectada.`:''} Antes se guarda una copia automática de lo que hay.</span></div></button></div><div class="fb" id="fb"></div></div>`)}
 async function applyImp(m){if(!pend)return;const ps=pend,now=Date.now();pend=null;
  await bkAuto(m=='rep'?'Antes de sustituir todo por una copia':'Antes de añadir una copia');
- if(m=='rep'){const keep=new Set(ps.map(q=>q.id)),del=Object.assign({},P.del);P.ps.forEach(q=>{if(q.id&&!keep.has(q.id))del[q.id]=now});ps.forEach(q=>{q.mt=now;delete del[q.id]});P={ps,c:0,rol:P.rol,pin:P.pin,md:P.md,ov:2,ob:P.ob,del,gmt:P.gmt}}
+ if(m=='rep'){const keep=new Set(ps.map(q=>q.id)),del=Object.assign({},P.del);P.ps.forEach(q=>{if(q.id&&!keep.has(q.id))del[q.id]=now});let ac=0;try{ac=!!localStorage.getItem('lectori.sync.uid')}catch(e){}/* H7: con cuenta, marcados como reiniciados para que al sincronizar gane la copia entera */ps.forEach(q=>{q.mt=now;if(ac)q.rz=now;delete del[q.id]});P={ps,c:0,rol:P.rol,pin:P.pin,md:P.md,ov:2,ob:P.ob,del,gmt:P.gmt}}
  else{const cid=P.c>=0&&P.ps[P.c]?P.ps[P.c].id:null;ps.forEach(q=>{const l=P.ps.find(x=>x.id===q.id),o=l?mergeP(l,q):q;o.mt=now;if(P.del)delete P.del[q.id];setLocal(q.id,o)});if(cid)P.c=P.ps.findIndex(q=>q.id===cid);else if(P.c===-1&&P.ps.length)P.c=0}
  save();try{localStorage.setItem('arbk',Date.now())}catch(e){}home()}
 /* Espacio usado en el almacenamiento del navegador (unos 5 MB para todas las apps de esta dirección) */
@@ -2086,6 +2086,8 @@ async function fbLogout(){try{if(FB)await FB.auth.signOut()}catch(e){}FBU=null;t
 const fbErr=e=>{const c=e&&e.code||'';return c.includes('unauthorized-domain')?'Este dominio no está autorizado en Firebase (Authentication › Configuración › Dominios autorizados).':c.includes('permission-denied')?'Firebase rechaza el acceso: revise las reglas de Firestore (ver la ayuda de abajo).':c.includes('popup-closed')||c.includes('cancelled-popup')?'Se cerró la ventana de Google antes de terminar.':c.includes('network')?'Sin conexión. Se sincronizará cuando vuelva internet.':(e&&e.message)||'Error desconocido'};
 const metaOf=()=>({rol:P.rol||'',pin:P.pin||'',ob:P.ob||0,md:P.md?{lv:P.md.lv|0,only:P.md.only?1:0,tz:P.md.tz||'2',rm:P.md.rm||'t',ft:P.md.ft||'i'}:null,gmt:P.gmt||0,del:P.del||{}});
 const isBlank=()=>!P.ps.length||P.ps.every(q=>!q.st&&!q.lv&&!Object.keys(q.s||{}).length);
+/* Fase 5b (H3): «sin nada que perder» = sin alumnos, o alumnos sin ningún dato (tampoco velocidad, evaluaciones, notas, lecturas ni días) */
+const noData=()=>P.ps.every(q=>!q.st&&!q.lv&&!Object.keys(q.s||{}).length&&!(q.vl||[]).length&&!(q.es||[]).length&&!(q.ev||[]).length&&!(q.nt||[]).length&&!Object.keys(q.rd||{}).length&&!Object.keys(q.d||{}).length);
 function applyMeta(m){if(m.rol==='doc'||m.rol==='fam')P.rol=m.rol;if(typeof m.pin==='string'&&m.pin)P.pin=m.pin;if(m.ob)P.ob=1;if(m.md&&typeof m.md==='object'){const d=mdP();d.lv=Math.max(0,Math.min(LV.length-1,m.md.lv|0));d.only=m.md.only?1:0;if(m.md.tz)d.tz=m.md.tz;if(m.md.rm)d.rm=m.md.rm;if(m.md.ft)d.ft=m.md.ft}P.gmt=m.gmt||0}
 function setLocal(id,o){const i=P.ps.findIndex(q=>q.id===id);if(o===null){if(i>=0){const cur=P.c===i;P.ps.splice(i,1);if(cur)P.c=-1;else if(P.c>i)P.c--}return}
  if(i>=0){const q=P.ps[i];Object.keys(q).forEach(k=>delete q[k]);Object.assign(q,o)}else P.ps.push(o)}
@@ -2096,14 +2098,16 @@ async function syncNow(force){if(!FBU||!FB||SYNC.busy)return;SYNC.busy=true;SYNC
  const R={},RN={};cs.forEach(d=>{try{const x=JSON.parse(d.data().d);if(x&&Array.isArray(x.nt)&&x.nt.length)RN[d.id]=1;const o=cleanP(x);o.id=d.id;R[d.id]=o}catch(e){}});
  const RM=md.exists?JSON.parse(md.data().meta||'{}'):null,first=localStorage.getItem('lectori.sync.uid')!==u,remoteEmpty=!RM&&!Object.keys(R).length;
  /* Primera vez en este dispositivo con datos en los dos lados: no se toca nada hasta que el docente elija (tarjeta de la cuenta) */
- let mode=force||'merge';if(first&&!remoteEmpty&&!force){if(isBlank())mode='down';else{const rs=Object.values(R);SYNC.ask={u,ln:P.ps.length,rn:rs.length,rt:rs.reduce((m,q)=>Math.max(m,q.mt||0),0)};return}}
+ let mode=force||'merge';if(first&&!remoteEmpty&&!force){if(noData())mode='down';else{const rs=Object.values(R);SYNC.ask={u,ln:P.ps.length,rn:rs.length,rt:rs.reduce((m,q)=>Math.max(m,q.mt||0),0)};return}}
  SYNC.ask=null;
  const L={};P.ps.forEach(q=>{if(!q.id)q.id=nid();L[q.id]=q});const push={},kill=[],cid=P.c>=0&&P.ps[P.c]?P.ps[P.c].id:null;
- if(mode==='down'){if(!isBlank())await bkAuto('Antes de usar lo de la cuenta',P);
+ if(mode==='down'){if(P.ps.length)await bkAuto('Antes de usar lo de la cuenta',P);
   P.ps=Object.values(R).sort((a,b)=>(a.n||'').localeCompare(b.n||''));P.ps.forEach(q=>{const l=L[q.id];if(l&&(l.nt||[]).length)q.nt=uni(q.nt,l.nt,200)});
   P.c=cid&&R[cid]?P.ps.findIndex(q=>q.id===cid):(P.c===-2?-2:-1);if(RM)applyMeta(RM);P.del=RM&&RM.del||{};Object.keys(RN).forEach(id=>{push[id]=R[id]})}
  else{const del=Object.assign({},mode==='up'?{}:RM&&RM.del||{},P.del||{});
   if(mode==='up'){const rs=Object.values(R);if(rs.length)await bkAuto('Antes de subir este dispositivo: lo que había en la cuenta',{ps:rs,del:RM&&RM.del||{}});Object.keys(R).forEach(id=>{if(!L[id])kill.push(id)})}
+  /* H5: si llega de la cuenta el borrado de alumnos que están aquí, antes una copia automática */
+  if(Object.keys(L).some(id=>{const r=mode==='up'?null:R[id],dt=del[id]||0;return dt&&dt>=Math.max(L[id].mt||0,r?r.mt||0:0)}))await bkAuto('Antes de quitar alumnos borrados en otro dispositivo',P);
   new Set([...Object.keys(L),...(mode==='up'?[]:Object.keys(R))]).forEach(id=>{const l=L[id],r=mode==='up'?null:R[id],dt=del[id]||0;
    if(dt&&dt>=Math.max(l?l.mt||0:0,r?r.mt||0:0)){if(r)kill.push(id);if(l)setLocal(id,null);return}
    if(!l){setLocal(id,r);if(RN[id])push[id]=r;return}
