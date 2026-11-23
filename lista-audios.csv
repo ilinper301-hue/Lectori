@@ -294,6 +294,11 @@ silaba,audio/silabas/fe.mp3,fe
 silaba,audio/silabas/fi.mp3,fi
 silaba,audio/silabas/fo.mp3,fo
 silaba,audio/silabas/fu.mp3,fu
+silaba,audio/silabas/af.mp3,af
+silaba,audio/silabas/ef.mp3,ef
+silaba,audio/silabas/if.mp3,if
+silaba,audio/silabas/of.mp3,of
+silaba,audio/silabas/uf.mp3,uf
 silaba,audio/silabas/pa.mp3,pa
 silaba,audio/silabas/pe.mp3,pe
 silaba,audio/silabas/pi.mp3,pi
@@ -319,6 +324,11 @@ silaba,audio/silabas/ve.mp3,ve
 silaba,audio/silabas/vi.mp3,vi
 silaba,audio/silabas/vo.mp3,vo
 silaba,audio/silabas/vu.mp3,vu
+silaba,audio/silabas/av.mp3,av
+silaba,audio/silabas/ev.mp3,ev
+silaba,audio/silabas/iv.mp3,iv
+silaba,audio/silabas/ov.mp3,ov
+silaba,audio/silabas/uv.mp3,uv
 silaba,audio/silabas/nya.mp3,ña
 silaba,audio/silabas/nye.mp3,ñe
 silaba,audio/silabas/nyi.mp3,ñi
@@ -329,11 +339,20 @@ silaba,audio/silabas/ye.mp3,ye
 silaba,audio/silabas/yi.mp3,yi
 silaba,audio/silabas/yo.mp3,yo
 silaba,audio/silabas/yu.mp3,yu
+silaba,audio/silabas/ay.mp3,ay
+silaba,audio/silabas/ey.mp3,ey
+silaba,audio/silabas/oy.mp3,oy
+silaba,audio/silabas/uy.mp3,uy
 silaba,audio/silabas/ka.mp3,ka
 silaba,audio/silabas/ke.mp3,ke
 silaba,audio/silabas/ki.mp3,ki
 silaba,audio/silabas/ko.mp3,ko
 silaba,audio/silabas/ku.mp3,ku
+silaba,audio/silabas/ak.mp3,ak
+silaba,audio/silabas/ek.mp3,ek
+silaba,audio/silabas/ik.mp3,ik
+silaba,audio/silabas/ok.mp3,ok
+silaba,audio/silabas/uk.mp3,uk
 silaba,audio/silabas/ca.mp3,ca
 silaba,audio/silabas/co.mp3,co
 silaba,audio/silabas/cu.mp3,cu
@@ -351,6 +370,11 @@ silaba,audio/silabas/go.mp3,go
 silaba,audio/silabas/gu.mp3,gu
 silaba,audio/silabas/gue.mp3,gue
 silaba,audio/silabas/gui.mp3,gui
+silaba,audio/silabas/ag.mp3,ag
+silaba,audio/silabas/eg.mp3,eg
+silaba,audio/silabas/ig.mp3,ig
+silaba,audio/silabas/og.mp3,og
+silaba,audio/silabas/ug.mp3,ug
 silaba,audio/silabas/ja.mp3,ja
 silaba,audio/silabas/je.mp3,je
 silaba,audio/silabas/ji.mp3,ji
@@ -358,9 +382,19 @@ silaba,audio/silabas/jo.mp3,jo
 silaba,audio/silabas/ju.mp3,ju
 silaba,audio/silabas/ge.mp3,ge
 silaba,audio/silabas/gi.mp3,gi
+silaba,audio/silabas/aj.mp3,aj
+silaba,audio/silabas/ej.mp3,ej
+silaba,audio/silabas/ij.mp3,ij
+silaba,audio/silabas/oj.mp3,oj
+silaba,audio/silabas/uj.mp3,uj
 silaba,audio/silabas/wa.mp3,wa
 silaba,audio/silabas/we.mp3,we
 silaba,audio/silabas/wi.mp3,wi
+silaba,audio/silabas/aw.mp3,aw
+silaba,audio/silabas/ew.mp3,ew
+silaba,audio/silabas/iw.mp3,iw
+silaba,audio/silabas/ow.mp3,ow
+silaba,audio/silabas/uw.mp3,uw
 silaba,audio/silabas/lla.mp3,lla
 silaba,audio/silabas/lle.mp3,lle
 silaba,audio/silabas/lli.mp3,lli
@@ -507,6 +541,10 @@ silaba,audio/silabas/it.mp3,it
 silaba,audio/silabas/ot.mp3,ot
 silaba,audio/silabas/ut.mp3,ut
 silaba,audio/silabas/ex.mp3,ex
+silaba,audio/silabas/ax.mp3,ax
+silaba,audio/silabas/ix.mp3,ix
+silaba,audio/silabas/ox.mp3,ox
+silaba,audio/silabas/ux.mp3,ux
 texto,audio/textos/000.mp3,Mamá ama a mi mula.
 pregunta,audio/preguntas/000.mp3,¿Qué ama mamá?
 texto,audio/textos/001.mp3,Mi mamá usa la sal.
