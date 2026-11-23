@@ -3,19 +3,26 @@
 Documento vivo. **Cada chat que trabaje en Lectori lo lee al empezar y lo actualiza al terminar**
 (sección «Últimos cambios» arriba del todo, y «Pendiente» / «Problemas conocidos» si cambian).
 
-_Última actualización: 2026-11-18 (fase 5b: arreglos de datos y nube)_
+_Última actualización: 2026-11-23 (arreglos: letra del nivel en Sonido y Practicar, dictado en tableta)_
 
 ## Resumen
 
 App (PWA) para aprender a leer con método fonético-sintético: 45 niveles (29 letras + 16 de inversas, trabadas,
 diptongos y diéresis), con sílabas, palabras, frases y lecturas decodificables, repaso espaciado y zona del tutor con PIN.
-Un solo `index.html` (versión 3.42), sin compilación. Publicada con GitHub Pages desde `main`:
+Un solo `index.html` (versión 3.43), sin compilación. Publicada con GitHub Pages desde `main`:
 https://ilinper301-hue.github.io/Lectori/ (el repositorio se llama `Lectori`, con mayúscula).
 Datos en el dispositivo (`localStorage`, clave `ar2`) y, con sesión de Google, en Firebase
 (proyecto `mis-apps-educativas`, colección `lectori`; reglas en el repositorio de Tabula).
 Reglas de trabajo: `CLAUDE.md`. Plan de mejoras por fases: `PLAN-DISENO.md`.
 
 ## Últimos cambios
+
+- **2026-11-23 · Arreglos pedidos por el tutor. Versión 3.43, caché `lectori-v15`.**
+  - Subnivel «Sonido de la letra» (`run`, `SP`): 3 de los 5 «¿Qué letra suena?» son siempre de la letra del nivel; los otros 2, repaso (`nextLetter`). Antes los 5 eran de repaso entre todas las letras conocidas y la letra nueva casi no salía.
+  - Practicar (`pl`): en Letras, Lee palabras, Construye palabras, Dictado y Lee y toca, 6 de cada 10 son de la letra o nivel actual (`cu`/`PL`); el resto, repaso. Sílabas y el resto, sin cambios.
+  - Dictado/Construir (`itemBuild`): al acertar sale el check sencillo (`okc`, clase `dkok`) en vez del emoji ✅. En horizontal (tableta) todas las letras van en una fila (`.grid.bld`, `--n`) y la pantalla cabe sin desplazarse.
+  - Pendiente de decisión del tutor: sílabas inversas en niveles que no las tienen (f, p, t, b…).
+  - Pruebas: 139 pasan; `humo.py` en verde.
 
 - **2026-11-18 · Fase 5b: arreglos de la revisión de datos y nube. Versión 3.42, caché `lectori-v14`.** Los 8 hallazgos de
   `docs/revision-datos.md`, arreglados; las 9 pruebas de `tests/revision.test.mjs` pasan **sin haberlas cambiado** (ya sin `todo`).
